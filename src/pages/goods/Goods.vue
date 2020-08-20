@@ -1,6 +1,6 @@
 <template>
   <div>
-    Goods----
+    Goods----asdas
   </div>
 </template>
 <script>
