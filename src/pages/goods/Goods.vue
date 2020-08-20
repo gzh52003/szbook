@@ -2,7 +2,7 @@
   <el-table
     :data="tableData5"
     max-height="590"
-    border="1px solid #fc0"
+    border
     size="small"
     highlight-current-row
     style="width: 100%"
@@ -23,7 +23,7 @@
             <span>{{ props.row.category }}</span>
           </el-form-item>
           <el-form-item label="图片">
-            <img src="#"/>
+            <img :src="props.row.url"/>
           </el-form-item>
         </el-form>
       </template>
@@ -35,8 +35,8 @@
     <el-table-column label="描述" width="300" prop="desc"></el-table-column>
     <el-table-column label="操作" fixed="right" width="160">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        <el-button size="mini" @click="handleEdit(scope.row.shopId)">编辑</el-button>
+        <el-button size="mini" type="danger" @click="handleDelete(scope.row.shopId)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -56,6 +56,7 @@ export default {
           shopId: "10333",
           author: "刘益良",
           pic: "54",
+          url:'./img.js'
         },
         {
           id: "12987122",
@@ -67,6 +68,7 @@ export default {
           shopId: "10333",
           author: "刘益良",
           pic: "54",
+          url:'./img.js'
         },
         {
           id: "12987122",
@@ -78,6 +80,7 @@ export default {
           shopId: "10333",
           author: "刘益良",
           pic: "54",
+          url:'./img.js'
         },
         {
           id: "12987122",
@@ -89,10 +92,19 @@ export default {
           shopId: "10333",
           author: "刘益良",
           pic: "54",
+          url:'./img.js'
         },
       ],
     };
   },
+  methods:{
+    handleEdit(_id){
+      console.log(_id);
+    },
+    handleDelete(_id){
+      console.log(_id);
+    }
+  }
 };
 </script>
 
