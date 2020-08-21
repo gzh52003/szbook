@@ -23,7 +23,10 @@
             <span>{{ props.row.category }}</span>
           </el-form-item>
           <el-form-item label="图片">
-            <img :src="props.row.url"/>
+            <el-image
+      style="width: 100px; height: 100px"
+      :src="url"
+      :fit="cover"></el-image>
           </el-form-item>
         </el-form>
       </template>
@@ -41,7 +44,7 @@
           v-model="searchText"
           @input="search(scope)"
           size="mini"
-          placeholder="输入关键字搜索"/>
+          placeholder="输入书籍名称搜索"/>
       </template>
       <template slot-scope="scope">
         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
