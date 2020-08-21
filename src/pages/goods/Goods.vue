@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="tableData5"
+    :data="books"
     max-height="590"
     border
     size="small"
@@ -32,11 +32,20 @@
     <el-table-column label="书籍名称" width="200" prop="name"></el-table-column>
     <el-table-column label="作者" width="150" prop="author"></el-table-column>
     <el-table-column label="价格" width="100" prop="pic"></el-table-column>
+    <el-table-column label="库存" width="100" prop="num"></el-table-column>
     <el-table-column label="描述" width="300" prop="desc"></el-table-column>
-    <el-table-column label="操作" fixed="right" width="160">
+    <el-table-column
+      fixed="right" width="160">
+       <template slot="header" slot-scope="scope">
+        <el-input
+          v-model="searchText"
+          @input="search(scope)"
+          size="mini"
+          placeholder="输入关键字搜索"/>
+      </template>
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.row.shopId)">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDelete(scope.row.shopId)">删除</el-button>
+        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -45,10 +54,10 @@
 export default {
   data() {
     return {
-      tableData5: [
+      books: [
         {
           id: "12987122",
-          name: "好滋好味鸡蛋仔",
+          name: "好滋鸡蛋仔",
           category: "江浙小吃、小吃零食",
           desc: "荷兰优质淡奶，奶香浓而不腻",
           address: "上海市普陀区真北路",
@@ -56,11 +65,12 @@ export default {
           shopId: "10333",
           author: "刘益良",
           pic: "54",
+          num:123,
           url:'./img.js'
         },
         {
           id: "12987122",
-          name: "好滋好味鸡蛋仔",
+          name: "好味鸡蛋仔",
           category: "江浙小吃、小吃零食",
           desc: "荷兰优质淡奶，奶香浓而不腻",
           address: "上海市普陀区真北路",
@@ -68,11 +78,12 @@ export default {
           shopId: "10333",
           author: "刘益良",
           pic: "54",
+          num:123,
           url:'./img.js'
         },
         {
           id: "12987122",
-          name: "好滋好味鸡蛋仔",
+          name: "好滋好味仔",
           category: "江浙小吃、小吃零食",
           desc: "荷兰优质淡奶，奶香浓而不腻",
           address: "上海市普陀区真北路",
@@ -80,11 +91,12 @@ export default {
           shopId: "10333",
           author: "刘益良",
           pic: "54",
+          num:123,
           url:'./img.js'
         },
         {
           id: "12987122",
-          name: "好滋好味鸡蛋仔",
+          name: "好滋好味鸡蛋",
           category: "江浙小吃、小吃零食",
           desc: "荷兰优质淡奶，奶香浓而不腻",
           address: "上海市普陀区真北路",
@@ -92,9 +104,11 @@ export default {
           shopId: "10333",
           author: "刘益良",
           pic: "54",
+          num:123,
           url:'./img.js'
         },
       ],
+      searchText:''
     };
   },
   methods:{
@@ -103,6 +117,11 @@ export default {
     },
     handleDelete(_id){
       console.log(_id);
+    },
+    search(){
+      let reg = new RegExp(this.searchText)
+      // console.log(this.books.filter(el=>el.name.match(reg)));
+      this.books = this.books.filter(el=>el.name.match(reg))
     }
   }
 };

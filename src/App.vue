@@ -37,9 +37,7 @@
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right" style="padding:6px">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-            <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-            <el-breadcrumb-item>用户详情</el-breadcrumb-item>
+            <el-breadcrumb-item>{{$route.fullPath}}</el-breadcrumb-item>
           </el-breadcrumb>
           <router-view />
         </el-main>
@@ -83,11 +81,11 @@ export default {
           icon: "el-icon-s-management",
           submenu: [
             {
-              text: "用户列表",
+              text: "商品列表",
               path: "/list",
             },
             {
-              text: "添加用户",
+              text: "添加商品",
               path: "/add",
             },
           ],
@@ -106,11 +104,14 @@ export default {
       this.activeIndex = path;
     },
     goto(path, idx) {
-      console.log(path);
+      if((this.$route.fullPath).toString()===path.toString())return
       this.$router.replace(path);
       this.currentIndex = idx;
     },
   },
+  computed:{
+    // pathName:this.$router.fullPath
+  }
 };
 window.onselectstart = function () {
   return false;
