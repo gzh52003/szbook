@@ -7,8 +7,11 @@
     class="demo-book"
     style="padding-top:6px"
   >
-    <el-form-item label="书籍名称" prop="name">
-      <el-input v-model="book.name"></el-input>
+    <el-form-item label="书籍名称" required prop="bookName">
+      <el-input v-model="book.bookName"></el-input>
+    </el-form-item>
+    <el-form-item label="ISBN" required prop="bookName">
+      <el-input v-model="book.isbn"></el-input>
     </el-form-item>
     <el-form-item label="上传图片" required>
       <el-upload
@@ -24,17 +27,20 @@
         <img width="100%" :src="book.imgUrl" alt />
       </el-dialog>
     </el-form-item>
-    <el-form-item label="作者" prop="authod">
-      <el-input v-model="book.authod"></el-input>
+    <el-form-item label="作者" required prop="author">
+      <el-input v-model="book.author"></el-input>
     </el-form-item>
-    <el-form-item label="价格" prop="pic">
-      <el-input v-model.number="book.pic"></el-input>
+    <el-form-item label="市场价" required prop="price">
+      <el-input v-model.number="book.price"></el-input>
+    </el-form-item>
+    <el-form-item label="上线价格" required prop="line_price">
+      <el-input v-model.number="book.line_price"></el-input>
     </el-form-item>
     <el-form-item label="库存" prop="num">
       <el-input v-model.number="book.num"></el-input>
     </el-form-item>
     <el-form-item label="出版社" required style="width:260px">
-      <el-select v-model="value" filterable placeholder="请选择出版社">
+      <el-select v-model="book.public" filterable placeholder="请选择出版社">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -70,16 +76,15 @@ export default {
   data() {
     return {
       book: {
-        id:"",
-        name: "",
+        bookName: "",
         desc: "",
         author: "",
         public:'',
         isbn: "",
         time: "",
-        pic: "",
-        line_pic: "",
-        num:"",
+        price: 0,
+        line_price: 0,
+        num:0,
         urlImg:"",
         on_line: false,
       },
@@ -152,11 +157,7 @@ export default {
   },
   methods: {
     submitGoods() {
-      this.$request.post("/goods",this.book)
-      .then(response => (this.info = response))
-      .catch(function (error) {
-        console.log(error);
-      });
+      console.log(this.book);
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
