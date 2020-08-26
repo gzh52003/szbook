@@ -1,0 +1,103 @@
+<template>
+    <div  class="reg">
+       <h1>注册</h1>
+        <!-- Reg -->
+        <el-row>
+            <!-- 左边框 -->
+            <el-col :span="12">
+                <div class="grid-content bg-purple-light"> 
+                    <!-- 注册框 -->
+                    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" >
+                        <!-- 账号 -->
+                        <el-form-item label="账号" prop="name">
+                            <el-input v-model.number="ruleForm.name" ></el-input>
+                            <!-- <div class="invalid-feedback">用户名已存在</div> -->
+                        </el-form-item>
+                        
+                        <!-- 密码 -->
+                        <el-form-item label="密码" prop="pass">
+                            <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+                        </el-form-item>
+
+                        <!-- 提交 -->
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+                            <el-button @click="resetForm('ruleForm')">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </el-col>
+        </el-row> 
+    </div>
+</template>
+<script>
+function reg(){
+
+}
+reg(1)
+
+export default {
+  data() {
+    var checkName = (rule, value, callback) => {
+
+      if (!value) {
+        return callback(new Error('账号不能为空'));
+      }
+      setTimeout(() => {
+        if (!Number.isInteger(value)) {
+          callback(new Error('请输入数字值'));
+        } else {
+          if (!(/^1[356789]\d{9}$/.test(value))) {
+            callback(new Error('请正确输入手机号'));
+          }else {
+            callback();
+          }
+        }
+      }, 1000);
+    };
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass');
+          console.log("123")
+        }
+        callback();
+      }
+    };
+    return {
+      ruleForm: {
+        pass: '',
+        name: ''
+      },
+      rules: {
+        pass: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        name: [
+          { validator: checkName, trigger: 'blur' }
+        ]
+      }
+    };
+  },
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  }
+}
+</script>
+
+<style  lang="scss">
+
+</style>

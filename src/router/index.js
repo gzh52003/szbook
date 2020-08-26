@@ -22,8 +22,8 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [
     {
-      path: '/', // 重定向指向->  /home
-      redirect: '/home'
+      path: '/', // 重定向指向->  /home   改为 reg
+      redirect: '/login'
     },
     {
       path: '/home',
@@ -59,7 +59,13 @@ const router = new VueRouter({
     },
     {
       path: '/reg',
-      component: Reg
+      component: Reg,
+      children: [
+        {
+          name:"login",
+          path: 'login',
+          component: Login
+        }]
     },
     {
       path: '/404',
