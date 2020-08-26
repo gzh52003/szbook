@@ -2,8 +2,8 @@
 <template>
   <el-container style="height:100%;margin:0">
     <el-header>
-      <i class="el-icon-attract"></i> 深圳书城后台管理系统
-
+      <i class="el-icon-attract"></i>
+ 深圳书城后台管理系统
     </el-header>
     <el-container>
       <el-menu
@@ -125,7 +125,7 @@ body {
   margin: 0;
   padding: 0;
 }
-.el-header{
+.el-header {
   background-color: #409eff;
   color: #333;
   line-height: 60px;
