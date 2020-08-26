@@ -1,14 +1,17 @@
 <template>
   <el-form
-    :model="ruleForm"
+    :model="book"
     :rules="rules"
-    ref="ruleForm"
+    ref="book"
     label-width="100px"
-    class="demo-ruleForm"
+    class="demo-book"
     style="padding-top:6px"
   >
-    <el-form-item label="书籍名称" prop="name">
-      <el-input v-model="ruleForm.name"></el-input>
+    <el-form-item label="书籍名称" required prop="bookName">
+      <el-input v-model="book.bookName"></el-input>
+    </el-form-item>
+    <el-form-item label="ISBN" required prop="bookName">
+      <el-input v-model="book.isbn"></el-input>
     </el-form-item>
     <el-form-item label="上传图片" required>
       <el-upload
@@ -21,20 +24,23 @@
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="ruleForm.imgUrl" alt />
+        <img width="100%" :src="book.imgUrl" alt />
       </el-dialog>
     </el-form-item>
-    <el-form-item label="作者" prop="authod">
-      <el-input v-model="ruleForm.authod"></el-input>
+    <el-form-item label="作者" required prop="author">
+      <el-input v-model="book.author"></el-input>
     </el-form-item>
-    <el-form-item label="价格" prop="pic">
-      <el-input v-model.number="ruleForm.pic"></el-input>
+    <el-form-item label="市场价" required prop="price">
+      <el-input v-model.number="book.price"></el-input>
+    </el-form-item>
+    <el-form-item label="上线价格" required prop="line_price">
+      <el-input v-model.number="book.line_price"></el-input>
     </el-form-item>
     <el-form-item label="库存" prop="num">
-      <el-input v-model.number="ruleForm.num"></el-input>
+      <el-input v-model.number="book.num"></el-input>
     </el-form-item>
     <el-form-item label="出版社" required style="width:260px">
-      <el-select v-model="value" filterable placeholder="请选择出版社">
+      <el-select v-model="book.public" filterable placeholder="请选择出版社">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -49,19 +55,19 @@
           <el-date-picker
             type="date"
             placeholder="选择日期"
-            v-model="ruleForm.date1"
+            v-model="book.time"
           ></el-date-picker>
         </el-form-item>
       </el-col>
     </el-form-item>
-    <el-form-item label="上架商品" prop="delivery">
-      <el-switch v-model="ruleForm.delivery"></el-switch>
+    <el-form-item label="上架商品">
+      <el-switch v-model="book.on_line"></el-switch>
     </el-form-item>
     <el-form-item label="描述" prop="desc">
-      <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+      <el-input type="textarea" v-model="book.desc"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+      <el-button type="primary" @click="submitGoods">立即创建</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -69,16 +75,18 @@
 export default {
   data() {
     return {
-      ruleForm: {
-        name: "",
-        imgUrl:'',
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
+      book: {
+        bookName: "",
         desc: "",
+        author: "",
+        public:'',
+        isbn: "",
+        time: "",
+        price: 0,
+        line_price: 0,
+        num:0,
+        urlImg:"",
+        on_line: false,
       },
       value: "",
       dialogImageUrl: "",
@@ -148,16 +156,8 @@ export default {
     };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-                console.log(this.ruleForm);
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    submitGoods() {
+      console.log(this.book);
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
