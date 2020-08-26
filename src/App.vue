@@ -5,7 +5,7 @@
       <i class="el-icon-attract"></i>
  深圳书城后台管理系统
     </el-header>
-    <el-container>
+    <el-container style="height:80%;overflow:hidden">
       <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
@@ -151,6 +151,8 @@ body {
   background-color: #fff;
   color: #333;
   line-height: 160px;
+  height: 100%;
+  overflow: hidden;
   border-left: 1px solid #dcdfe6;
 }
 

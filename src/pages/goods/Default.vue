@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="uesr_main">
         <router-view/>
     </div>
 </template>
