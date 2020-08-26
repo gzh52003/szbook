@@ -25,7 +25,7 @@
     <el-form-item label="库存">
       <el-input v-model.number="book.num"></el-input>
     </el-form-item>
-    <el-form-item label="出版社" style="width:260px">
+    <el-form-item label="出版社" style="width:300px">
       <el-select v-model="book.public" filterable placeholder="请选择出版社">
         <el-option
           v-for="item in options"
