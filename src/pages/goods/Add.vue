@@ -5,7 +5,7 @@
     ref="book"
     label-width="100px"
     class="demo-book"
-    style="padding-top:6px"
+    style="padding-top:30px"
   >
     <el-form-item label="书籍名称" prop="bookName">
       <el-input v-model="book.bookName"></el-input>
@@ -25,7 +25,7 @@
     <el-form-item label="库存">
       <el-input v-model.number="book.num"></el-input>
     </el-form-item>
-    <el-form-item label="出版社" style="width:260px">
+    <el-form-item label="出版社" style="width:300px">
       <el-select v-model="book.public" filterable placeholder="请选择出版社">
         <el-option
           v-for="item in options"
@@ -48,7 +48,7 @@
     <el-form-item label="描述">
       <el-input type="textarea" v-model="book.desc"></el-input>
     </el-form-item>
-    <el-form-item label="上传图片">
+    <el-form-item label="上传图片" style="height: 100%;">
       <el-upload
         action="http://42.194.179.50/api/upload/singleimg"
         list-type="picture-card"

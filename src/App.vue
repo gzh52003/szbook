@@ -3,7 +3,7 @@
   <el-container style="height:100%;margin:0">
     <el-header>
       <i class="el-icon-attract"></i>
- 深圳书城后台管理系统
+      深圳书城后台管理系统
     </el-header>
     <el-container style="height:80%;overflow:hidden">
       <el-menu
@@ -37,7 +37,7 @@
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right" style="padding:6px">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>{{$route.fullPath}}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{route_str}}</el-breadcrumb-item>
           </el-breadcrumb>
           <router-view />
         </el-main>
@@ -104,13 +104,29 @@ export default {
       this.activeIndex = path;
     },
     goto(path, idx) {
-      if((this.$route.fullPath).toString()===path.toString())return
+      if (this.$route.fullPath.toString() === path.toString()) return;
       this.$router.replace(path);
       this.currentIndex = idx;
     },
   },
-  computed:{
-    // pathName:this.$router.fullPath
+  computed: {
+    route_str:function(){
+      let rouArr = this.$route.path.split("/");
+      let rouStr = ""
+        console.log(rouArr);
+        console.log(rouStr);
+      for(var i=0;i<rouArr.length;i++){
+        if(!rouArr[i])return;
+        if(i==1){
+          rouStr += i
+        }
+        if(i!=1){
+          rouStr = rouStr + ">>" + i
+        }
+        console.log(rouStr);
+      }
+      return rouStr;
+    }
   }
 };
 window.onselectstart = function () {
@@ -173,5 +189,18 @@ body > .el-container {
   i {
     color: inherit !important;
   }
+}
+.el-breadcrumb {
+  position: fixed;
+  z-index: 1;
+  background: #eee;
+  height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  width: 100%;
+  left: 202px;
+  top: 60px;
+  line-height: 40px !important;
+  box-shadow: 0 0 1px 0 rgba($color: #666, $alpha: 0.6);
 }
 </style>
