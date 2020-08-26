@@ -1,5 +1,5 @@
 <template>
-  <div class="user" style="padding-top:30px">
+  <div class="user" style="padding-top:28px">
     <el-table :data="books" border size="small" highlight-current-row style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">
