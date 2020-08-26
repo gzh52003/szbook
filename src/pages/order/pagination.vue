@@ -4,10 +4,10 @@
       class="pages"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :page-sizes="[2, 3, 4, 5]"
-      :page-size="2"
+      :page-sizes="[5, 10, 20, 50]"
+      :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="datas.length"
+      :total="datasNum"
       >
     </el-pagination>
   </div>
@@ -15,20 +15,23 @@
 <script>
 export default {
     name:'pagination',
-    props:['datas'],
+    props:['datasNum'],
     data(){
         return{
-
+            pageSize:5,
+            currentPage:1
         }
     },
     methods:{
         handleSizeChange(val){
             // val 一页的条数
-            console.log(val)
+            this.pageSize=val;
+            this.$emit("getPageSize",this.currentPage,this.pageSize)
         },
         handleCurrentChange(val){
             //val 当前页的页数
-            console.log(val)
+            this.currentPage=val;
+            this.$emit("getCurrentPage",this.currentPage,this.pageSize)
         }
     }
 }
