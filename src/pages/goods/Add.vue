@@ -48,7 +48,7 @@
     <el-form-item label="描述">
       <el-input type="textarea" v-model="book.desc"></el-input>
     </el-form-item>
-    <el-form-item label="上传图片">
+    <el-form-item label="上传图片" style="height: 100%;">
       <el-upload
         action="http://42.194.179.50/api/upload/singleimg"
         list-type="picture-card"
