@@ -29,7 +29,7 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="useredit(scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="userdelete()">删除</el-button>
+          <el-button size="mini" type="danger" @click="userdelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,61 +70,61 @@
 
 <script>
 async function userlist(page = 1, options = {}) {
-  // console.log(page);
+  console.log(page);
   if (Object.keys(options).length <= 0) {
-    // console.log(1111);
+    console.log(1111);
     let result = await fetch(
       `http://42.194.179.50/api/user?page=${page}&size=10`
     ).then((res) => res.json());
-    console.log(result);
+    // console.log(result);
     // this.tableData = aa;
     return result;
   } else {
-    // console.log(2222);
+    console.log(2222);
     if (options.typemsg == "姓名") {
       options.type = "username";
-      console.log(options.type);
+      // console.log(options.type);
     } else if (options.typemsg == "描述") {
       options.type = "description";
-      console.log(options.type);
+      // console.log(options.type);
     } else if (options.typemsg == "日期") {
       options.type = "date";
-      console.log(options.type);
+      // console.log(options.type);
     }
     let aa = await fetch(
       `http://42.194.179.50/api/user?page=1&size=10&type=${options.type}&msg=${options.msg}`
     ).then((res) => res.json());
-    // console.log(aa);
+    console.log(aa);
     // this.tableData = aa;
     return aa;
   }
 }
 async function searchuserlist(page = 1, options = {}) {
-  // console.log(page);
+  console.log(page);
   if (Object.keys(options).length <= 0) {
-    // console.log(1111);
+    console.log(1111);
     let aa = await fetch(
       `http://42.194.179.50/api/user?page=${page}&size=10`
     ).then((res) => res.json());
-    console.log(aa);
+    // console.log(aa);
     // this.tableData = aa;
     return aa;
   } else {
-    // console.log(2222);
+    console.log(2222);
     if (options.typemsg == "姓名") {
       options.type = "username";
-      console.log(options.type);
+      // console.log(options.type);
     } else if (options.typemsg == "描述") {
       options.type = "description";
-      console.log(options.type);
+      // console.log(options.type);
     } else if (options.typemsg == "日期") {
       options.type = "date";
-      console.log(options.type);
+      // console.log(options.type);
     }
     let aa = await fetch(
       `http://42.194.179.50/api/user/mohu?page=1&size=10&type=${options.type}&msg=${options.msg}`
     ).then((res) => res.json());
-    // console.log(aa);
+    console.log(aa);
     // this.tableData = aa;
     return aa;
   }
@@ -172,27 +172,27 @@ export default {
     async getuserlistBypage(page) {
       let result = await userlist(page);
       this.tableData = result;
-      console.log(result);
+      // console.log(result);
     },
     async searchmsg(typemsg, msg) {
       // this.search = this.$refs.aaa;
-      console.log(await this.$refs.aaa.value);
-      console.log(typemsg, msg);
+      // console.log(await this.$refs.aaa.value);
+      // console.log(typemsg, msg);
       let result1 = await searchuserlist(1, { typemsg, msg });
       this.tableData = result1;
-      console.log(result1);
+      // console.log(result1);
     },
     // 无法拿到tableData的每条数据
     // 编辑
     useredit(item) {
       this.$refs.showedit.className = "showedit editbigbox";
-      console.log(item);
+      // console.log(item);
       this.username = item.username;
       this.description = item.description;
       this.idx = item._id;
     },
     async sureedit() {
-      console.log(this.idx, this.description);
+      // console.log(this.idx, this.description);
       let result = await fetch(`http://42.194.179.50/api/user`, {
         method: "PUT",
         body: JSON.stringify({ _id: this.idx, description: this.description }),
@@ -202,13 +202,13 @@ export default {
       }).then((res) => res.json());
       if (result.code && result.code == 200) {
         this.tableData = this.tableData.reduce((pre, cur) => {
-          console.log(cur);
+          // console.log(cur);
           if (cur._id == this.idx) {
             cur.description = this.description;
           }
           return pre.concat(cur);
         }, []);
-        console.log(this.tableData);
+        // console.log(this.tableData);
         this.openedit("编辑成功");
       } else {
         this.openedit("编辑失败");
@@ -230,15 +230,23 @@ export default {
       });
     },
     //删除
-    userdelete() {
+    async userdelete(obj) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
+        .then(async () => {
           //发送ajax请求，把数据库删掉
-
+          await fetch(`http://42.194.179.50/api/user?_id=${obj._id}`, {
+            method: "delete",
+          }).then((res) => {
+            return res.json();
+          });
+          this.tableData = this.tableData.filter((item) => {
+            return item._id != obj._id;
+          });
+          // console.log(this.tableData);
           this.$message({
             type: "success",
             message: "删除成功!",
