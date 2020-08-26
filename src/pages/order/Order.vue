@@ -64,7 +64,6 @@
     ></pagination>
   </div>
 </template>
-
 <script>
 import pagination from "./pagination.vue";
 import firstIn from "./firstin.js";
