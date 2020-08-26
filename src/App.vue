@@ -37,13 +37,7 @@
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right" style="padding:6px">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-<<<<<<< HEAD
-            <!-- <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-            <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-            <el-breadcrumb-item>用户详情</el-breadcrumb-item>-->
-=======
             <el-breadcrumb-item>{{$route.fullPath}}</el-breadcrumb-item>
->>>>>>> de31e34f822bdb3d075b632060afae969afee634
           </el-breadcrumb>
           <router-view />
         </el-main>
