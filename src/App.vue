@@ -1,9 +1,9 @@
   <!-- 根节点 -->
 <template>
-  <el-container style="height:100%;margin:0">
+  <el-container style="height:100%;margin:0;padding:30px">
     <el-header>
       <i class="el-icon-attract"></i>
- 深圳书城后台管理系统
+      深圳书城后台管理系统
     </el-header>
     <el-container>
       <el-menu
@@ -37,13 +37,7 @@
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right" style="padding:6px">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-<<<<<<< HEAD
-            <!-- <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-            <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-            <el-breadcrumb-item>用户详情</el-breadcrumb-item>-->
-=======
             <el-breadcrumb-item>{{$route.fullPath}}</el-breadcrumb-item>
->>>>>>> de31e34f822bdb3d075b632060afae969afee634
           </el-breadcrumb>
           <router-view />
         </el-main>
@@ -110,14 +104,14 @@ export default {
       this.activeIndex = path;
     },
     goto(path, idx) {
-      if((this.$route.fullPath).toString()===path.toString())return
+      if (this.$route.fullPath.toString() === path.toString()) return;
       this.$router.replace(path);
       this.currentIndex = idx;
     },
   },
-  computed:{
+  computed: {
     // pathName:this.$router.fullPath
-  }
+  },
 };
 window.onselectstart = function () {
   return false;
