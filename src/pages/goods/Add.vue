@@ -5,7 +5,7 @@
     ref="book"
     label-width="100px"
     class="demo-book"
-    style="padding-top:6px"
+    style="padding-top:30px"
   >
     <el-form-item label="书籍名称" prop="bookName">
       <el-input v-model="book.bookName"></el-input>
