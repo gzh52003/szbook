@@ -6,7 +6,6 @@
         <el-col :span="12" class="logo">
           <i class="el-icon-attract"></i> 深圳书城后台管理系统
         </el-col>
-
         <el-col :span="12" style="text-align:right">
           <el-button type="text" style="color:#fff"  @click="goto(logins.path,0)"  v-show="isShow">{{logins.text}} </el-button>
         </el-col>
