@@ -1,5 +1,6 @@
   <!-- 根节点 -->
 <template>
+
   <el-container style="height:100%;margin:0">
     <el-header class="header">
       <el-row>
@@ -11,6 +12,7 @@
           <el-button type="text" style="color:#fff"  @click="goto(logins.path,0)"  v-show="isShow">{{logins.text}} </el-button>
         </el-col>
       </el-row>
+
     </el-header>
 
     <el-container style="height:80%;overflow:hidden">
@@ -46,7 +48,7 @@
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right" style="padding:6px">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>{{route_str}}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{$route.fullPath}}</el-breadcrumb-item>
           </el-breadcrumb>
           <router-view />
         </el-main>

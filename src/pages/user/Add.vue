@@ -12,19 +12,19 @@
         >
           <el-select v-model="select" slot="prepend" placeholder="请选择">
             <el-option label="日期" value="日期"></el-option>
-            <el-option label="姓名" value="姓名"></el-option>
+            <el-option label="用户名" value="用户名"></el-option>
             <el-option label="描述" value="描述"></el-option>
           </el-select>
           <el-button slot="append" @click="searchmsg(select, search)" icon="el-icon-search"></el-button>
         </el-input>
       </div>
       <el-col>
-        <el-button type="success" class="adduser">添加用户</el-button>
+        <el-button type="success" class="adduser" @click="showadd">添加用户</el-button>
       </el-col>
     </el-row>
     <el-table :data="tableData" border style="width: 100%" :idx="tableData._id" class="tabbody">
       <el-table-column label="日期" align="center" prop="date"></el-table-column>
-      <el-table-column label="姓名" align="center" prop="username"></el-table-column>
+      <el-table-column label="用户名" align="center" prop="username"></el-table-column>
       <el-table-column label="描述" align="center" prop="description"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
@@ -33,18 +33,60 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 添加按钮 -->
+    <div class="edit-box" id="adduser-box" ref="addoneuser" style="display:none">
+      <div class="edittle">新增用户</div>
+      <el-upload
+        class="avatar-uploader"
+        action="http://42.194.179.50/api/upload/singleimg"
+        name="goodsImg"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+      >
+        <img v-if="imageUrl" :src="imageUrl" class="avatar" id="imgactive" />
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+      <el-input placeholder="请输入用户名" v-model="addusername">
+        <template slot="prepend">用户名:</template>
+      </el-input>
+      <el-input placeholder="请输入密码" @keyup.enter.native="adduser" v-model="addpassword">
+        <template slot="prepend">密&nbsp;&nbsp; 码：</template>
+      </el-input>
+      <!-- <el-input placeholder="请输入内容" v-model="input1">
+          <template slot="prepend">用户名：</template>
+      </el-input>-->
+      <div class="editbtn">
+        <el-button @click="adduser" class="sure" type="success">确定</el-button>
+        <el-button @click="canleadd" class="canle" type="danger">取消</el-button>
+      </div>
+    </div>
+
     <!-- 编辑按钮 -->
     <main class="editbigbox exitedit" ref="showedit">
       <div class="edit-box">
         <div class="edittle">编辑用户</div>
+        <el-upload
+          class="avatar-uploader"
+          action="http://42.194.179.50/api/upload/singleimg"
+          name="goodsImg"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <img :src="imgpath" class="avatar" id="imgactive" />
+
+          <i class="el-icon-plus avatar-uploader-icon"></i>
+          <img :src="imgpath" alt style="positon:absolute;z-index:10;" />
+        </el-upload>
         <el-input placeholder="请输入内容" :value="username">
-          <template slot="prepend">姓名：</template>
+          <template slot="prepend">用户名：</template>
         </el-input>
         <el-input placeholder="请输入内容" v-model="description" @keyup.enter.native="sureedit">
           <template slot="prepend">描述：</template>
         </el-input>
         <!-- <el-input placeholder="请输入内容" v-model="input1">
-          <template slot="prepend">姓名：</template>
+          <template slot="prepend">用户名：</template>
         </el-input>-->
         <div class="editbtn">
           <el-button @click="sureedit" class="sure" type="success">确定</el-button>
@@ -59,6 +101,7 @@
     </div>
     <el-pagination
       background
+      :data="longpage"
       layout="prev, pager, next"
       :total="1000"
       :current-page.sync="page"
@@ -81,7 +124,7 @@ async function userlist(page = 1, options = {}) {
     return result;
   } else {
     console.log(2222);
-    if (options.typemsg == "姓名") {
+    if (options.typemsg == "用户名") {
       options.type = "username";
       // console.log(options.type);
     } else if (options.typemsg == "描述") {
@@ -111,7 +154,7 @@ async function searchuserlist(page = 1, options = {}) {
     return aa;
   } else {
     console.log(2222);
-    if (options.typemsg == "姓名") {
+    if (options.typemsg == "用户名") {
       options.type = "username";
       // console.log(options.type);
     } else if (options.typemsg == "描述") {
@@ -135,13 +178,19 @@ export default {
       input1: "",
       input2: "",
       input3: "",
-      select: "姓名",
+      select: "用户名",
       search: "",
       username: "",
       idx: "",
       description: "",
+      longpage: 6,
       page: 1,
       item: "",
+      imageUrl: "",
+      imgpath: "",
+      addusername: "",
+      addpassword: "",
+      imgpathsend: "",
       tableData: [
         // {
         //   date: "2016-05-02",
@@ -189,13 +238,21 @@ export default {
       // console.log(item);
       this.username = item.username;
       this.description = item.description;
+      this.imgpath = item.imageUrl;
+      console.log(typeof this.imgpath);
+      // console.log(this.imgpath, item.imageUrl);
       this.idx = item._id;
     },
+
     async sureedit() {
       // console.log(this.idx, this.description);
       let result = await fetch(`http://42.194.179.50/api/user`, {
         method: "PUT",
-        body: JSON.stringify({ _id: this.idx, description: this.description }),
+        body: JSON.stringify({
+          _id: this.idx,
+          description: this.description,
+          imageUrl: this.imgpath,
+        }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -210,10 +267,11 @@ export default {
         }, []);
         // console.log(this.tableData);
         this.openedit("编辑成功");
+        this.$refs.showedit.className = "exitedit editbigbox";
       } else {
         this.openedit("编辑失败");
       }
-      this.$refs.showedit.className = "exitedit editbigbox";
+      this.imageUrl = "";
     },
     canleedit() {
       this.$refs.showedit.className = "exitedit editbigbox";
@@ -259,15 +317,96 @@ export default {
           });
         });
     },
+    // 新增用户
+    showadd() {
+      this.$refs.addoneuser.style = "display:flex";
+    },
+    canleadd() {
+      this.$refs.addoneuser.style = "display:none";
+    },
+    async adduser() {
+      console.log(this.addusername, this.addpassword, this.imageUrl);
+      this.imgpath = this.imageUrl;
+      console.log(!/\s/g.test(this.addusername));
+      if (
+        this.addusername &&
+        this.addpassword &&
+        !/\s+/g.test(this.addusername) &&
+        !/\s+/g.test(this.addpassword)
+      ) {
+        let result = await fetch("http://42.194.179.50/api/reg", {
+          method: "post",
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+          body: JSON.stringify({
+            imageUrl: this.imgpathsend,
+            username: this.addusername,
+            password: this.addpassword,
+          }),
+        }).then((res) => res.json());
+        console.log(result);
+
+        this.openedit("添加成功");
+        this.imgpath = this.imgpathsend;
+        console.log(this.imgpath);
+        this.addusername = "";
+        this.addpassword = "";
+        this.canleadd();
+      } else {
+        this.openedit("添加失败");
+      }
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imgpathsend =
+        "http://42.194.179.50:80/" + file.response.data.uploadUrl.slice(3);
+      console.log(this.imgpathsend);
+      this.imgpath = this.imgpathsend;
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
   },
+
+  // 查看一共数据库一共有多少个相对应的数据
   async created() {
     //判断有无token，如果有，那么就免登录
     let result = await userlist(1);
     this.tableData = result;
+    console.log(this.tableData);
+    // console.log(this.tableData.length / 2);
+    // if (this.tableData.length % 10 != 0) {
+    //   let shiwei = (parseInt(this.tableData.length / 10) + 1) * 10;
+    //   this.longpage = shiwei;
+    // } else {
+    //   this.longpage = this.tableData.length;
+    // }
+    // console.log(this.longpage);
+  },
+  mounted() {
+    // if (this.tableData.length % 10 != 0) {
+    //   let shiwei = (parseInt(this.tableData.length / 10) + 1) * 10;
+    //   this.longpage = shiwei;
+    // } else {
+    //   this.longpage = this.tableData.length;
+    // }
   },
 };
 </script>
 <style>
+#adduser-box {
+  height: 400px;
+  box-sizing: border-box;
+  padding: 12px 20px 6px;
+}
 .showedit {
   display: block;
 }
@@ -295,7 +434,7 @@ export default {
 .edit-box {
   width: 500px;
   position: absolute;
-  height: 300px;
+  height: 400px;
   left: 32%;
   top: 22%;
   margin: 0 auto;
@@ -306,6 +445,11 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-content: center;
+}
+.edittle {
+  font-size: 16px;
+  color: rgb(2, 2, 2);
+  font-weight: 500;
 }
 .caozuo {
   right: 50px;
@@ -345,5 +489,45 @@ export default {
 .el-table__header-wrapper {
   height: 80px;
   padding-top: 0;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  /* position: relative; */
+  overflow: hidden;
+}
+.avatar-uploader {
+  width: 400px;
+  height: 100px;
+  margin: 0 auto;
+}
+.el-upload {
+  width: 100px;
+  height: 100px;
+  left: 150px;
+}
+#imgactive {
+  width: 100%;
+  height: 100%;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.el-upload .avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  line-height: 100px;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
