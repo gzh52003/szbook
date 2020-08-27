@@ -5,7 +5,7 @@
       <i class="el-icon-attract"></i>
       深圳书城后台管理系统
     </el-header>
-    <el-container>
+    <el-container style="height:80%;overflow:hidden">
       <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
@@ -110,8 +110,24 @@ export default {
     },
   },
   computed: {
-    // pathName:this.$router.fullPath
-  },
+    route_str:function(){
+      let rouArr = this.$route.path.split("/");
+      let rouStr = ""
+        console.log(rouArr);
+        console.log(rouStr);
+      for(var i=0;i<rouArr.length;i++){
+        if(!rouArr[i])return;
+        if(i==1){
+          rouStr += i
+        }
+        if(i!=1){
+          rouStr = rouStr + ">>" + i
+        }
+        console.log(rouStr);
+      }
+      return rouStr;
+    }
+  }
 };
 window.onselectstart = function () {
   return false;
@@ -151,6 +167,8 @@ body {
   background-color: #fff;
   color: #333;
   line-height: 160px;
+  height: 100%;
+  overflow: hidden;
   border-left: 1px solid #dcdfe6;
 }
 
@@ -171,5 +189,18 @@ body > .el-container {
   i {
     color: inherit !important;
   }
+}
+.el-breadcrumb {
+  position: fixed;
+  z-index: 1;
+  background: #eee;
+  height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  width: 100%;
+  left: 202px;
+  top: 60px;
+  line-height: 40px !important;
+  box-shadow: 0 0 1px 0 rgba($color: #666, $alpha: 0.6);
 }
 </style>
