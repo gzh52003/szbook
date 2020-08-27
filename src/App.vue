@@ -78,16 +78,7 @@ export default {
           text: "用户管理",
           path: "/user",
           icon: "el-icon-user-solid",
-          submenu: [
-            {
-              text: "添加用户",
-              path: "/add",
-            },
-            {
-              text: "用户列表",
-              path: "/list",
-            },
-          ],
+          
         },
         {
           text: "商品管理",
