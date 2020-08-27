@@ -9,8 +9,11 @@ import User from '../pages/user/Default.vue'
 import UserList from '../pages/user/List.vue'
 import UserAdd from '../pages/user/Add.vue'
 
+import Goods from '../pages/goods/Default.vue'
+import GoodsAdd from '../pages/goods/Add.vue'
+import GoodsList from '../pages/goods/Goods.vue'
+
 import Order from '../pages/order/Order.vue'
-import Goods from '../pages/goods/Goods.vue'
 import Reg from '../pages/reg/Reg.vue'
 import Login from '../pages/login/Login.vue'
 import NotFound from '../pages/NotFound.vue'
@@ -51,7 +54,18 @@ const router = new VueRouter({
     },
     {
       path: '/goods',
-      component: Goods
+      component: Goods,
+      children: [
+        {
+          path: '',
+          redirect: 'list'
+        }, {
+          path: 'add',
+          component: GoodsAdd
+        }, {
+          path: 'list',
+          component: GoodsList
+        }]
     },
     {
       path: '/login',
@@ -79,4 +93,4 @@ const router = new VueRouter({
   ]
 })
 
-export default router;
+export default router

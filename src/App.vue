@@ -12,8 +12,9 @@
         </el-col>
       </el-row>
     </el-header>
-    
-    <el-container>
+
+    <el-container style="height:80%;overflow:hidden">
+
       <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
@@ -44,10 +45,8 @@
       <el-container>
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right" style="padding:6px">
-            <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
-            <!-- <el-breadcrumb-item>用户5管理</el-breadcrumb-item>
-            <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-            <el-breadcrumb-item>用户详情</el-breadcrumb-item> -->
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>{{route_str}}</el-breadcrumb-item>
           </el-breadcrumb>
           <router-view />
         </el-main>
@@ -92,7 +91,17 @@ export default {
         {
           text: "商品管理",
           path: "/goods",
-          icon: "el-icon-grape",
+          icon: "el-icon-s-management",
+          submenu: [
+            {
+              text: "商品列表",
+              path: "/list",
+            },
+            {
+              text: "添加商品",
+              path: "/add",
+            },
+          ],
         },
         {
           text: "订单管理",
@@ -110,11 +119,30 @@ export default {
       this.activeIndex = path;
     },
     goto(path, idx) {
-      // console.log(path);
+      if (this.$route.fullPath.toString() === path.toString()) return;
       this.$router.replace(path);
       this.currentIndex = idx;
     },
   },
+  computed: {
+    route_str:function(){
+      let rouArr = this.$route.path.split("/");
+      let rouStr = ""
+        console.log(rouArr);
+        console.log(rouStr);
+      for(var i=0;i<rouArr.length;i++){
+        if(!rouArr[i])return;
+        if(i==1){
+          rouStr += i
+        }
+        if(i!=1){
+          rouStr = rouStr + ">>" + i
+        }
+        console.log(rouStr);
+      }
+      return rouStr;
+    }
+  }
 };
 window.onselectstart = function () {
   return false;
@@ -128,7 +156,7 @@ body {
   margin: 0;
   padding: 0;
 }
-.el-header{
+.el-header {
   background-color: #409eff;
   color: #333;
   line-height: 60px;
@@ -154,6 +182,8 @@ body {
   background-color: #fff;
   color: #333;
   line-height: 160px;
+  height: 100%;
+  overflow: hidden;
   border-left: 1px solid #dcdfe6;
 }
 
@@ -174,5 +204,18 @@ body > .el-container {
   i {
     color: inherit !important;
   }
+}
+.el-breadcrumb {
+  position: fixed;
+  z-index: 1;
+  background: #eee;
+  height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  width: 100%;
+  left: 202px;
+  top: 60px;
+  line-height: 40px !important;
+  box-shadow: 0 0 1px 0 rgba($color: #666, $alpha: 0.6);
 }
 </style>
