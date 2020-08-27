@@ -82,7 +82,7 @@ export default {
     fr(){
       console.log("fr");
       const {tel} = this.ReginForm.tel;
-          // console.log(phoneData);
+      // 去重用户接口
       const url = "http://42.194.179.50/api/reg/check";
       // console.log('用户名是否重复url：',url);
 
@@ -91,9 +91,10 @@ export default {
             'Content-Type':'application/json'
           }
       }).then(res=>res.json()).then(data=>{
-        console.log(data);
+        console.log("去重：",data);
       });
     },
+
     //   验证 码
     getAuthCode: function () {
       const verification = this.ReginForm.tel;
@@ -131,7 +132,7 @@ export default {
       const mCodeData = this.verification;
       const self= this;
       
-      //   手机注册
+      // 注册接口
       const url = "http://42.194.179.50/api/reg";
       fetch(url,{
         method:'post',
@@ -217,11 +218,6 @@ html,body{
   padding-left: 10px;
   border-radius: 8%;
 }
-/* .loginform[data-v-92def6b0] {
-  width: 370px;
-  min-height: 440px;
-} */
-
 .reg-text {
   text-align: center;
   margin-bottom: 20px;
@@ -231,7 +227,7 @@ html,body{
 .regBox .el-form-item{
   min-width: 300px;
   width: 60%;
-  margin: 0 auto;
+  margin: 22px auto;
   max-width: 500px;
 }
 </style>
