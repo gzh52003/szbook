@@ -2,7 +2,7 @@
   <div class="loginBox">
     <el-main>
       <el-form :model="ruleForm" ref="ruleForm" :rules="rule" class="loginform" label-width="0">
-        <h3 class="login-text">欢迎-登录</h3>
+        <h3 class="login-text" style="line-height:2rem">欢迎-登录</h3>
         <el-form-item prop="tel">
           <el-input type="text" v-model="ruleForm.tel" placeholder="用户名"></el-input>
         </el-form-item>
@@ -25,8 +25,8 @@
             :loading="logining"
           >登录</el-button>
           <hr />
-          <p>
-            暂无<span style="color:#56ac67"> “深圳书城后台管理系统”账号</span>， 马上
+          <p style="font-size:0.2rem">
+            暂无<span style="color:#56ac67;font-size:0.2rem"> “深圳书城后台管理系统”账号</span>， 马上
             <span class="to" @click="toreg">注册</span>
           </p>
         </el-form-item>
@@ -181,14 +181,17 @@ html,body{
   left:0;
   right:0;
   bottom:0;
+  z-index: 100;
 }
 .loginform {
-  margin: 56px auto;
-  width: 310px;
+  margin: 8% auto;
+  min-width: 300px;
+  width: 39%;
+  max-height: 600px;
   background: #fff;
   box-shadow: 0 0 10px #b4bccc;
   padding: 30px 30px 0 30px;
-  border-radius: 25px;
+  border-radius: 20px;
 }
 .submitBtn {
   width: 100%;
@@ -214,6 +217,13 @@ html,body{
   text-align: center;
   margin-bottom: 20px;
   color:#58bc54;
+}
+
+.el-form-item{
+  min-width: 300px;
+  width: 60%;
+  margin: 0 auto;
+  max-width: 500px;
 }
 
 </style>
