@@ -5,9 +5,7 @@ import VueRouter from 'vue-router'
 // 引入自定义模块
 import Home from '../pages/Home.vue'
 
-import User from '../pages/user/Default.vue'
-import UserList from '../pages/user/List.vue'
-import UserAdd from '../pages/user/Add.vue'
+import User from '../pages/user/User.vue'
 
 import Goods from '../pages/goods/Default.vue'
 import GoodsAdd from '../pages/goods/Add.vue'
@@ -35,18 +33,7 @@ const router = new VueRouter({
     {
       path: '/user',
       component: User,
-      children: [
-        // 进入用户管理页面直接跳到用户列表
-        {
-          path: '',
-          redirect: 'list'
-        }, {
-          path: 'add',
-          component: UserAdd
-        }, {
-          path: 'list',
-          component: UserList
-        }]
+     
     },
     {
       path: '/order',
