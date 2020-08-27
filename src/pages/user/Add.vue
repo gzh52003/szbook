@@ -85,6 +85,7 @@
         placeholder="请输入密码"
         @keyup.enter.native="adduser"
         v-model="addpassword"
+        show-password
       >
         <template slot="prepend">密&nbsp;&nbsp; 码：</template>
       </el-input>
@@ -116,7 +117,7 @@
           <i class="el-icon-plus avatar-uploader-icon"></i>
           <img :src="imgpath" alt style="positon:absolute;z-index:10;" />
         </el-upload>
-        <el-input placeholder="请输入内容" :value="username">
+        <el-input placeholder="请输入内容" v-model="username" :value="username">
           <template slot="prepend">用户名：</template>
         </el-input>
         <el-input
@@ -284,7 +285,7 @@ export default {
       this.username = item.username;
       this.description = item.description;
       this.imgpath = item.imageUrl;
-      console.log(typeof this.imgpath);
+      console.log(this.imgpath);
       // console.log(this.imgpath, item.imageUrl);
       this.idx = item._id;
     },
@@ -295,6 +296,7 @@ export default {
         method: "PUT",
         body: JSON.stringify({
           _id: this.idx,
+          username: this.username,
           description: this.description,
           imageUrl: this.imgpath,
         }),
@@ -307,6 +309,8 @@ export default {
           // console.log(cur);
           if (cur._id == this.idx) {
             cur.description = this.description;
+            cur.username = this.username;
+            cur.imageUrl = this.imgpath;
           }
           return pre.concat(cur);
         }, []);
@@ -346,6 +350,20 @@ export default {
           }).then((res) => {
             return res.json();
           });
+          if (obj.imageUrl) {
+            let rm_url = obj.imageUrl.replace(
+              /http:\/\/42.194.179.50:80/,
+              ".."
+            );
+            let res = await fetch(
+              `http://42.194.179.50/api/upload/rmimg?rm_url=${rm_url}`,
+              {
+                method: "delete",
+              }
+            ).then((res) => res.json);
+            console.log(res);
+          }
+
           this.tableData = this.tableData.filter((item) => {
             return item._id != obj._id;
           });
