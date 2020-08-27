@@ -36,8 +36,7 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="订单号" prop="_id" width="100">
-      </el-table-column>
+      <el-table-column label="订单号" prop="_id" width="120" show-overflow-tooltip> </el-table-column>
       <el-table-column label="下单日期" sortable prop="add_time" width="120">
       </el-table-column>
       <el-table-column label="用户名" prop="username" width="80">
@@ -51,20 +50,44 @@
           <el-input
             v-show="scope.row.show"
             v-model="scope.row.address"
-            @change="putData(scope.row._id,scope.row.address,scope.row.phone)"
+            @change="putData(scope.row._id, scope.row.address, scope.row.phone)"
           ></el-input>
           <span v-show="!scope.row.show">{{ scope.row.address }}</span>
         </template>
       </el-table-column>
       <el-table-column label="联系方式" prop="phone" width="150">
+        <template v-slot="scope">
+          <el-input
+            v-show="scope.row.show"
+            v-model="scope.row.phone"
+            @change="putData(scope.row._id, scope.row.address, scope.row.phone)"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.phone }}</span>
+        </template>
       </el-table-column>
       <el-table-column label="操作" width="160">
         <template v-slot="scope">
-          <el-button type="text" @click="scope.row.show = false"
-            >完成</el-button
-          >
-          <el-button type="text" @click="scope.row.show = true">编辑</el-button>
-           <el-button type="text" @click="delData(scope.row._id)">删除</el-button>
+          <el-button
+            type="success"
+            size="mini"
+            circle
+            icon="el-icon-circle-check"
+            @click="scope.row.show = false"
+          ></el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            circle
+            icon="el-icon-edit"
+            @click="scope.row.show = true"
+          ></el-button>
+          <el-button
+            type="danger"
+            size="mini"
+            circle
+            icon="el-icon-delete"
+            @click="delData(scope.row._id)"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -77,13 +100,13 @@
 </template>
 <script>
 import pagination from "./pagination.vue";
-import {deleteData,findData,changeData} from "./firstin.js";
+import { deleteData, findData, changeData } from "./firstin.js";
 import getDetails from "./getDetails.js";
 // import {findData,changeData} from "./firstin.js";
 export default {
   data() {
     return {
-      show:true,
+      show: true,
       totoalDataNum: 0,
       pagesize: 5,
       currentpage: 1,
@@ -102,8 +125,7 @@ export default {
       // ],
     };
   },
-  computed: {
-  },
+  computed: {},
   created() {
     findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
       let result = JSON.parse(res);
@@ -205,72 +227,75 @@ export default {
         this.orderdata = result.data.slice(0, result.data.length - 1);
       });
     },
-    putData(_id,address,phone){
-      changeData({"_id":_id,"address":address,"phone":phone})
-        findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
-      let result = JSON.parse(res);
-      this.totoalDataNum = result.data[result.data.length - 1].orderNum;
-      result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
-        let obj1 = cur.details;
-        cur.goodsNum = 0;
-        cur.totalPrice = 0;
-        obj1.forEach((item) => {
-          // 计算订单商品总数量
-          cur.goodsNum += item.buynum;
-        });
-        getDetails({ goodsID: obj1 }).then((res) => {
-          const obj2 = JSON.parse(res).data;
-          // order数据库中记录订单详情字段：isbn，buynum；
-          //根据isbn到goods数据库中取回商品详细信息，数据合并
-          var obj = obj2.map((item, index) => {
-            return { ...obj1[index], ...item };
+    putData(_id, address, phone) {
+      changeData({ _id: _id, address: address, phone: phone });
+      findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
+        let result = JSON.parse(res);
+        this.totoalDataNum = result.data[result.data.length - 1].orderNum;
+        result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
+          let obj1 = cur.details;
+          cur.goodsNum = 0;
+          cur.totalPrice = 0;
+          obj1.forEach((item) => {
+            // 计算订单商品总数量
+            cur.goodsNum += item.buynum;
           });
+          getDetails({ goodsID: obj1 }).then((res) => {
+            const obj2 = JSON.parse(res).data;
+            // order数据库中记录订单详情字段：isbn，buynum；
+            //根据isbn到goods数据库中取回商品详细信息，数据合并
+            var obj = obj2.map((item, index) => {
+              return { ...obj1[index], ...item };
+            });
 
-          obj.forEach((item) => {
-            //  计算订单总价
-            cur.totalPrice +=
-              parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
+            obj.forEach((item) => {
+              //  计算订单总价
+              cur.totalPrice +=
+                parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
+            });
+            cur.totalPrice = cur.totalPrice.toFixed(2);
+            cur.details = obj;
           });
-          cur.totalPrice = cur.totalPrice.toFixed(2);
-          cur.details = obj;
         });
+        this.orderdata = result.data.slice(0, result.data.length - 1);
       });
-      this.orderdata = result.data.slice(0, result.data.length - 1);
-    });
     },
-    delData(_id){
-        deleteData({"_id":_id});
-          findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
-      let result = JSON.parse(res);
-      this.totoalDataNum = result.data[result.data.length - 1].orderNum;
-      result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
-        let obj1 = cur.details;
-        cur.goodsNum = 0;
-        cur.totalPrice = 0;
-        obj1.forEach((item) => {
-          // 计算订单商品总数量
-          cur.goodsNum += item.buynum;
-        });
-        getDetails({ goodsID: obj1 }).then((res) => {
-          const obj2 = JSON.parse(res).data;
-          // order数据库中记录订单详情字段：isbn，buynum；
-          //根据isbn到goods数据库中取回商品详细信息，数据合并
-          var obj = obj2.map((item, index) => {
-            return { ...obj1[index], ...item };
+    delData(_id) {
+      const isdel=confirm('确认删除?')
+      if(!isdel)
+      return
+      deleteData({ _id: _id });
+      findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
+        let result = JSON.parse(res);
+        this.totoalDataNum = result.data[result.data.length - 1].orderNum;
+        result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
+          let obj1 = cur.details;
+          cur.goodsNum = 0;
+          cur.totalPrice = 0;
+          obj1.forEach((item) => {
+            // 计算订单商品总数量
+            cur.goodsNum += item.buynum;
           });
+          getDetails({ goodsID: obj1 }).then((res) => {
+            const obj2 = JSON.parse(res).data;
+            // order数据库中记录订单详情字段：isbn，buynum；
+            //根据isbn到goods数据库中取回商品详细信息，数据合并
+            var obj = obj2.map((item, index) => {
+              return { ...obj1[index], ...item };
+            });
 
-          obj.forEach((item) => {
-            //  计算订单总价
-            cur.totalPrice +=
-              parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
+            obj.forEach((item) => {
+              //  计算订单总价
+              cur.totalPrice +=
+                parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
+            });
+            cur.totalPrice = cur.totalPrice.toFixed(2);
+            cur.details = obj;
           });
-          cur.totalPrice = cur.totalPrice.toFixed(2);
-          cur.details = obj;
         });
+        this.orderdata = result.data.slice(0, result.data.length - 1);
       });
-      this.orderdata = result.data.slice(0, result.data.length - 1);
-    });
-    }
+    },
   },
   components: {
     pagination,
