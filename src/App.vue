@@ -2,19 +2,13 @@
 <template>
   <el-container style="height:100%;margin:0">
     <el-header class="header">
-      <!-- <i class="el-icon-attract"></i> 深圳书城后台管理系统 -->
       <el-row>
-        
         <el-col :span="12" class="logo">
           <i class="el-icon-attract"></i> 深圳书城后台管理系统
         </el-col>
 
         <el-col :span="12" style="text-align:right">
-          <el-button type="text" style="color:#fff" @click="goto(regs.path,0)"  v-show="isShow">{{regs.text}}</el-button>
           <el-button type="text" style="color:#fff"  @click="goto(logins.path,0)"  v-show="isShow">{{logins.text}} </el-button>
-          <!-- <el-button type="text" style="color:#fff">退出</el-button> -->
-          <!-- <el-button type="text" style="color:#fff" @click="goto(regs.path,0)">{{regs.text}}</el-button>
-          <el-button type="text" style="color:#fff"  @click="goto(logins.path,0)">{{logins.text}}</el-button> -->
         </el-col>
       </el-row>
     </el-header>
@@ -70,12 +64,8 @@ export default {
     return {
       activeIndex: "./login",
       openMenu: [],
-      regs:{
-        text:"注册",
-        path:"/reg"
-      },
       logins:{
-        text:"登录",
+        text:"退出",//退出到登录页面
         path:"/login"
       },
       menu: [

@@ -1,37 +1,38 @@
 <template>
-  <el-main>
-    <el-form :model="ruleForm" ref="ruleForm" :rules="rule" class="regform" label-width="0">
-      <h3 class="login-text">请登录</h3>
-
-      <el-form-item prop="tel">
-        <el-input type="text" v-model.number="ruleForm.tel" placeholder="手机号码"></el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input type="password" v-model="ruleForm.password" placeholder="密码"></el-input>
-      </el-form-item>
-      <!-- <div>
-        <input class="auth_input" type="text" v-model="verification" placeholder="输入验证码" />
-        <span v-show="sendAuthCode" class="auth_text auth_text_blue" @click="getAuthCode">获取验证码</span>
-        <span v-show="!sendAuthCode" class="auth_text">
-          <span class="auth_text_blue">{{auth_time}}</span> 秒之后重新发送验证码
-        </span>
-      </div> -->
-      <el-form-item>
-        <el-button
-          type="success"
-          class="submitBtn"
-          round
-          @click.native.prevent="submit"
-          :loading="logining"
-        >登录</el-button>
-        <hr />
-        <p>
-          没有账号，马上去
-          <span class="to" @click="toreg">注册</span>
-        </p>
-      </el-form-item>
-    </el-form>
-  </el-main>
+  <div class="loginBox">
+    <el-main>
+      <el-form :model="ruleForm" ref="ruleForm" :rules="rule" class="loginform" label-width="0">
+        <h3 class="login-text">欢迎-登录</h3>
+        <el-form-item prop="tel">
+          <el-input type="text" v-model="ruleForm.tel" placeholder="用户名"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input type="password" v-model="ruleForm.password" placeholder="密码"></el-input>
+        </el-form-item>
+        <!-- <div>
+          <input class="auth_input" type="text" v-model="verification" placeholder="输入验证码" />
+          <span v-show="sendAuthCode" class="auth_text auth_text_blue" @click="getAuthCode">获取验证码</span>
+          <span v-show="!sendAuthCode" class="auth_text">
+            <span class="auth_text_blue">{{auth_time}}</span> 秒之后重新发送验证码
+          </span>
+        </div> -->
+        <el-form-item>
+          <el-button
+            type="success"
+            class="submitBtn"
+            round
+            @click.native.prevent="submit"
+            :loading="logining"
+          >登录</el-button>
+          <hr />
+          <p>
+            暂无<span style="color:#56ac67"> “深圳书城后台管理系统”账号</span>， 马上
+            <span class="to" @click="toreg">注册</span>
+          </p>
+        </el-form-item>
+      </el-form>
+    </el-main>
+  </div>
 </template>
 
 <script>
@@ -49,10 +50,8 @@ export default {
     let checkAge = (rule, value, callback) => {
       if (value === "") {
         return callback(new Error("账号不能为空"));
-      } else if (!Number.isInteger(value)) {
-        return callback(new Error("必须是数字"));
-      } else if (value.toString().length !== 11) {
-        return callback(new Error("正确填写手机号"));
+      }else if (/\s+/g.test(value)) {
+        return callback(new Error("正则填写用户名"));
       } else {
         callback();
       }
@@ -168,3 +167,53 @@ export default {
 </script>
 
 <style>
+html,body{
+  width: 100%;
+  height: 100%;
+}
+.el-main{
+  width: 100%;
+  height: 100%;
+}
+.loginBox{
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
+.loginform {
+  margin: 56px auto;
+  width: 310px;
+  background: #fff;
+  box-shadow: 0 0 10px #b4bccc;
+  padding: 30px 30px 0 30px;
+  border-radius: 25px;
+}
+.submitBtn {
+  width: 100%;
+}
+.to {
+  color: #fa5555;
+  cursor: pointer;
+}
+.auth_input {
+  width: 140px;
+  height: 38px;
+  margin-bottom: 20px;
+  border: 1px solid #dcdfe6;
+  padding-left: 10px;
+  border-radius: 8%;
+}
+/* .loginform[data-v-92def6b0] {
+  width: 370px;
+  min-height: 440px;
+} */
+
+.login-text {
+  text-align: center;
+  margin-bottom: 20px;
+  color:#58bc54;
+}
+
+</style>
