@@ -223,7 +223,7 @@ html,body{
 .loginBox .el-form-item{
   min-width: 300px;
   width: 60%;
-  margin: 0 auto;
+  margin: 22px auto;
   max-width: 500px;
 }
 
