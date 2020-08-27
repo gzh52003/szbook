@@ -1,5 +1,5 @@
 <template>
-  <div class="big-box" style="position:relative">
+  <div class="big-box" style="position:relative;padding:30px">
     <el-row>
       <div style="margin: 15px 0 15px 0; width:80%">
         <el-input
@@ -15,26 +15,57 @@
             <el-option label="用户名" value="用户名"></el-option>
             <el-option label="描述" value="描述"></el-option>
           </el-select>
-          <el-button slot="append" @click="searchmsg(select, search)" icon="el-icon-search"></el-button>
+          <el-button
+            slot="append"
+            @click="searchmsg(select, search)"
+            icon="el-icon-search"
+          ></el-button>
         </el-input>
       </div>
       <el-col>
-        <el-button type="success" class="adduser" @click="showadd">添加用户</el-button>
+        <el-button type="success" class="adduser" @click="showadd"
+          >添加用户</el-button
+        >
       </el-col>
     </el-row>
-    <el-table :data="tableData" border style="width: 100%" :idx="tableData._id" class="tabbody">
-      <el-table-column label="日期" align="center" prop="date"></el-table-column>
-      <el-table-column label="用户名" align="center" prop="username"></el-table-column>
-      <el-table-column label="描述" align="center" prop="description"></el-table-column>
+    <el-table
+      :data="tableData"
+      border
+      style="width: 100%"
+      :idx="tableData._id"
+      class="tabbody"
+    >
+      <el-table-column
+        label="日期"
+        align="center"
+        prop="date"
+      ></el-table-column>
+      <el-table-column
+        label="用户名"
+        align="center"
+        prop="username"
+      ></el-table-column>
+      <el-table-column
+        label="描述"
+        align="center"
+        prop="description"
+      ></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="useredit(scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="userdelete(scope.row)">删除</el-button>
+          <el-button size="mini" type="danger" @click="userdelete(scope.row)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
     <!-- 添加按钮 -->
-    <div class="edit-box" id="adduser-box" ref="addoneuser" style="display:none">
+    <div
+      class="edit-box"
+      id="adduser-box"
+      ref="addoneuser"
+      style="display:none"
+    >
       <div class="edittle">新增用户</div>
       <el-upload
         class="avatar-uploader"
@@ -50,7 +81,11 @@
       <el-input placeholder="请输入用户名" v-model="addusername">
         <template slot="prepend">用户名:</template>
       </el-input>
-      <el-input placeholder="请输入密码" @keyup.enter.native="adduser" v-model="addpassword">
+      <el-input
+        placeholder="请输入密码"
+        @keyup.enter.native="adduser"
+        v-model="addpassword"
+      >
         <template slot="prepend">密&nbsp;&nbsp; 码：</template>
       </el-input>
       <!-- <el-input placeholder="请输入内容" v-model="input1">
@@ -58,7 +93,9 @@
       </el-input>-->
       <div class="editbtn">
         <el-button @click="adduser" class="sure" type="success">确定</el-button>
-        <el-button @click="canleadd" class="canle" type="danger">取消</el-button>
+        <el-button @click="canleadd" class="canle" type="danger"
+          >取消</el-button
+        >
       </div>
     </div>
 
@@ -82,15 +119,23 @@
         <el-input placeholder="请输入内容" :value="username">
           <template slot="prepend">用户名：</template>
         </el-input>
-        <el-input placeholder="请输入内容" v-model="description" @keyup.enter.native="sureedit">
+        <el-input
+          placeholder="请输入内容"
+          v-model="description"
+          @keyup.enter.native="sureedit"
+        >
           <template slot="prepend">描述：</template>
         </el-input>
         <!-- <el-input placeholder="请输入内容" v-model="input1">
           <template slot="prepend">用户名：</template>
         </el-input>-->
         <div class="editbtn">
-          <el-button @click="sureedit" class="sure" type="success">确定</el-button>
-          <el-button @click="canleedit" class="canle" type="danger">取消</el-button>
+          <el-button @click="sureedit" class="sure" type="success"
+            >确定</el-button
+          >
+          <el-button @click="canleedit" class="canle" type="danger"
+            >取消</el-button
+          >
         </div>
       </div>
     </main>
