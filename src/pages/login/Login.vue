@@ -184,10 +184,11 @@ html,body{
   z-index: 100;
 }
 .loginform {
-  margin: 8% auto;
+  margin: 0 auto;
   min-width: 300px;
   width: 39%;
   max-height: 600px;
+  height: 55%;
   background: #fff;
   box-shadow: 0 0 10px #b4bccc;
   padding: 30px 30px 0 30px;
