@@ -220,7 +220,7 @@ html,body{
   color:#58bc54;
 }
 
-.el-form-item{
+.loginBox .el-form-item{
   min-width: 300px;
   width: 60%;
   margin: 0 auto;

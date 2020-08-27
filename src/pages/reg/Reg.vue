@@ -2,7 +2,7 @@
   <div class="regBox">
   <el-main>
     <el-form :model="ReginForm" ref="ReginForm" :rules="rule" class="regform" label-width="0">
-      <h3 class="reg-text">免费-注册</h3>
+      <h3 class="reg-text" style="line-height:2rem">免费-注册</h3>
       <el-form-item prop="tel">
         <el-input type="text" v-model="ReginForm.tel" placeholder="用户名" @blur="fr"></el-input>
       </el-form-item>
@@ -18,7 +18,7 @@
           :loading="logining"
         >注册</el-button>
         <hr />
-        <p>
+        <p style="font-size:0.2rem">
           已有<span style="color:#56ac67"> “深圳书城后台管理系统”账号</span>，马上
           <span class="to" @click="tologin">登录</span>
         </p>
@@ -179,20 +179,28 @@ html,body{
   width: 100%;
   height: 100%;
 }
+.el-main{
+  width: 100%;
+  height: 100%;
+}
 .regBox{
   position: fixed;
   top:0;
   left:0;
   right:0;
   bottom:0;
+  z-index: 100;
 }
 .regform {
-  margin: 56px auto;
-  width: 310px;
+  margin: 0 auto;
+  min-width: 300px;
+  width: 39%;
+  max-height: 600px;
+  height: 55%;
   background: #fff;
   box-shadow: 0 0 10px #b4bccc;
   padding: 30px 30px 0 30px;
-  border-radius: 25px;
+  border-radius: 20px;
 }
 .submitBtn {
   width: 100%;
@@ -209,9 +217,21 @@ html,body{
   padding-left: 10px;
   border-radius: 8%;
 }
+/* .loginform[data-v-92def6b0] {
+  width: 370px;
+  min-height: 440px;
+} */
+
 .reg-text {
   text-align: center;
   margin-bottom: 20px;
   color:#58bc54;
+}
+
+.regBox .el-form-item{
+  min-width: 300px;
+  width: 60%;
+  margin: 0 auto;
+  max-width: 500px;
 }
 </style>
