@@ -388,11 +388,13 @@ export default {
         console.log(result);
         this.imageUrl = "";
         this.openedit("添加成功");
-        this.tableData = this.tableData.concat({
-          imageUrl: this.imgpathsend,
-          username: this.addusername,
-          password: this.addpassword,
-        });
+        if (this.tableData.length % 10) {
+          this.tableData = this.tableData.concat({
+            imageUrl: this.imgpathsend,
+            username: this.addusername,
+            password: this.addpassword,
+          });
+        }
 
         let datalong = await userlist(1);
         this.longpage = datalong.length;
