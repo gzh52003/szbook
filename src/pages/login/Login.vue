@@ -87,7 +87,9 @@ export default {
   methods: {
     //   验证 码
     getAuthCode() {
-      fetch("http://42.194.179.50/api/vcode").then(res=>res.json()).then(data=>{
+      fetch("http://42.194.179.50/api/vcode",{
+        credentials:"include"
+      }).then(res=>res.json()).then(data=>{
         this.svg_vcode = data.data
       })
     },
@@ -141,7 +143,9 @@ export default {
           // queryStr.pop();
           // queryStr = queryStr.join("")
           console.log(this.ruleForm);
-          fetch(`http://42.194.179.50/api/login?${queryStr}`).then(res=>res.json()).then(data=>{
+          fetch(`http://42.194.179.50/api/login?${queryStr}`,{
+            credentials:"include"
+          }).then(res=>res.json()).then(data=>{
             console.log(data);
           })
           // console.log("开始写入后台数据！");
@@ -183,8 +187,7 @@ body {
   min-width: 300px;
   max-width: 380px;
   width: 39%;
-  max-height: 600px;
-  height: 55%;
+  height: 380px;
   background: #fff;
   box-shadow: 0 0 10px #b4bccc;
   padding: 30px 30px 0 30px;
