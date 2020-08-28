@@ -22,13 +22,13 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="商品 ID" width="200" prop="_id"></el-table-column>
-      <el-table-column label="书籍名称" width="200" prop="bookName"></el-table-column>
-      <el-table-column label="作者" width="150" prop="author"></el-table-column>
-      <el-table-column label="价格" width="100" prop="line_price"></el-table-column>
-      <el-table-column label="库存" width="100" prop="num"></el-table-column>
-      <el-table-column label="描述" width="380" prop="desc"></el-table-column>
-      <el-table-column fixed="right" width="160">
+      <el-table-column label="商品 ID" width="200" prop="_id" :resizable='false'></el-table-column>
+      <el-table-column label="书籍名称" width="200" prop="bookName" show-overflow-tooltip :resizable='false'></el-table-column>
+      <el-table-column label="作者" width="150" prop="author" show-overflow-tooltip :resizable='false'></el-table-column>
+      <el-table-column label="价格" width="100" prop="line_price" :resizable='false'></el-table-column>
+      <el-table-column label="库存" width="100" prop="num" :resizable='false'></el-table-column>
+      <el-table-column label="描述" width="380" prop="desc" :resizable='false'></el-table-column>
+      <el-table-column fixed="right" width="160" :resizable='false'>
         <template slot="header" slot-scope="scope">
           <el-input
             v-model="searchText"
@@ -155,8 +155,9 @@ export default {
       Imgurl = "http://42.194.179.50/" + Imgurl;
       return Imgurl;
     },
-    changePage() {
-      let page = document.querySelector(".active").innerHTML;
+    changePage(pageNum) {
+      let page = pageNum;
+      // let page = document.querySelector(".active").innerHTML;
       this.getbook({ page, size: 10 });
     },
     handleEdit(book) {
@@ -268,5 +269,8 @@ export default {
 }
 .user .el-table__row td:nth-of-type(3) .cell {
   width: 200px;
+}
+.user .el-table__row td{
+  padding: 5px 0;
 }
 </style>

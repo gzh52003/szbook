@@ -4,7 +4,6 @@ export async function findData(query={page:1,size:10}){
         // params+=('sort='+query.sort[1]);
         params+=('page='+query.page);
         params+=('&size='+query.size);
-            console.log(query.size)
            const res= await fetch(`http://42.194.179.50/api/order?`+params).then(res=>{
                 return res.text();
             })
@@ -13,7 +12,6 @@ export async function findData(query={page:1,size:10}){
 
 }
 export async function changeData(query={_id:'',address:'',phone:''}){
-        console.log(query.size)
        const res= await fetch(`http://42.194.179.50/api/order`,{
            method:'put',
            headers:{
@@ -25,12 +23,12 @@ export async function changeData(query={_id:'',address:'',phone:''}){
             _id:query._id,
            })
        }).then(res=>{
+            // resolve()
             return res.text();
         })
     return res;
 }
 export async function deleteData(query={_id:''}){
-
        const res= await fetch(`http://42.194.179.50/api/order/`+query._id,{
            method:'DELETE'
        }).then(res=>{
