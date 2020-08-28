@@ -1,5 +1,7 @@
 <template>
   <div>
+    <search  style="padding:22px;" >
+    </search>
     <el-table
       ref="table"
       :default-sort="{ prop: 'add_time', order: 'descending' }"
@@ -104,6 +106,7 @@
 </template>
 <script>
 import pagination from "./pagination.vue";
+import search from "./search.vue";
 import { deleteData, findData, changeData } from "./firstin.js";
 
 import operateDataBeforeRender from "./OrganData.js";
@@ -244,13 +247,24 @@ export default {
   },
   components: {
     pagination,
+    search
   },
 };
 </script>
 
-<style>
+<style scope>
 .el-main {
   line-height: 0;
+}
+.el-table__header-wrapper{
+  height: 40px!important;
+}
+.el-table__expanded-cell{
+  padding-top:4px 10px!important;
+}
+.el-main .has-gutter .is-leaf{
+  padding: 0!important;
+  height: 40px!important;
 }
 .el-table .cell {
   line-height: 30px !important;

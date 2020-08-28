@@ -1,9 +1,13 @@
-export async function findData(query={page:1,size:10}){
+export async function findData(query={page:1,size:5}){
     let params="";
         // params+=('sortKey='+query.sort[0]);
         // params+=('sort='+query.sort[1]);
         params+=('page='+query.page);
         params+=('&size='+query.size);
+        if(query.field)
+        params+=('&field='+query.field);
+        if(query.contents)
+        params+=('&contents='+query.contents);
            const res= await fetch(`http://42.194.179.50/api/order?`+params).then(res=>{
                 return res.text();
             })
