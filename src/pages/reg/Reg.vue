@@ -177,11 +177,11 @@ export default {
       );
     },
     submit() {
-      console.log(111);
+      console.log(this.okReg);
       this.$refs.ReginForm.validate((valid) => {
-        console.log(222);
+        console.log(this.okReg);
         if (valid) {
-          console.log(333);
+          this.fr();
           if (this.okReg) {
             this.thisAjax();
             this.$router.replace("/login");
