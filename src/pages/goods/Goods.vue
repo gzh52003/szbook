@@ -155,8 +155,9 @@ export default {
       Imgurl = "http://42.194.179.50/" + Imgurl;
       return Imgurl;
     },
-    changePage() {
-      let page = document.querySelector(".active").innerHTML;
+    changePage(pageNum) {
+      let page = pageNum;
+      // let page = document.querySelector(".active").innerHTML;
       this.getbook({ page, size: 10 });
     },
     handleEdit(book) {
@@ -268,5 +269,8 @@ export default {
 }
 .user .el-table__row td:nth-of-type(3) .cell {
   width: 200px;
+}
+.user .el-table__row td{
+  padding: 5px 0;
 }
 </style>
