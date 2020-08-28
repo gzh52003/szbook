@@ -36,7 +36,13 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="订单号" prop="_id" width="120" show-overflow-tooltip> </el-table-column>
+      <el-table-column
+        label="订单号"
+        prop="_id"
+        width="120"
+        show-overflow-tooltip
+      >
+      </el-table-column>
       <el-table-column label="下单日期" sortable prop="add_time" width="120">
       </el-table-column>
       <el-table-column label="用户名" prop="username" width="80">
@@ -48,21 +54,19 @@
       <el-table-column label="配送地址" prop="address" show-overflow-tooltip>
         <template v-slot="scope">
           <el-input
-            v-show="scope.row.show"
+            v-show="scope.row.isshow"
             v-model="scope.row.address"
-            @change="putData(scope.row._id, scope.row.address, scope.row.phone)"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.address }}</span>
+          <span v-show="!scope.row.isshow">{{ scope.row.address }}</span>
         </template>
       </el-table-column>
       <el-table-column label="联系方式" prop="phone" width="150">
         <template v-slot="scope">
           <el-input
-            v-show="scope.row.show"
+            v-show="scope.row.isshow"
             v-model="scope.row.phone"
-            @change="putData(scope.row._id, scope.row.address, scope.row.phone)"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.phone }}</span>
+          <span v-show="!scope.row.isshow">{{ scope.row.phone }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="160">
@@ -72,14 +76,14 @@
             size="mini"
             circle
             icon="el-icon-circle-check"
-            @click="scope.row.show = false"
+            @click="isfinishEdit(scope.$index, scope.row)"
           ></el-button>
           <el-button
             type="primary"
             size="mini"
             circle
             icon="el-icon-edit"
-            @click="scope.row.show = true"
+            @click="isEdit(scope.$index, scope.row)"
           ></el-button>
           <el-button
             type="danger"
@@ -101,12 +105,12 @@
 <script>
 import pagination from "./pagination.vue";
 import { deleteData, findData, changeData } from "./firstin.js";
-import getDetails from "./getDetails.js";
-// import {findData,changeData} from "./firstin.js";
+
+import operateDataBeforeRender from "./OrganData.js";
+
 export default {
   data() {
     return {
-      show: true,
       totoalDataNum: 0,
       pagesize: 5,
       currentpage: 1,
@@ -128,34 +132,7 @@ export default {
   computed: {},
   created() {
     findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
-      let result = JSON.parse(res);
-      this.totoalDataNum = result.data[result.data.length - 1].orderNum;
-      result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
-        let obj1 = cur.details;
-        cur.goodsNum = 0;
-        cur.totalPrice = 0;
-        obj1.forEach((item) => {
-          // 计算订单商品总数量
-          cur.goodsNum += item.buynum;
-        });
-        getDetails({ goodsID: obj1 }).then((res) => {
-          const obj2 = JSON.parse(res).data;
-          // order数据库中记录订单详情字段：isbn，buynum；
-          //根据isbn到goods数据库中取回商品详细信息，数据合并
-          var obj = obj2.map((item, index) => {
-            return { ...obj1[index], ...item };
-          });
-
-          obj.forEach((item) => {
-            //  计算订单总价
-            cur.totalPrice +=
-              parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
-          });
-          cur.totalPrice = cur.totalPrice.toFixed(2);
-          cur.details = obj;
-        });
-      });
-      this.orderdata = result.data.slice(0, result.data.length - 1);
+      operateDataBeforeRender(res, this);
     });
   },
   methods: {
@@ -163,138 +140,106 @@ export default {
       this.pagesize = _size;
       this.currentpage = _currentpage;
       findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
-        let result = JSON.parse(res);
-        this.totoalDataNum = result.data[result.data.length - 1].orderNum;
-        result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
-          let obj1 = cur.details;
-          cur.goodsNum = 0;
-          cur.totalPrice = 0;
-          obj1.forEach((item) => {
-            // 计算订单商品总数量
-            cur.goodsNum += item.buynum;
-          });
-          getDetails({ goodsID: obj1 }).then((res) => {
-            const obj2 = JSON.parse(res).data;
-            // order数据库中记录订单详情字段：isbn，buynum；
-            //根据isbn到goods数据库中取回商品详细信息，数据合并
-            var obj = obj2.map((item, index) => {
-              return { ...obj1[index], ...item };
-            });
-
-            obj.forEach((item) => {
-              //  计算订单总价
-              cur.totalPrice +=
-                parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
-            });
-            cur.totalPrice = cur.totalPrice.toFixed(2);
-            cur.details = obj;
-          });
-        });
-        this.orderdata = result.data.slice(0, result.data.length - 1);
+        operateDataBeforeRender(res, this);
       });
     },
     getPageSize(_currentpage, _size) {
       this.pagesize = _size;
       this.currentpage = _currentpage;
       findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
-        let result = JSON.parse(res);
-        this.totoalDataNum = result.data[result.data.length - 1].orderNum;
-        result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
-          let obj1 = cur.details;
-          cur.goodsNum = 0;
-          cur.totalPrice = 0;
-          obj1.forEach((item) => {
-            // 计算订单商品总数量
-            cur.goodsNum += item.buynum;
-          });
-          getDetails({ goodsID: obj1 }).then((res) => {
-            const obj2 = JSON.parse(res).data;
-            // order数据库中记录订单详情字段：isbn，buynum；
-            //根据isbn到goods数据库中取回商品详细信息，数据合并
-            var obj = obj2.map((item, index) => {
-              return { ...obj1[index], ...item };
-            });
-
-            obj.forEach((item) => {
-              //  计算订单总价
-              cur.totalPrice +=
-                parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
-            });
-            cur.totalPrice = cur.totalPrice.toFixed(2);
-            cur.details = obj;
-          });
-        });
-        this.orderdata = result.data.slice(0, result.data.length - 1);
+        operateDataBeforeRender(res, this);
       });
     },
-    putData(_id, address, phone) {
-      changeData({ _id: _id, address: address, phone: phone });
-      findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
-        let result = JSON.parse(res);
-        this.totoalDataNum = result.data[result.data.length - 1].orderNum;
-        result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
-          let obj1 = cur.details;
-          cur.goodsNum = 0;
-          cur.totalPrice = 0;
-          obj1.forEach((item) => {
-            // 计算订单商品总数量
-            cur.goodsNum += item.buynum;
-          });
-          getDetails({ goodsID: obj1 }).then((res) => {
-            const obj2 = JSON.parse(res).data;
-            // order数据库中记录订单详情字段：isbn，buynum；
-            //根据isbn到goods数据库中取回商品详细信息，数据合并
-            var obj = obj2.map((item, index) => {
-              return { ...obj1[index], ...item };
+    // async putData(_id, address, phone) {
+    //   this.$confirm("此操作将永久修改该信息, 是否继续?", "提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning",
+    //   })
+    //     .then(async () => {
+    //       const a = await changeData({
+    //         _id: _id,
+    //         address: address,
+    //         phone: phone,
+    //       });
+    //       if (JSON.parse(a).code === 1)
+    //         this.$message({
+    //           message: "信息修改成功",
+    //           type: "success",
+    //         });
+    //       findData({ size: this.pagesize, page: this.currentpage }).then(
+    //         (res) => {
+    //           operateDataBeforeRender(res, this);
+    //         }
+    //       );
+    //     })
+    //     .catch(() => {
+    //       this.$message({
+    //         type: "info",
+    //         message: "已取消修改",
+    //       });
+    //     });
+    // },
+    async delData(_id) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          const a = await deleteData({ _id: _id });
+          if (JSON.parse(a).code === 1)
+            this.$message({
+              type: "success",
+              message: "删除成功!",
             });
-
-            obj.forEach((item) => {
-              //  计算订单总价
-              cur.totalPrice +=
-                parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
-            });
-            cur.totalPrice = cur.totalPrice.toFixed(2);
-            cur.details = obj;
+          findData({ size: this.pagesize, page: this.currentpage }).then(
+            (res) => {
+              operateDataBeforeRender(res, this);
+            }
+          );
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
           });
         });
-        this.orderdata = result.data.slice(0, result.data.length - 1);
-      });
     },
-    delData(_id) {
-      const isdel=confirm('确认删除?')
-      if(!isdel)
-      return
-      deleteData({ _id: _id });
-      findData({ size: this.pagesize, page: this.currentpage }).then((res) => {
-        let result = JSON.parse(res);
-        this.totoalDataNum = result.data[result.data.length - 1].orderNum;
-        result.data.slice(0, result.data.length - 1).forEach(async (cur) => {
-          let obj1 = cur.details;
-          cur.goodsNum = 0;
-          cur.totalPrice = 0;
-          obj1.forEach((item) => {
-            // 计算订单商品总数量
-            cur.goodsNum += item.buynum;
+    isEdit(index, row) {
+      row.isshow = true;
+    },
+    isfinishEdit(index, row) {
+      this.$confirm("此操作将永久修改该信息, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          const a = await changeData({
+            _id: row._id,
+            address: row.address,
+            phone: row.phone,
           });
-          getDetails({ goodsID: obj1 }).then((res) => {
-            const obj2 = JSON.parse(res).data;
-            // order数据库中记录订单详情字段：isbn，buynum；
-            //根据isbn到goods数据库中取回商品详细信息，数据合并
-            var obj = obj2.map((item, index) => {
-              return { ...obj1[index], ...item };
+          if (JSON.parse(a).code === 1) {
+            this.$message({
+              message: "信息修改成功",
+              type: "success",
             });
-
-            obj.forEach((item) => {
-              //  计算订单总价
-              cur.totalPrice +=
-                parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
-            });
-            cur.totalPrice = cur.totalPrice.toFixed(2);
-            cur.details = obj;
+            findData({ size: this.pagesize, page: this.currentpage }).then(
+              (res) => {
+                operateDataBeforeRender(res, this);
+              }
+            );
+            row.isshow = false;
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消修改",
           });
         });
-        this.orderdata = result.data.slice(0, result.data.length - 1);
-      });
     },
   },
   components: {
