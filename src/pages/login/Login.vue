@@ -146,7 +146,9 @@ export default {
           fetch(`http://42.194.179.50/api/login?${queryStr}`,{
             credentials:"include"
           }).then(res=>res.json()).then(data=>{
-            console.log(data);
+            if(data.code==1){
+              this.$router.replace("/home");
+            }
           })
           // console.log("开始写入后台数据！");
         } else{
