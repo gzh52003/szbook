@@ -24,13 +24,12 @@
     </el-row>
     <el-table :data="tableData" border style="width: 100%" :idx="tableData._id" class="tabbody">
       <el-table-column label="日期" align="center" prop="date"></el-table-column>
-      <!-- <el-table-column label="头像" align="center" prop="imageUrl" :data="tableData.imageUrl">
-        <div class="demo-image">
-          <div class="block">
-            <el-image style="width: 100px; height: 100px" :src="tableData[].imageUrl"></el-image>
-          </div>
-        </div>
-      </el-table-column>-->
+      <el-table-column label="头像" align="center">
+        <template slot-scope="scope" style="width: 100px; height: 100px">
+          <!-- {{scope.row}} -->
+          <img :src="scope.row.imageUrl" alt style="width:40px;" />
+        </template>
+      </el-table-column>
       <el-table-column label="用户名" align="center" prop="username"></el-table-column>
       <el-table-column label="描述" align="center" prop="description"></el-table-column>
       <el-table-column label="操作" align="center">
@@ -115,10 +114,10 @@
       background
       :data="longpage"
       layout="prev, pager, next"
-      :total="longpage"
+      :total="longpage*2"
       :current-page.sync="page"
       @current-change="getuserlistBypage"
-      style="margin:0 auto;width:407px"
+      style="margin:0 auto;width:255px"
     ></el-pagination>
   </div>
 </template>
@@ -129,9 +128,9 @@ async function userlist(page = 1, options = {}) {
   if (Object.keys(options).length <= 0 || options.size) {
     console.log(1111);
     if (options.size) {
-      console.log("10条数据");
+      console.log("5条数据");
       let result = await fetch(
-        `http://42.194.179.50/api/user?page=${page}&size=10`
+        `http://42.194.179.50/api/user?page=${page}&size=5`
       ).then((res) => res.json());
       return result;
     } else {
@@ -156,7 +155,7 @@ async function userlist(page = 1, options = {}) {
       // console.log(options.type);
     }
     let aa = await fetch(
-      `http://42.194.179.50/api/user?page=1&size=10&type=${options.type}&msg=${options.msg}`
+      `http://42.194.179.50/api/user?page=1&size=5&type=${options.type}&msg=${options.msg}`
     ).then((res) => res.json());
     console.log(aa);
     // this.tableData = aa;
@@ -168,7 +167,7 @@ async function searchuserlist(page = 1, options = {}) {
   if (Object.keys(options).length <= 0) {
     console.log(1111);
     let aa = await fetch(
-      `http://42.194.179.50/api/user?page=${page}&size=10`
+      `http://42.194.179.50/api/user?page=${page}&size=5`
     ).then((res) => res.json());
     // console.log(aa);
     // this.tableData = aa;
@@ -186,7 +185,7 @@ async function searchuserlist(page = 1, options = {}) {
       // console.log(options.type);
     }
     let aa = await fetch(
-      `http://42.194.179.50/api/user/mohu?page=1&size=10&type=${options.type}&msg=${options.msg}`
+      `http://42.194.179.50/api/user/mohu?page=1&size=5&type=${options.type}&msg=${options.msg}`
     ).then((res) => res.json());
     console.log(aa);
     // this.tableData = aa;
@@ -241,7 +240,7 @@ export default {
   methods: {
     // 当页数变化时会触发这个方法
     async getuserlistBypage(page) {
-      let result = await userlist(page, { size: 10 });
+      let result = await userlist(page, { size: 5 });
       this.tableData = result;
       // console.log(result);
     },
@@ -289,6 +288,7 @@ export default {
             cur.username = this.username;
             cur.imageUrl = this.imgpath;
           }
+
           return pre.concat(cur);
         }, []);
         // console.log(this.tableData);
@@ -431,8 +431,8 @@ export default {
   // 查看一共数据库一共有多少个相对应的数据
   async created() {
     //判断有无token，如果有，那么就免登录
-    // 如果没有传{size:10}那么就会查询全部
-    let result = await userlist(1, { size: 10 });
+    // 如果没有传{size:5}那么就会查询全部
+    let result = await userlist(1, { size: 5 });
     this.tableData = result;
     console.log("this.tableData", this.tableData);
     let datalong = await userlist(1);
@@ -585,5 +585,10 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+
+.el-table_1_column_2 .cell {
+  padding-top: 10px;
+  line-height: 0;
 }
 </style>
