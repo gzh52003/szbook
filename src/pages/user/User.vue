@@ -15,57 +15,33 @@
             <el-option label="用户名" value="用户名"></el-option>
             <el-option label="描述" value="描述"></el-option>
           </el-select>
-          <el-button
-            slot="append"
-            @click="searchmsg(select, search)"
-            icon="el-icon-search"
-          ></el-button>
+          <el-button slot="append" @click="searchmsg(select, search)" icon="el-icon-search"></el-button>
         </el-input>
       </div>
       <el-col>
-        <el-button type="success" class="adduser" @click="showadd"
-          >添加用户</el-button
-        >
+        <el-button type="success" class="adduser" @click="showadd">添加用户</el-button>
       </el-col>
     </el-row>
-    <el-table
-      :data="tableData"
-      border
-      style="width: 100%"
-      :idx="tableData._id"
-      class="tabbody"
-    >
-      <el-table-column
-        label="日期"
-        align="center"
-        prop="date"
-      ></el-table-column>
-      <el-table-column
-        label="用户名"
-        align="center"
-        prop="username"
-      ></el-table-column>
-      <el-table-column
-        label="描述"
-        align="center"
-        prop="description"
-      ></el-table-column>
+    <el-table :data="tableData" border style="width: 100%" :idx="tableData._id" class="tabbody">
+      <el-table-column label="日期" align="center" prop="date"></el-table-column>
+      <!-- <el-table-column label="头像" align="center" prop="imageUrl" :data="tableData.imageUrl">
+        <div class="demo-image">
+          <div class="block">
+            <el-image style="width: 100px; height: 100px" :src="tableData[].imageUrl"></el-image>
+          </div>
+        </div>
+      </el-table-column>-->
+      <el-table-column label="用户名" align="center" prop="username"></el-table-column>
+      <el-table-column label="描述" align="center" prop="description"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="useredit(scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="userdelete(scope.row)"
-            >删除</el-button
-          >
+          <el-button size="mini" type="danger" @click="userdelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 添加按钮 -->
-    <div
-      class="edit-box"
-      id="adduser-box"
-      ref="addoneuser"
-      style="display:none"
-    >
+    <div class="edit-box" id="adduser-box" ref="addoneuser" style="display:none">
       <div class="edittle">新增用户</div>
       <el-upload
         class="avatar-uploader"
@@ -94,9 +70,7 @@
       </el-input>-->
       <div class="editbtn">
         <el-button @click="adduser" class="sure" type="success">确定</el-button>
-        <el-button @click="canleadd" class="canle" type="danger"
-          >取消</el-button
-        >
+        <el-button @click="canleadd" class="canle" type="danger">取消</el-button>
       </div>
     </div>
 
@@ -120,23 +94,15 @@
         <el-input placeholder="请输入内容" v-model="username" :value="username">
           <template slot="prepend">用户名：</template>
         </el-input>
-        <el-input
-          placeholder="请输入内容"
-          v-model="description"
-          @keyup.enter.native="sureedit"
-        >
+        <el-input placeholder="请输入内容" v-model="description" @keyup.enter.native="sureedit">
           <template slot="prepend">描述：</template>
         </el-input>
         <!-- <el-input placeholder="请输入内容" v-model="input1">
           <template slot="prepend">用户名：</template>
         </el-input>-->
         <div class="editbtn">
-          <el-button @click="sureedit" class="sure" type="success"
-            >确定</el-button
-          >
-          <el-button @click="canleedit" class="canle" type="danger"
-            >取消</el-button
-          >
+          <el-button @click="sureedit" class="sure" type="success">确定</el-button>
+          <el-button @click="canleedit" class="canle" type="danger">取消</el-button>
         </div>
       </div>
     </main>
@@ -149,7 +115,7 @@
       background
       :data="longpage"
       layout="prev, pager, next"
-      :total="1000"
+      :total="longpage"
       :current-page.sync="page"
       @current-change="getuserlistBypage"
       style="margin:0 auto;width:407px"
@@ -160,14 +126,23 @@
 <script>
 async function userlist(page = 1, options = {}) {
   console.log(page);
-  if (Object.keys(options).length <= 0) {
+  if (Object.keys(options).length <= 0 || options.size) {
     console.log(1111);
-    let result = await fetch(
-      `http://42.194.179.50/api/user?page=${page}&size=10`
-    ).then((res) => res.json());
+    if (options.size) {
+      console.log("10条数据");
+      let result = await fetch(
+        `http://42.194.179.50/api/user?page=${page}&size=10`
+      ).then((res) => res.json());
+      return result;
+    } else {
+      let result = await fetch(`http://42.194.179.50/api/user`).then((res) =>
+        res.json()
+      );
+      console.log("总长度=", result.length);
+      return result;
+    }
     // console.log(result);
     // this.tableData = aa;
-    return result;
   } else {
     console.log(2222);
     if (options.typemsg == "用户名") {
@@ -237,6 +212,7 @@ export default {
       addusername: "",
       addpassword: "",
       imgpathsend: "",
+      imageindex: 0,
       tableData: [
         // {
         //   date: "2016-05-02",
@@ -265,7 +241,7 @@ export default {
   methods: {
     // 当页数变化时会触发这个方法
     async getuserlistBypage(page) {
-      let result = await userlist(page);
+      let result = await userlist(page, { size: 10 });
       this.tableData = result;
       // console.log(result);
     },
@@ -275,6 +251,7 @@ export default {
       // console.log(typemsg, msg);
       let result1 = await searchuserlist(1, { typemsg, msg });
       this.tableData = result1;
+
       // console.log(result1);
     },
     // 无法拿到tableData的每条数据
@@ -372,6 +349,8 @@ export default {
             type: "success",
             message: "删除成功!",
           });
+          let datalong = await userlist(1);
+          this.longpage = datalong.length;
         })
         .catch(() => {
           this.$message({
@@ -407,8 +386,18 @@ export default {
           }),
         }).then((res) => res.json());
         console.log(result);
-
+        this.imageUrl = "";
         this.openedit("添加成功");
+        if (this.tableData.length % 10) {
+          this.tableData = this.tableData.concat({
+            imageUrl: this.imgpathsend,
+            username: this.addusername,
+            password: this.addpassword,
+          });
+        }
+
+        let datalong = await userlist(1);
+        this.longpage = datalong.length;
         this.imgpath = this.imgpathsend;
         console.log(this.imgpath);
         this.addusername = "";
@@ -442,9 +431,13 @@ export default {
   // 查看一共数据库一共有多少个相对应的数据
   async created() {
     //判断有无token，如果有，那么就免登录
-    let result = await userlist(1);
+    // 如果没有传{size:10}那么就会查询全部
+    let result = await userlist(1, { size: 10 });
     this.tableData = result;
-    console.log(this.tableData);
+    console.log("this.tableData", this.tableData);
+    let datalong = await userlist(1);
+    this.longpage = datalong.length;
+    console.log("this.datalong", this.longpage);
     // console.log(this.tableData.length / 2);
     // if (this.tableData.length % 10 != 0) {
     //   let shiwei = (parseInt(this.tableData.length / 10) + 1) * 10;
