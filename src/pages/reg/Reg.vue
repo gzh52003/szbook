@@ -14,7 +14,7 @@
           <hr />
           <p style="font-size:0.2rem">
             已有
-            <span style="color:#56ac67">“深圳书城后台管理系统”账号</span>，马上
+            <span style="color:#409eff">“深圳书城后台管理系统”账号</span>，马上
             <span class="to" @click="tologin">登录</span>
           </p>
         </el-form-item>

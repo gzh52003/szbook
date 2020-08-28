@@ -18,7 +18,7 @@
         </div> -->
         <el-form-item>
           <el-button
-            type="success"
+            type="primary"
             class="submitBtn"
             round
             @click.native.prevent="submit"
@@ -217,7 +217,7 @@ html,body{
 .login-text {
   text-align: center;
   margin-bottom: 20px;
-  color:#58bc54;
+  color:#409eff;
 }
 
 .loginBox .el-form-item{
