@@ -271,6 +271,6 @@ export default {
   width: 200px;
 }
 .user .el-table__row td{
-  padding: 5px 0;
+  padding: 3px 0;
 }
 </style>

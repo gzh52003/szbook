@@ -147,7 +147,12 @@ export default {
             credentials:"include"
           }).then(res=>res.json()).then(data=>{
             if(data.code==1){
+              localStorage.setItem("userInfo",JSON.stringify([data.data]))
               this.$router.replace("/home");
+            }else if(data.code==10){
+              this.$message.error("验证码错误！")
+            }else{
+              this.$message.error("帐号密码错误！")
             }
           })
           // console.log("开始写入后台数据！");

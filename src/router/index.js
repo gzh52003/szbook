@@ -79,5 +79,15 @@ const router = new VueRouter({
     }
   ]
 })
-
+router.beforeEach((to, from, next) => {
+  console.log(to,from);
+  console.log(localStorage.getItem("userInfo"));
+  let token = JSON.parse(localStorage.getItem("userInfo")) || {}
+  if(token.authorization){
+    console.log(111);
+  }else{
+    console.log(222);
+  }
+  next();
+})
 export default router
