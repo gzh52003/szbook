@@ -220,8 +220,9 @@ body {
   z-index: 100;
 }
 .regform {
-  margin: 0 auto;
+  margin: 30px auto;
   min-width: 300px;
+  max-width: 380px;
   width: 39%;
   max-height: 600px;
   height: 55%;
