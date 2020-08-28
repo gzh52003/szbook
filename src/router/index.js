@@ -80,14 +80,19 @@ const router = new VueRouter({
   ]
 })
 router.beforeEach((to, from, next) => {
-  console.log(to,from);
-  console.log(localStorage.getItem("userInfo"));
   let token = JSON.parse(localStorage.getItem("userInfo")) || {}
-  if(token.authorization){
+  if(token[0]){
     console.log(111);
+    if(to){
+      next()
+    }else{
+      next({path:"/home"},next())
+    }
+  }else if(to.fullPath=="/reg"){
+    console.log(to.fullPath);
+    next();
   }else{
-    console.log(222);
+    next({path:"/login"},next());
   }
-  next();
 })
 export default router
