@@ -288,6 +288,7 @@ export default {
             cur.username = this.username;
             cur.imageUrl = this.imgpath;
           }
+
           return pre.concat(cur);
         }, []);
         // console.log(this.tableData);
