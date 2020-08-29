@@ -77,6 +77,7 @@
             type="success"
             size="mini"
             circle
+            style="padding:13px"
             icon="el-icon-circle-check"
             @click="isfinishEdit(scope.$index, scope.row)"
           ></el-button>
@@ -84,6 +85,7 @@
             type="primary"
             size="mini"
             circle
+            style="padding:13px;margin-left: 2px;"
             icon="el-icon-edit"
             @click="isEdit(scope.$index, scope.row)"
           ></el-button>
@@ -91,6 +93,7 @@
             type="danger"
             size="mini"
             circle
+            style="padding:13px;margin-left: 2px;"
             icon="el-icon-delete"
             @click="delData(scope.row._id)"
           ></el-button>
@@ -272,5 +275,8 @@ export default {
 .cell {
   font-size: 12px;
   text-align: center !important;
+}
+.btn button{
+  padding:0;
 }
 </style>

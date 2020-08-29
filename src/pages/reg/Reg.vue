@@ -177,11 +177,11 @@ export default {
       );
     },
     submit() {
-      console.log(111);
+      console.log(this.okReg);
       this.$refs.ReginForm.validate((valid) => {
-        console.log(222);
+        console.log(this.okReg);
         if (valid) {
-          console.log(333);
+          this.fr();
           if (this.okReg) {
             this.thisAjax();
             this.$router.replace("/login");
@@ -224,8 +224,7 @@ body {
   min-width: 300px;
   max-width: 380px;
   width: 39%;
-  max-height: 600px;
-  height: 55%;
+  height: 380px;
   background: #fff;
   box-shadow: 0 0 10px #b4bccc;
   padding: 30px 30px 0 30px;
