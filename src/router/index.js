@@ -82,11 +82,20 @@ const router = new VueRouter({
     },
   ],
 });
+let type;
 router.beforeEach((to, from, next) => {
   let token = JSON.parse(localStorage.getItem("userInfo")) || {};
   console.log(token);
+
+  if (type) {
+    // console.log("我是from", type);
+    next();
+    return;
+  }
+  console.log("我是from", type);
   if (typeof token == "string") {
     console.log(token);
+    console.time("start");
     let result = fetch(
       `http://42.194.179.50/api/login/check?authorization=${token}`,
       {
@@ -96,6 +105,7 @@ router.beforeEach((to, from, next) => {
       .then((res) => res.json())
       .then((data) => {
         if (data.code == 200) {
+          type = true;
           console.log(to.fullPath);
           if (to.fullPath != "/home" && to.fullPath != "/login") {
             next();
@@ -104,6 +114,8 @@ router.beforeEach((to, from, next) => {
           } else {
             next({ path: "/home" }, next());
           }
+
+          console.timeEnd("start");
         } else {
           localStorage.removeItem("userInfo");
           if (to.fullPath != "/login") {
