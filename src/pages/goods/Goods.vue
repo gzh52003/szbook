@@ -273,9 +273,9 @@ export default {
 .user .el-table__row td{
   padding: 3px 0;
 }
-.user .el-upload{
-  display: table-cell;
-  width: 120px;
+.el-form-item .el-upload{
+  width: 146px;
+  height: 146px;
 }
 #btn{
   position: relative;
