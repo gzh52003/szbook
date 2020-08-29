@@ -586,4 +586,8 @@ export default {
   height: 178px;
   display: block;
 }
+
+.el-input .el-input-group__append{
+  padding: 0 20px;
+}
 </style>
