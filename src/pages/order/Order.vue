@@ -1,6 +1,6 @@
 <template>
   <div>
-    <search  style="padding:22px;" >
+    <search  style="padding:22px;" @changeData="changedata" >
     </search>
     <el-table
       ref="table"
@@ -142,6 +142,10 @@ export default {
     });
   },
   methods: {
+    changedata(res){
+      // operateDataBeforeRender(res, this);
+       operateDataBeforeRender(res, this);
+    },
     getCurrentPage(_currentpage, _size) {
       this.pagesize = _size;
       this.currentpage = _currentpage;
