@@ -33,9 +33,9 @@
           <el-input
             v-model="searchText"
             @input="search(scope)"
-
             size="mini"
             placeholder="输入书籍名称搜索"
+            id="btn"
           />
         </template>
         <template slot-scope="scope">
@@ -272,5 +272,13 @@ export default {
 }
 .user .el-table__row td{
   padding: 3px 0;
+}
+.el-form-item .el-upload{
+  width: 146px;
+  height: 146px;
+}
+#btn{
+  position: relative;
+  top: -1px;
 }
 </style>

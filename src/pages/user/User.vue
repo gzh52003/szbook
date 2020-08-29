@@ -587,8 +587,9 @@ export default {
   display: block;
 }
 
-.el-table_1_column_2 .cell {
-  padding-top: 10px;
-  line-height: 0;
+
+.el-row .el-input .el-input-group__append{
+  padding: 0 20px;
+
 }
 </style>
