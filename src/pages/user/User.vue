@@ -587,7 +587,7 @@ export default {
   display: block;
 }
 
-.el-input .el-input-group__append{
+.el-row .el-input .el-input-group__append{
   padding: 0 20px;
 }
 </style>
