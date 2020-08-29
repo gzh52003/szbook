@@ -587,13 +587,9 @@ export default {
   display: block;
 }
 
-<<<<<<< HEAD
+
 .el-row .el-input .el-input-group__append{
   padding: 0 20px;
-=======
-.el-table_1_column_2 .cell {
-  padding-top: 10px;
-  line-height: 0;
->>>>>>> a49fba081e9a0ddd220bd59f7e9d589e50f6f847
+
 }
 </style>
