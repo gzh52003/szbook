@@ -1,30 +1,54 @@
 <template>
   <div class="loginBox">
     <el-main>
-      <el-form :model="ruleForm" ref="ruleForm" :rules="rule" class="loginform" label-width="0">
+      <el-form
+        :model="ruleForm"
+        ref="ruleForm"
+        :rules="rule"
+        class="loginform"
+        label-width="0"
+      >
         <h3 class="login-text" style="line-height:2rem">欢迎-登录</h3>
         <el-form-item prop="tel">
-          <el-input type="text" v-model="ruleForm.username" placeholder="用户名"></el-input>
+          <el-input
+            type="text"
+            v-model="ruleForm.username"
+            placeholder="用户名"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" v-model="ruleForm.password" placeholder="密码"></el-input>
+          <el-input
+            type="password"
+            v-model="ruleForm.password"
+            placeholder="密码"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input placeholder="输入验证码" v-model="ruleForm.vcode">
-            <el-button slot="append" style="width:150px;z-index:10;padding:0;margin: 0;" @click="getAuthCode" v-html="svg_vcode">点击获取验证码</el-button>
+            <el-button
+              slot="append"
+              style="width:150px;z-index:10;padding:0;margin: 0;"
+              @click="getAuthCode"
+              v-html="svg_vcode"
+              >点击获取验证码</el-button
+            >
           </el-input>
         </el-form-item>
+        <el-switch v-model="value1" active-text="7天免登录"> </el-switch>
         <el-form-item style="margin:10px auto">
           <el-button
             type="primary"
             class="submitBtn"
             round
             @click.native.prevent="submit"
-          >登录</el-button>
+            >登录</el-button
+          >
           <hr />
           <p style="font-size:0.2rem">
             暂无
-            <span style="color:#56ac67;font-size:0.2rem">“深圳书城后台管理系统”账号</span>， 马上
+            <span style="color:#56ac67;font-size:0.2rem"
+              >“深圳书城后台管理系统”账号</span
+            >， 马上
             <span class="to" @click="toreg">注册</span>
           </p>
         </el-form-item>
@@ -53,13 +77,13 @@ export default {
       }
     };
     return {
+      value1: true,
       ruleForm: {
         password: "",
         username: "",
         vcode: "",
-        mdl: false,
       },
-      svg_vcode:"",
+      svg_vcode: "",
       sendAuthCode: true /*布尔值，通过v-show控制显示‘获取按钮’还是‘倒计时’ */,
       auth_time: 0 /*倒计时 计数器*/,
       verification: "", //绑定输入验证码框框
@@ -87,11 +111,13 @@ export default {
   methods: {
     //   验证 码
     getAuthCode() {
-      fetch("http://42.194.179.50/api/vcode",{
-        credentials:"include"
-      }).then(res=>res.json()).then(data=>{
-        this.svg_vcode = data.data
+      fetch("http://42.194.179.50/api/vcode", {
+        credentials: "include",
       })
+        .then((res) => res.json())
+        .then((data) => {
+          this.svg_vcode = data.data;
+        });
     },
     toreg() {
       //没有账号，跳转到注册页面
@@ -117,13 +143,13 @@ export default {
           mCodeData,
         },
       }).then(
-        function (response) {
+        function(response) {
           //登录后跳转的页面--首页
           console.log("跳转", response);
           // this.$router.push("/");
           self.$router.replace("/home");
         },
-        function (error) {
+        function(error) {
           alert("请求失败", error);
         }
       );
@@ -133,31 +159,39 @@ export default {
         if (valid) {
           let queryStr = "";
           for (const key in this.ruleForm) {
-            queryStr+=key;
-           queryStr+="=";
-           queryStr+=this.ruleForm[key];
-           queryStr+="&";
+            queryStr += key;
+            queryStr += "=";
+            queryStr += this.ruleForm[key];
+            queryStr += "&";
           }
-          queryStr = queryStr.substr(0,queryStr.length-1)
+          queryStr += `mdl=${this.value1}`;
+          // queryStr = queryStr.substr(0, queryStr.length - 1);
           // queryStr = queryStr.split("");
           // queryStr.pop();
           // queryStr = queryStr.join("")
+          console.log(queryStr);
           console.log(this.ruleForm);
-          fetch(`http://42.194.179.50/api/login?${queryStr}`,{
-            credentials:"include"
-          }).then(res=>res.json()).then(data=>{
-            if(data.code==1){
-              localStorage.setItem("userInfo",JSON.stringify([data.data]))
-              this.$router.replace("/home");
-            }else if(data.code==10){
-              this.$message.error("验证码错误！")
-            }else{
-              this.$message.error("帐号密码错误！")
-            }
+          fetch(`http://42.194.179.50/api/login?${queryStr}`, {
+            credentials: "include",
           })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.code == 1) {
+                localStorage.setItem(
+                  "userInfo",
+                  JSON.stringify(data.data.authorization)
+                );
+                console.log(data);
+                this.$router.replace("/home");
+              } else if (data.code == 10) {
+                this.$message.error("验证码错误！");
+              } else {
+                this.$message.error("帐号密码错误！");
+              }
+            });
           // console.log("开始写入后台数据！");
-        } else{
-          this.$message.error("请完整输入内容！")
+        } else {
+          this.$message.error("请完整输入内容！");
         }
       });
     },
@@ -165,9 +199,10 @@ export default {
       this.$refs.ruleForm.resetFields();
     },
   },
-  created(){
+
+  created() {
     this.getAuthCode();
-  }
+  },
 };
 </script>
 
@@ -228,14 +263,14 @@ body {
   margin: 22px auto;
   max-width: 500px;
 }
-.el-input .el-input-group__append{
+.el-input .el-input-group__append {
   padding: 0;
   border: none;
 }
-.el-button{
+.el-button {
   height: 40px;
 }
-svg{
+svg {
   height: 40px;
 }
 </style>
