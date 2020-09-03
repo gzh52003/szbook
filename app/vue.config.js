@@ -8,10 +8,10 @@ module.exports = {
   // 当运行 vue-cli-service build 时生成的生产环境构建文件的目录。
   // 注意目标目录在构建之前会被清除 (构建时传入 --no-clean 可关闭该行为)。
   // 默认值'dist'
-  outputDir: "szbook",
+  outputDir: "szbookapp",
   // 放置生成的静态资源 (js、css、img、fonts) 的目录(相对于outputDir目录)。
   // 默认值''
-  assetsDir: 'szbook',
+  assetsDir: 'szbookapp',
   //指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
   // 默认值'index.html'
   indexPath: "Index.html",
