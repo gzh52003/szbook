@@ -16,7 +16,6 @@ export default {
   },
   methods: {
     onClickLeft() {
-      console.log(this.$router);
       // 通过路由，回到上一次停留的页面
       this.$router.back();
     },
