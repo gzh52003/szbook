@@ -1,78 +1,90 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-  const routes = [
+const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: "/",
+    name: "Home",
     // component: Home,
-    redirect:"/home"
+    redirect: "/home",
   },
   {
-    path: '/home',
-    name: 'Home',
+    path: "/home",
+    name: "Home",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Home.vue"),
   },
   {
-    path: '/shopcart',
-    name: 'ShopCart',
-    component: () => import('../views/shopcart/ShopCart.vue')
+    path: "/shopcart",
+    name: "ShopCart",
+    component: () => import("../views/shopcart/ShopCart.vue"),
   },
   {
-    path: '/category',
-    name: 'Category',
-    component: () => import('../views/category/Category.vue')
+    path: "/category",
+    name: "Category",
+    component: () => import("../views/category/Category.vue"),
   },
   {
+<<<<<<< HEAD
+    path: "/goodslist/:id",
+    name: "GoodsList",
+    component: () => import("../views/category/GoodsList.vue"),
+=======
     path: '/goodslist/:id',
     name: 'GoodsList',
     component: () => import('../views/category/GoodsList.vue')
+>>>>>>> 6640bbfd575f7277299e9670217952cec96e49ac
   },
   {
-    path: '/goods',
-    name: 'Goods',
-    component: () => import('../views/category/Goods.vue')
+    path: "/goods",
+    name: "Goods",
+    component: () => import("../views/category/Goods.vue"),
   },
   {
-    path: '/hotnews',
-    name: 'HotNews',
-    component: () => import('../views/hotnews/HotNews.vue')
+    path: "/hotnews",
+    name: "HotNews",
+    component: () => import("../views/hotnews/HotNews.vue"),
   },
   {
-    path: '/shopcart',
-    name: 'ShopCart',
-    component: () => import('../views/shopcart/ShopCart.vue')
+    path: "/shopcart",
+    name: "ShopCart",
+    component: () => import("../views/shopcart/ShopCart.vue"),
   },
   {
-    path: '/mine',
-    name: 'Mine',
-    component: () => import('../views/mine/Mine.vue')
+    path: "/mine",
+    name: "Mine",
+    component: () => import("../views/mine/Mine.vue"),
   },
   {
-    path: '/reg',
-    name: 'Reg',
-    component: () => import('../views/mine/Reg.vue')
+    path: "/reg",
+    name: "Reg",
+    component: () => import("../views/mine/Reg.vue"),
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/mine/Login.vue')
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/mine/Login.vue"),
   },
   {
-    path:'*',
-    name:'404',
-    component:() => import('../Default.vue')
-  }
-]
+    path: "*",
+    name: "404",
+    component: () => import("../Default.vue"),
+  },
+];
 
 const router = new VueRouter({
+<<<<<<< HEAD
+  routes,
+});
+=======
   mode:'history',
   routes
 })
+>>>>>>> 6640bbfd575f7277299e9670217952cec96e49ac
 
-export default router
+export default router;

@@ -3,14 +3,20 @@
     <div class="main">
       <router-view />
     </div>
-    <van-tabbar active-color="#ff1100" inactive-color="#000" route id="nav" :fixed="false">
+    <van-tabbar
+      active-color="#ff1100"
+      inactive-color="#000"
+      route
+      id="nav"
+      :fixed="false"
+    >
       <!-- <van-tabbar-item icon="home">
         <van-icon class="iconfont" class-prefix="icon" name="shujiguanli" />
         <div>书城</div>
       </van-tabbar-item>-->
-      <van-tabbar-item v-for="(item,idx) in Tabbar" :key="idx" :to="item.path">
+      <van-tabbar-item v-for="(item, idx) in Tabbar" :key="idx" :to="item.path">
         <van-icon class="iconfont" class-prefix="icon" :name="item.icon" />
-        <div>{{item.text}}</div>
+        <div>{{ item.text }}</div>
       </van-tabbar-item>
       <!-- <van-tabbar-item class="iconfont" class-prefix="icon" name="home" to=''>分类</van-tabbar-item>
       <van-tabbar-item icon="search">热点</van-tabbar-item>
@@ -22,6 +28,8 @@
 
 <script>
 import "@/assets/iconfont/iconfont.css";
+import vanFun from "./vant/comVant";
+vanFun();
 import Vue from "vue";
 import { Tabbar, TabbarItem, Icon } from "vant";
 Vue.use(Tabbar);
@@ -77,9 +85,9 @@ body {
     flex-direction: column;
     overflow: hidden;
     text-align: center;
-    .main{
+    .main {
       overflow-y: auto;
-      height: 100%;
+      height: 94%;
     }
     #nav {
       padding: 0;
