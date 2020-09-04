@@ -29,7 +29,7 @@ Vue.use(VueRouter)
     component: () => import('../views/category/Category.vue')
   },
   {
-    path: '/goodslist',
+    path: '/goodslist/:id',
     name: 'GoodsList',
     component: () => import('../views/category/GoodsList.vue')
   },
