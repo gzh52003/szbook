@@ -20,6 +20,9 @@ import {
   Tab,
   Tabs,
   PullRefresh,
+  Grid,
+  GridItem,
+  Card,
 } from "vant";
 
 export default function() {
@@ -39,4 +42,7 @@ export default function() {
   Vue.use(Tab);
   Vue.use(Tabs);
   Vue.use(PullRefresh);
+  Vue.use(Grid);
+  Vue.use(GridItem);
+  Vue.use(Card);
 }

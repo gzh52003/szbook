@@ -4,7 +4,7 @@
       <router-view />
     </div>
     <van-tabbar active-color="#ff1100" inactive-color="#000" route id="nav" :fixed="false">
-      <div class="bottomBox" v-if="!this.$route.params.id">
+      <div class="bottomBox" v-if="!this.$route.params.id||this.$route.query.tatle">
         <van-tabbar-item v-for="(item, idx) in Tabbar" :key="idx" :to="item.path">
           <van-icon class="iconfont" class-prefix="icon" :name="item.icon" />
           <div>{{ item.text }}</div>
@@ -17,7 +17,9 @@
           </p>
           <p style="line-height:10px">客服</p>
         </div>
-        <div style="line-height:50px;color:#bdbdbd"><van-icon name="like"/></div>
+        <div style="line-height:50px;color:#bdbdbd">
+          <van-icon name="like" />
+        </div>
         <div style="line-height:50px">立即购买</div>
         <div style="line-height:50px;background:#f10;color:#fff">加入购物车</div>
       </div>
@@ -68,7 +70,7 @@ export default {
   },
   methods: {},
   watch: {
-    '$route.path'() {
+    "$route.path"() {
       console.log(this.$route.params);
     },
   },
@@ -120,16 +122,16 @@ body {
           }
         }
       }
-      .buyGoods{
-        div{
+      .buyGoods {
+        div {
           width: 25%;
           height: 100%;
           text-align: center;
           font-size: 14px;
-          .van-icon{
+          .van-icon {
             font-size: 18px;
           }
-          p{
+          p {
             margin: 0;
           }
         }
