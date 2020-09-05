@@ -16,10 +16,10 @@ import {
   Search,
   NavBar,
   Toast,
-  DropdownMenu,
-  DropdownItem,
-  Collapse,
-  CollapseItem,
+  List,
+  Tab,
+  Tabs,
+  PullRefresh,
 } from "vant";
 
 export default function() {
@@ -35,8 +35,8 @@ export default function() {
   Vue.use(Search);
   Vue.use(NavBar);
   Vue.use(Toast);
-  Vue.use(DropdownMenu);
-  Vue.use(DropdownItem);
-  Vue.use(Collapse);
-  Vue.use(CollapseItem);
+  Vue.use(List);
+  Vue.use(Tab);
+  Vue.use(Tabs);
+  Vue.use(PullRefresh);
 }
