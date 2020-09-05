@@ -10,18 +10,10 @@
       id="nav"
       :fixed="false"
     >
-      <!-- <van-tabbar-item icon="home">
-        <van-icon class="iconfont" class-prefix="icon" name="shujiguanli" />
-        <div>书城</div>
-      </van-tabbar-item>-->
       <van-tabbar-item v-for="(item, idx) in Tabbar" :key="idx" :to="item.path">
         <van-icon class="iconfont" class-prefix="icon" :name="item.icon" />
         <div>{{ item.text }}</div>
       </van-tabbar-item>
-      <!-- <van-tabbar-item class="iconfont" class-prefix="icon" name="home" to=''>分类</van-tabbar-item>
-      <van-tabbar-item icon="search">热点</van-tabbar-item>
-      <van-tabbar-item icon="search">购物车</van-tabbar-item>
-      <van-tabbar-item icon="setting-o">我的</van-tabbar-item>-->
     </van-tabbar>
   </div>
 </template>
@@ -31,10 +23,12 @@ import "@/assets/iconfont/iconfont.css";
 import vanFun from "./vant/comVant";
 vanFun();
 import Vue from "vue";
-import { Tabbar, TabbarItem, Icon } from "vant";
+import { Tabbar, TabbarItem, Icon, List, PullRefresh } from "vant";
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
 Vue.use(Icon);
+Vue.use(List);
+Vue.use(PullRefresh);
 export default {
   data() {
     return {
@@ -73,6 +67,7 @@ export default {
   //   console.log(this.$router, this.$store);
   // },
 };
+document.title = "深圳书城"
 </script>
 
 <style lang="scss">
