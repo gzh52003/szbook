@@ -3,25 +3,24 @@
     <div class="main">
       <router-view />
     </div>
-    <van-tabbar
-      active-color="#ff1100"
-      inactive-color="#000"
-      route
-      id="nav"
-      :fixed="false"
-    >
-      <!-- <van-tabbar-item icon="home">
-        <van-icon class="iconfont" class-prefix="icon" name="shujiguanli" />
-        <div>书城</div>
-      </van-tabbar-item>-->
-      <van-tabbar-item v-for="(item, idx) in Tabbar" :key="idx" :to="item.path">
-        <van-icon class="iconfont" class-prefix="icon" :name="item.icon" />
-        <div>{{ item.text }}</div>
-      </van-tabbar-item>
-      <!-- <van-tabbar-item class="iconfont" class-prefix="icon" name="home" to=''>分类</van-tabbar-item>
-      <van-tabbar-item icon="search">热点</van-tabbar-item>
-      <van-tabbar-item icon="search">购物车</van-tabbar-item>
-      <van-tabbar-item icon="setting-o">我的</van-tabbar-item>-->
+    <van-tabbar active-color="#ff1100" inactive-color="#000" route id="nav" :fixed="false">
+      <div class="bottomBox" v-if="!this.$route.params.id">
+        <van-tabbar-item v-for="(item, idx) in Tabbar" :key="idx" :to="item.path">
+          <van-icon class="iconfont" class-prefix="icon" :name="item.icon" />
+          <div>{{ item.text }}</div>
+        </van-tabbar-item>
+      </div>
+      <div class="bottomBox buyGoods" v-else>
+        <div style="line-height:32px;margin:0">
+          <p>
+            <van-icon name="service-o" />
+          </p>
+          <p style="line-height:10px">客服</p>
+        </div>
+        <div style="line-height:50px;color:#bdbdbd"><van-icon name="like"/></div>
+        <div style="line-height:50px">立即购买</div>
+        <div style="line-height:50px;background:#f10;color:#fff">加入购物车</div>
+      </div>
     </van-tabbar>
   </div>
 </template>
@@ -31,10 +30,12 @@ import "@/assets/iconfont/iconfont.css";
 import vanFun from "./vant/comVant";
 vanFun();
 import Vue from "vue";
-import { Tabbar, TabbarItem, Icon } from "vant";
+import { Tabbar, TabbarItem, Icon, List, PullRefresh } from "vant";
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
 Vue.use(Icon);
+Vue.use(List);
+Vue.use(PullRefresh);
 export default {
   data() {
     return {
@@ -66,6 +67,11 @@ export default {
     };
   },
   methods: {},
+  watch: {
+    '$route.path'() {
+      console.log(this.$route.params);
+    },
+  },
   // 使用request请求
   // async created() {
   //   const res = await this.$request.get("/goods");
@@ -73,6 +79,7 @@ export default {
   //   console.log(this.$router, this.$store);
   // },
 };
+document.title = "深圳书城";
 </script>
 
 <style lang="scss">
@@ -99,13 +106,32 @@ body {
           color: #f00;
         }
       }
-      .van-tabbar-item {
-        .iconfont {
-          font-size: 18px;
+      .bottomBox {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        .van-tabbar-item {
+          .iconfont {
+            font-size: 18px;
+          }
+          .van-tabbar-item__text {
+            line-height: 18px;
+            font-size: 12px;
+          }
         }
-        .van-tabbar-item__text {
-          line-height: 18px;
-          font-size: 12px;
+      }
+      .buyGoods{
+        div{
+          width: 25%;
+          height: 100%;
+          text-align: center;
+          font-size: 14px;
+          .van-icon{
+            font-size: 18px;
+          }
+          p{
+            margin: 0;
+          }
         }
       }
     }

@@ -32,7 +32,7 @@
         <template #right>{{val.data.length?'更多':""}}</template>
         <!-- <template #imglist></template> -->
         <template #goodslist>
-          <li v-for="item in val.data" :key="item.id">
+          <li v-for="item in val.data" :key="item.id" @click="gotoGoods(item.id)">
             <div class="imgbox" v-if="val.name!='推荐品牌'">
               <img v-lazy="item.post" />
               <p>{{item.name}}</p>
@@ -96,6 +96,12 @@ export default {
       goodsList: [],
     };
   },
+  methods:{
+    gotoGoods(id){
+      
+      this.$router.push("/goods/"+id);
+    }
+  },
   components: {
     goodsSection,
   },
@@ -139,7 +145,6 @@ export default {
       });
   },
 };
-document.title = "深圳书城";
 </script>
 
 <style lang="scss">

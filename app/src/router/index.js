@@ -30,12 +30,18 @@ const routes = [
     component: () => import("../views/category/Category.vue"),
   },
   {
+<<<<<<< HEAD
     path: "/goodslist/:id",
     name: "GoodsList",
     component: () => import("../views/category/GoodsList.vue"),
+=======
+    path: '/goodslist/:id',
+    name: 'GoodsList',
+    component: () => import('../views/category/GoodsList.vue')
+>>>>>>> 5f47ddd9b0979ee27e0e2733a2b2980b493001c1
   },
   {
-    path: "/goods",
+    path: "/goods/:id",
     name: "Goods",
     component: () => import("../views/category/Goods.vue"),
   },
@@ -73,7 +79,12 @@ const routes = [
 
 const router = new VueRouter({
   mode:'history',
+<<<<<<< HEAD
   routes
 })
+=======
+  routes,
+});
+>>>>>>> 5f47ddd9b0979ee27e0e2733a2b2980b493001c1
 
 export default router;
