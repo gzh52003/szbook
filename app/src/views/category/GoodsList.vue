@@ -19,7 +19,29 @@
         </template>
 
         <van-list v-model="loading" :error.sync="error" offset immediate-check @load="onLoad">
-          <goods-data :listdata="goodslist" v-for="item in goodslist" :key="item.length"></goods-data>
+          <goods-data v-for="item in goodslist" :key="item.length">
+            <!-- <template #img>
+              <img :src="item.post" alt />
+            </template>
+            <template #title>
+              <p>{{item.title}}</p>
+            </template>
+            <template #mane>
+              <p>{{item.name}}</p>
+            </template>
+            <template #market_price>{{item.market_price}}</template>
+            <template #sale_price>{{item.sale_price}}</template>-->
+            <template>
+              <van-card
+                :centered="false"
+                :price="item.sale_price"
+                :desc="item.name"
+                :title="item.title"
+                :thumb="item.post"
+                :origin-price="item.market_price"
+              />
+            </template>
+          </goods-data>
         </van-list>
       </van-tab>
     </van-tabs>
@@ -111,6 +133,7 @@ export default {
       this.goodslist = [...this.goodslist, ...result.data.data.list];
       this.page++;
       this.loading = false;
+      console.log("切换页面触发", this.goodslist.length);
       // console.log(this.goodslist);
     },
     async readerpage(pagetime) {
@@ -145,21 +168,16 @@ export default {
       this.page = 1;
       this.chicktime = 1;
       this.goodstate = true;
-      console.log("切换页面触发", this.goodstate);
+      // console.log("切换页面触发", this.goodslist.length);
     },
     async onLoad() {
-      console.log("我是onload");
+      // console.log("我是onload");
       await this.renderlistdata();
       // this.goodslist = [...this.goodslist,...]
     },
-
-    async check() {
-      console.log("我就是我");
-      await this.onLoad();
-    },
   },
   created() {
-    // console.log(this.$route.params.id);
+    // console.log(this.$route.query);
     // this.renderlistdata();
   },
 };
@@ -176,6 +194,18 @@ export default {
   }
   .van-tabs__content {
     height: 100%;
+  }
+}
+.van-card__bottom {
+  line-height: 42px;
+}
+.van-card__desc {
+  line-height: 30px;
+}
+.van-card__content {
+  text-align: start;
+  .van-card__price {
+    color: orangered;
   }
 }
 </style>
