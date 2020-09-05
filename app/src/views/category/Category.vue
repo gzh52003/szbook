@@ -51,11 +51,11 @@ export default {
       console.log(this.active);
     },
     // 这个是用于商品跳转的
-    selectitem(msg) {
-      console.log(msg);
+    selectitem(id, msg) {
+      console.log(msg, id);
       console.log(this.$route);
       console.log(this.$router);
-      this.$router.push("/goodslist/" + "tatle=" + msg);
+      this.$router.push(`/goodslist/${id}?tatle=${msg}`);
       console.log(this.$route);
     },
     async initdata() {

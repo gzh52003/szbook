@@ -7,7 +7,7 @@
           class="_dl"
           :key="child.name"
           v-for="child in item.children[0].list"
-          @click="childselect(child.name)"
+          @click="childselect(child.id,child.name)"
         >
           <dt>
             <img :src="child.post" alt />
@@ -29,9 +29,9 @@ export default {
     initclasscontext() {
       console.log(this.msg);
     },
-    childselect(table) {
-      console.log(table);
-      this.$emit("select", table);
+    childselect(table, id) {
+      console.log(table, id);
+      this.$emit("select", table, id);
     },
   },
   created() {
