@@ -27,12 +27,7 @@ export default {
   },
   methods:{
     goto(id){
-      console.log("88888",this.to,window)
       window.location.replace("https://h5.szbookmall.com/#/hot/detail/"+this.to);
-      // this.$request.post("",{
-      //   news_id: "239"
-      //   }     
-    // )
       }
   },
   props: ["to", "imgurl"],
@@ -41,7 +36,6 @@ export default {
 <style lang="scss" scoped>
 .item {
   width: 100%;
-  height: 285px;
   margin-bottom: 10px;
   a {
     display: block;

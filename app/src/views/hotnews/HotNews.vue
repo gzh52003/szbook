@@ -48,7 +48,6 @@ export default {
     onLoad() {
       this.loading = true;
       this.getNews();
-      console.log(this.pageData);
     },
   },
   components: {

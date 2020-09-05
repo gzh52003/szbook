@@ -35,7 +35,7 @@ const routes = [
     component: () => import('../views/category/GoodsList.vue')
   },
   {
-    path: "/goods",
+    path: "/goods/:id",
     name: "Goods",
     component: () => import("../views/category/Goods.vue"),
   },
@@ -72,6 +72,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
+  mode:'history',
   routes,
 });
 
