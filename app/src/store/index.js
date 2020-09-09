@@ -5,14 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+    userInfo:{},
+    currentGoods:{}
   },
   mutations:{
 
        addUserInfo(state){
         function getCookie(name){
           let cookieArr=document.cookie.split('; ');
-          let res=cookieArr.map(function(cur,idx){
+          let res=cookieArr.map(function(cur){
               if(cur.split('=')[0]===name){
                   return cur.split('=')[1]
               }
@@ -21,14 +22,11 @@ export default new Vuex.Store({
         }
         state["userInfo"]={
             "username":getCookie("szbookUsername"),
-            "cartInfo":getCookie("szbookcarInfo")
+            "cartInfo":JSON.parse(getCookie("szbookcarInfo"))
         }
 
        },
-       getUserInfo(state){
-         console.log("state",state);
-         return state;
-       }
+
   },
   actions: {
   },

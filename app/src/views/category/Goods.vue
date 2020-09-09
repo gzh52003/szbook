@@ -53,7 +53,14 @@ export default {
       .then((res) => {
         this.$store.state.currentGoods = this.pageData = res.data.data;
       });
+
+      // this.$store.commit("addUserInfo");
+
+      console.log(this.$store.state.userInfo)
   },
+
+
+
 };
 </script>
 <style lang="scss">

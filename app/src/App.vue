@@ -68,13 +68,18 @@ export default {
       ],
     };
   },
+  created() {
+    // this.cartInfolist=this.$store.state.userInfo.cartInfo
+    //  console.log("this.cartInfo",this.cartInfo)
+      this.$store.commit("addUserInfo");
+  },
   methods: {
     addCart(){
       if(this.$store.state.userInfo.name){
         const bookName = this.$store.state.currentGoods.name
         console.log(this.$store.state.userInfo.name);
         // this.$router.push('/shopcart')
-          console.log(bookName)
+          // console.log(bookName)
         // this.$request.get('http://42.194.179.50/api/goods?'+).then(res=>{
         //   res.data
         // })
@@ -87,7 +92,7 @@ export default {
   },
   watch: {
     "$route.path"() {
-      console.log(this.$route.params);
+      // console.log(this.$route.params);
     },
   },
   // 使用request请求
