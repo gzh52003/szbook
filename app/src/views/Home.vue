@@ -107,6 +107,9 @@ export default {
       isok:true
     };
   },
+   created(){              
+    this.$store.commit("addUserInfo")
+  },
   methods: {
     gotoGoods(id) {
       this.$router.push("/goods/" + id);

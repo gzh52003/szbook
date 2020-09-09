@@ -69,21 +69,19 @@ export default {
     };
   },
   methods: {
-    addCart(){
-      if(this.$store.state.userInfo.name){
-        const bookName = this.$store.state.currentGoods.name
-        console.log(this.$store.state.userInfo.name);
-        // this.$router.push('/shopcart')
-          console.log(bookName)
-        // this.$request.get('http://42.194.179.50/api/goods?'+).then(res=>{
-        //   res.data
-        // })
-        // let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        
-      }else{
-        this.$router.push('/mine')
+    addCart() {
+      console.log(this.$store.state);
+      if (localStorage.getItem("userInfo")) {
+        const bookName = this.$store.state.currentGoods.name;
+        this.$request.get("/goods?bookName=" + bookName).then((res) => {
+          const bookInfo = res.data.data[0];
+          this.$store.commit("changeUserInfo", bookInfo);
+          console.log(this.$store.state.userInfo);
+        });
+      } else {
+        this.$router.push("/mine");
       }
-    }
+    },
   },
   watch: {
     "$route.path"() {
