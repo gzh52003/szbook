@@ -21,7 +21,7 @@
           <van-icon name="like" />
         </div>
         <div style="line-height:50px">立即购买</div>
-        <div style="line-height:50px;background:#f10;color:#fff">加入购物车</div>
+        <div style="line-height:50px;background:#f10;color:#fff" @click="addCart">加入购物车</div>
       </div>
     </van-tabbar>
   </div>
@@ -68,7 +68,23 @@ export default {
       ],
     };
   },
-  methods: {},
+  methods: {
+    addCart(){
+      if(this.$store.state.userInfo.name){
+        const bookName = this.$store.state.currentGoods.name
+        console.log(this.$store.state.userInfo.name);
+        // this.$router.push('/shopcart')
+          console.log(bookName)
+        // this.$request.get('http://42.194.179.50/api/goods?'+).then(res=>{
+        //   res.data
+        // })
+        // let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        
+      }else{
+        this.$router.push('/mine')
+      }
+    }
+  },
   watch: {
     "$route.path"() {
       console.log(this.$route.params);

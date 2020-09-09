@@ -22,7 +22,7 @@
         <h1>{{pageData.name}}</h1>
         <p class="title" v-html="pageData.title"></p>
         <p class="count">
-          <span>浏览次数 {{pageData.count.view}}</span>
+          <span>浏览次数 {{pageData.count['view']}}</span>
           <span>销量 {{pageData.count.sale}}</span>
         </p>
       </div>
@@ -51,8 +51,7 @@ export default {
     this.$request
       .post("https://api.szbookmall.com/app/product/detail", this.$route.params)
       .then((res) => {
-        this.pageData = res.data.data;
-        console.log(res.data.data);
+        this.$store.state.currentGoods = this.pageData = res.data.data;
       });
   },
 };

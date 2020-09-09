@@ -69,13 +69,11 @@ export default {
         }
       ).then((res) => res.json());
       this.classifymsg = data.data;
-      console.log(data.data.list);
       let classify = data.data.list;
       this.items = classify.reduce((pre, item) => {
         pre.push({ text: item.name });
         return pre;
       }, []);
-      console.log(this.items);
     },
   },
 };
