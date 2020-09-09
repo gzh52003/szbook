@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="topBar">
+    <div class="topBar" @scroll.passive="scrollNum">
       <van-search shape="round" background="#fff" placeholder="请输入搜索关键词" />
       <van-tabs line-width="30px">
         <van-tab
@@ -12,10 +12,12 @@
         ></van-tab>
       </van-tabs>
     </div>
-    <div class="mainContent">
+    <div class="mainContent" ref="scroll">
       <van-swipe :autoplay="3000" indicator-color="white">
         <van-swipe-item v-for="image in bannerimages" :key="image.id">
-          <a :href="image.url" style="display:flex;align-items:center"><img v-lazy="image.post"/></a>
+          <a :href="image.url" style="display:flex;align-items:center">
+            <img v-lazy="image.post" />
+          </a>
         </van-swipe-item>
       </van-swipe>
       <van-grid :column-num="5" icon-size="46px" style="margin:10px 0">
@@ -42,25 +44,32 @@
               </p>
             </div>
             <div class="imgbox" v-else>
-              <img v-lazy="item.post" style="width:40px;height:40px;margin-left:24px"/>
+              <img v-lazy="item.post" style="width:40px;height:40px;margin-left:24px" />
               <p style="width:88px">{{item.name}}</p>
             </div>
           </li>
         </template>
         <template #imgslot>
           <div class="showImg" v-if="val.name=='开学季专区'">
-            <div v-for="(img,idx) in val.inner_ads" 
-            :key="img.id" 
-            :class="idx==3?'col-10':'col-3'"><a :href="img.link"><img v-lazy="img.post" alt=""></a></div>
+            <div v-for="(img,idx) in val.inner_ads" :key="img.id" :class="idx==3?'col-10':'col-3'">
+              <a :href="img.link">
+                <img v-lazy="img.post" alt />
+              </a>
+            </div>
           </div>
           <div class="showImg" v-else>
-            <div v-for="img in val.inner_ads" 
-            :key="img.id" 
-            class="col-10"><a :href="img.link"><img v-lazy="img.post" alt=""></a></div>
+            <div v-for="img in val.inner_ads" :key="img.id" class="col-10">
+              <a :href="img.link">
+                <img v-lazy="img.post" alt />
+              </a>
+            </div>
           </div>
         </template>
       </goodsSection>
     </div>
+    <span id="gotop" v-show="this.scroll" @click="backtop" ref="btn_gotop">
+      <i class="iconfont icon-huidaodingbu"></i>
+    </span>
   </div>
 </template>
 
@@ -94,16 +103,47 @@ export default {
       bannerimages: [],
       Home_category: [],
       goodsList: [],
+      scroll: false,
+      isok:true
     };
   },
-  methods:{
-    gotoGoods(id){
-      
-      this.$router.push("/goods/"+id);
-    }
+  methods: {
+    gotoGoods(id) {
+      this.$router.push("/goods/" + id);
+    },
+    scrollNum() {
+      if (this.isok) {
+        this.isok = false;
+        let scrollBottom =
+          this.$refs.scroll.scrollTop
+        if (scrollBottom > 800) {
+          this.scroll = true;
+        } else {
+          this.scroll = false;
+        }
+        setTimeout(() => {
+          this.isok = true;
+        }, 300);
+      }
+    },
+    backtop() {
+      let self = this;
+      var timer = window.setInterval(function () {
+        let osTop = self.$refs.scroll.scrollTop;
+        let ispeed = Math.floor(-osTop / 5);
+        self.$refs.scroll.scrollTo({top:osTop+ispeed})
+        self.isTop = true;
+        if (osTop <= 0) {
+          clearInterval(timer);
+        }
+      }, 30);
+    },
   },
   components: {
     goodsSection,
+  },
+  mounted() {
+    window.addEventListener("scroll", this.scrollNum, true);
   },
   created() {
     // topnav
@@ -137,7 +177,6 @@ export default {
     this.$request
       .post("https://api.szbookmall.com/app/floor/list")
       .then((res) => {
-        console.log(res.data.data);
         this.goodsList = res.data.data;
       })
       .catch((err) => {
@@ -152,8 +191,6 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-  .topBar {
-  }
   .mainContent {
     width: 100%;
     overflow-x: hidden;
@@ -209,24 +246,39 @@ export default {
         }
       }
     }
-    .showImg{
-      div{
+    .showImg {
+      div {
         overflow: hidden;
         margin: 0 auto;
       }
-      .col-3{
+      .col-3 {
         width: 33%;
         display: inline-block;
         box-sizing: border-box;
         border: 3px solid #fff;
       }
-      .col-10{
+      .col-10 {
         width: 100%;
       }
-      img{
+      img {
         object-fit: cover;
         width: 100%;
       }
+    }
+  }
+  #gotop {
+    position: fixed;
+    bottom: 60px;
+    right: 30px;
+    i {
+      background: #ccc;
+      display: block;
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+      line-height: 30px;
+      border-radius: 50%;
+      box-shadow: 0 0 3px 0 #adadad;
     }
   }
 }
