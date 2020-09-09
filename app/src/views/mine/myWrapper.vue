@@ -64,7 +64,7 @@ export default {
       }).then(res => res.json());
 
       if (result.code === 1) {
-        svgVcode.innerHTML = result.data;
+        document.querySelector('#svgVcode').innerHTML = result.data;
       }
     },
     goto() {
@@ -79,6 +79,7 @@ export default {
       }
       return true;
     },
+
     async onSubmit(values) {
       if (this.buttonName === "登录") {
         let queryStr = "";
@@ -95,13 +96,11 @@ export default {
                 JSON.stringify(data.data.authorization)
               );
               console.log(data);
-              document.cookie="szbookUsern="+this.username;
+              document.cookie="szbookUsername="+this.username;
+              document.cookie="szbookcarInfo="+JSON.stringify(data.data.cartInfo)
               Notify({ type: "success", message: "登录成功" });
               this.$router.replace("/home");
-              this.$store.state.userInfo={
-                username:data.data.username,
-                cartInfo:data.data.cartInfo,
-              }
+              this.$store.commit("addUserInfo",data)
             } else if (data.code == 10) {
               Notify({ type: "danger", message: "验证码错误" });
               this.getVcode();
@@ -130,7 +129,7 @@ export default {
                   username: this.username,
                   password: this.password,
                   vcode: this.verify,
-                  cartInfo:{}
+                  cartInfo:[]
                 })
               })
                 .then(res => res.json())
