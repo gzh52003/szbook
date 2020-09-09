@@ -100,7 +100,7 @@ export default {
               document.cookie="szbookcarInfo="+JSON.stringify(data.data.cartInfo)
               Notify({ type: "success", message: "登录成功" });
               this.$router.replace("/home");
-              this.$store.commit("addUserInfo",data)
+              this.$store.commit("addUserInfo")
             } else if (data.code == 10) {
               Notify({ type: "danger", message: "验证码错误" });
               this.getVcode();
