@@ -137,7 +137,8 @@ export default {
    }
  },
  mounted(){
-   console.log(this.$store.state)
+   this.$store.commit("getUserInfo")
+  //  console.log(this.$store.state)
  }
 }
 </script>

@@ -122,6 +122,7 @@ export default {
     let token = localStorage.getItem("userInfo");
     if (token) {
       //token存在，先不弹wrapper
+      this.$store.commit("addUserInfo")
       this.show = false;
       //然后发送请求到后端校验接口，校验通过则不弹wrapper
       token = token.split("");
