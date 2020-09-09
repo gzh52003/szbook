@@ -138,6 +138,7 @@ export default {
  },
  mounted(){
    this.$store.commit("getUserInfo")
+   
   //  console.log(this.$store.state)
  }
 }

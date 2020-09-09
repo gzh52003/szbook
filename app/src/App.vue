@@ -76,7 +76,7 @@ export default {
         this.$request.get("/goods?bookName=" + bookName).then((res) => {
           const bookInfo = res.data.data[0];
           this.$store.commit("changeUserInfo", bookInfo);
-          console.log(this.$store.state.userInfo);
+          console.log(this.$store.state);
         });
       } else {
         this.$router.push("/mine");
