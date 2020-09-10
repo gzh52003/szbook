@@ -43,20 +43,20 @@ export default {
   },
   methods: {
     onSearch() {
-      console.log("我是搜索框");
+      // console.log("我是搜索框");
     },
     changeindex(idx) {
-      console.log(idx);
+      // console.log(idx);
       this.idx = this.active;
-      console.log(this.active);
+      // console.log(this.active);
     },
     // 这个是用于商品跳转的
     selectitem(id, msg) {
-      console.log(msg, id);
-      console.log(this.$route);
-      console.log(this.$router);
+      // console.log(msg, id);
+      // console.log(this.$route);
+      // console.log(this.$router);
       this.$router.push(`/goodslist/${id}?tatle=${msg}`);
-      console.log(this.$route);
+      // console.log(this.$route);
     },
     async initdata() {
       let data = await fetch(

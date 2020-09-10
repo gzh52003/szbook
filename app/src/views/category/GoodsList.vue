@@ -129,7 +129,7 @@ export default {
       this.goodslist = [...this.goodslist, ...result.data.data.list];
       this.page++;
       this.loading = false;
-      console.log("切换页面触发", this.goodslist.length);
+      // console.log("切换页面触发", this.goodslist.length);
       // console.log(this.goodslist);
     },
     async readerpage(pagetime) {
@@ -173,7 +173,7 @@ export default {
     },
     gopages(index) {
       // console.log(e.target);
-      console.log(index);
+      // console.log(index);
       // console.log();
       let idx = this.goodslist[index].id;
       this.$router.push("/goods/" + idx);
