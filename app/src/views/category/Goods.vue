@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       pageData: {},
-    };
+    }
   },
   methods: {
     goback() {
@@ -48,15 +48,12 @@ export default {
     },
   },
   computed:{
-    cartNum(){
-      
-      const cartNumber = this.$store.state;
-      console.log(cartNumber);
-      return 0;
+    cartNum:function(){
+      console.log("cartlength",(this.$store.state.userInfo.cartInfo.length))
+      return (this.$store.state.userInfo.cartInfo.length)
     }
   },
   created() {
-    console.log("creat")
     this.$request
       .post("https://api.szbookmall.com/app/product/detail", this.$route.params)
       .then((res) => {

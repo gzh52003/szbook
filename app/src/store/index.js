@@ -6,27 +6,43 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    userInfo: {},
-    currentGoods: {}
+  state(){
+      if(localStorage.getItem("szbookUsername")&&localStorage.getItem("szbookcarInfo")){
+        return {
+          "userInfo":{
+            "username":localStorage.getItem("szbookUsername"),
+            "cartInfo":JSON.parse(localStorage.getItem("szbookcarInfo"))
+          },
+          "currentGoods": {}
+      }
+
+    }
+
+    console.log(2)
+      return{
+        "userInfo":{},
+        "currentGoods": {}
+      }
+
   },
+
   mutations: {
     addUserInfo(state) {
-      function getCookie(name) {
-        let cookieArr = document.cookie.split('; ');
-        let res = cookieArr.map(function (cur) {
-          if (cur.split('=')[0] === name) {
-            return cur.split('=')[1]
-          }
-        }).join('')
-        return res;
-      }
-      state.userInfo.username=getCookie("szbookUsername");
-      state.userInfo.cartInfo=JSON.parse(getCookie("szbookcarInfo"));
-      // state["userInfo"] = {
-      //   "username": getCookie("szbookUsername"),
-      //   "cartInfo": JSON.parse(getCookie("szbookcarInfo"))
-      // }
+    //   function getCookie(name) {
+    //     let cookieArr = document.cookie.split('; ');
+    //     let res = cookieArr.map(function (cur) {
+    //       if (cur.split('=')[0] === name) {
+    //         return cur.split('=')[1]
+    //       }
+    //     }).join('')
+    //     return res;
+    //   }
+      state.userInfo.username=localStorage.getItem("szbookUsername");
+      state.userInfo.cartInfo=JSON.parse(localStorage.getItem("szbookcarInfo"))
+    //   // state["userInfo"] = {
+    //   //   "username": getCookie("szbookUsername"),
+    //   //   "cartInfo": JSON.parse(getCookie("szbookcarInfo"))
+    //   // }
     },
     setCurrentGoods(state,data){
       state.currentGoods = data;
@@ -41,7 +57,7 @@ export default new Vuex.Store({
           return item;
         })
       }else{
-        state.userInfo.cartInfo = [...state.userInfo.cartInfo,{book:data,num:1}]
+        state.userInfo.cartInfo = [...state.userInfo.cartInfo,{book:data,num:1,checked:false}]
       }
     }
   },

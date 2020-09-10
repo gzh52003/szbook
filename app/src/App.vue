@@ -68,22 +68,22 @@ export default {
       ],
     };
   },
-  created() {
-    // this.cartInfolist=this.$store.state.userInfo.cartInfo
-    //  console.log("this.cartInfo",this.cartInfo)
-    console.log(this.$stroe.state);
-      this.$store.commit("addUserInfo");
+ created() {
+    console.log("this.$store.state",this.$store.state)
   },
   methods: {
     addCart() {
-      console.log(this.$store.state);
       if (localStorage.getItem("userInfo")) {
         const bookName = this.$store.state.currentGoods.name;
         this.$request.get("/goods?bookName=" + bookName).then((res) => {
           const bookInfo = res.data.data[0];
           this.$store.commit("changeUserInfo", bookInfo);
-          console.log(bookInfo);
-          console.log(this.$store.state);
+          console.log("userInfo",this.$store.state.userInfo);
+          // this.$request.patch('/goods',{
+          //   userInfo:this.$store.state.userInfo
+          // }).then(res=>{
+          //   console.log(res);
+          // })
         });
       } else {
         this.$router.push("/mine");
