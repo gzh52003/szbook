@@ -49,8 +49,8 @@ export default {
   },
   computed: {
     cartNum: function () {
-      // console.log("cartlength", this.$store.state.userInfo.cartInfo.cartlength);
-      // return this.$store.state.userInfo.cartInfo.length;
+      console.log("cartlength", this.$store.state.userInfo.cartInfo.length);
+      return (this.$store.state.userInfo.cartInfo.length);
     },
   },
   created() {

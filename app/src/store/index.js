@@ -49,7 +49,9 @@ export default new Vuex.Store({
     },
     changeUserInfo(state,data){
       const cartArr = state.userInfo.cartInfo;
-      console.log(data._id);
+      console.log(cartArr);
+      console.log(state.userInfo.cartInfo);
+      console.log(data);
       if(cartArr.some(item=>item.book._id == data._id)){
         cartArr.map(item=>{
           if(item.book._id==data._id){
@@ -58,7 +60,7 @@ export default new Vuex.Store({
           return item;
         })
       }else{
-        state.userInfo.cartInfo = [...state.userInfo.cartInfo,{book:data,num:1,checked:false}]
+        state.userInfo.cartInfo = [...cartArr,{book:data,num:1,checked:false}]
       }
     }
   },

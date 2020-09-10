@@ -146,7 +146,6 @@ export default {
     window.addEventListener("scroll", this.scrollNum, true);
   },
   created() {
-      console.log(this.$store.state);
     // topnav
     this.$request
       .post("https://api.szbookmall.com/app/menu/top")
