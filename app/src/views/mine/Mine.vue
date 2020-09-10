@@ -122,7 +122,7 @@ export default {
     let token = localStorage.getItem("userInfo");
     if (token) {
       //token存在，先不弹wrapper
-      this.$store.commit("addUserInfo")
+      // this.$store.commit("addUserInfo");
       this.show = false;
       //然后发送请求到后端校验接口，校验通过则不弹wrapper
       token = token.split("");
@@ -130,7 +130,7 @@ export default {
       token.shift();
       // token=token.unshift()
       token = token.join("");
-      console.log(token);
+      // console.log(token);
       fetch(`http://42.194.179.50/api/login/check?authorization=${token}`)
         .then(res => res.json())
         .then(res => {
@@ -202,7 +202,8 @@ export default {
     }
   }
 }
-.fav ,.askOrAnswer{
+.fav,
+.askOrAnswer {
   background: #fff;
   margin: 1vh 0;
   padding-top: 1vh;

@@ -6,7 +6,8 @@
             icon-size="18px"
             class="agree"
             v-model="checked"
-          >登录即代表同意深圳书城协议服务和隐私政策</van-checkbox>
+          >登录即代表同意深圳书城协议服务和隐私政策
+          </van-checkbox>
     </myWrapper>
           <p @click="goto" class="gotoReg">还没有账号，立即注册</p>
   </div>

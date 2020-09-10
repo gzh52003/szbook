@@ -43,7 +43,7 @@ export default {
   props: {
     //   getVcode:{type:Function},
     buttonName: { type: String },
-    checked: { type: Boolean },
+    checked: { type: Boolean }
     // showReg:{type:Boolean},
     // showLogin:{type:Boolean}
   },
@@ -64,7 +64,7 @@ export default {
       }).then(res => res.json());
 
       if (result.code === 1) {
-        document.querySelector('#svgVcode').innerHTML = result.data;
+        document.querySelector("#svgVcode").innerHTML = result.data;
       }
     },
     goto() {
@@ -96,11 +96,12 @@ export default {
                 JSON.stringify(data.data.authorization)
               );
               console.log(data);
-              document.cookie="szbookUsername="+this.username;
-              document.cookie="szbookcarInfo="+JSON.stringify(data.data.cartInfo)
+              localStorage.setItem("szbookUsername",this.username)
+              localStorage.setItem("szbookcarInfo",JSON.stringify(data.data.cartInfo))
+
               Notify({ type: "success", message: "登录成功" });
               this.$router.replace("/home");
-              this.$store.commit("addUserInfo")
+              // this.$store.commit("addUserInfo")
             } else if (data.code == 10) {
               Notify({ type: "danger", message: "验证码错误" });
               this.getVcode();
@@ -129,7 +130,7 @@ export default {
                   username: this.username,
                   password: this.password,
                   vcode: this.verify,
-                  cartInfo:[]
+                  cartInfo: []
                 })
               })
                 .then(res => res.json())
@@ -141,12 +142,11 @@ export default {
                   } else {
                     Notify({ type: "success", message: "注册成功" });
                     //跳到登录组件
-                    this.$emit("goto")
+                    this.$emit("goto");
                   }
                 });
             }
           });
-
       }
     }
   }

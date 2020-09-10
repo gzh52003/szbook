@@ -68,6 +68,11 @@ export default {
       ],
     };
   },
+ created() {
+
+     console.log("this.$store.state",this.$store.state)
+
+  },
   methods: {
     addCart() {
       console.log(this.$store.state);
@@ -85,7 +90,7 @@ export default {
   },
   watch: {
     "$route.path"() {
-      console.log(this.$route.params);
+      // console.log(this.$route.params);
     },
   },
   // 使用request请求
