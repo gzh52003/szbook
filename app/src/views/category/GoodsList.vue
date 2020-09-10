@@ -19,7 +19,7 @@
         </template>
 
         <van-list v-model="loading" :error.sync="error" offset immediate-check @load="onLoad">
-          <goods-data v-for="item in goodslist" :key="item.length">
+          <goods-data v-for="(item,index) in goodslist" :key="item.length">
             <!-- <template #img>
               <img :src="item.post" alt />
             </template>
@@ -39,6 +39,7 @@
                 :title="item.title"
                 :thumb="item.post"
                 :origin-price="item.market_price"
+                @click="gopages(index)"
               />
             </template>
           </goods-data>
@@ -76,11 +77,6 @@ export default {
         { name: "销量" },
         { name: "价格" },
         { name: "时间" },
-        // "综合",
-        // "销量",
-        // "价格",
-        // "时间",
-        // <van-icon name="qr" />,
       ],
     };
   },
@@ -174,6 +170,13 @@ export default {
       // console.log("我是onload");
       await this.renderlistdata();
       // this.goodslist = [...this.goodslist,...]
+    },
+    gopages(index) {
+      // console.log(e.target);
+      console.log(index);
+      // console.log();
+      let idx = this.goodslist[index].id;
+      this.$router.push("/goods/" + idx);
     },
   },
   created() {

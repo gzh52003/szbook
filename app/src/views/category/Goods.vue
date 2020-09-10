@@ -40,18 +40,18 @@ export default {
   data() {
     return {
       pageData: {},
-    }
+    };
   },
   methods: {
     goback() {
       this.$router.back();
     },
   },
-  computed:{
-    cartNum:function(){
-      console.log("cartlength",(this.$store.state.userInfo.cartInfo.length))
-      return (this.$store.state.userInfo.cartInfo.length)
-    }
+  computed: {
+    cartNum: function () {
+      // console.log("cartlength", this.$store.state.userInfo.cartInfo.cartlength);
+      // return this.$store.state.userInfo.cartInfo.length;
+    },
   },
   created() {
     this.$request
@@ -61,9 +61,6 @@ export default {
         this.$store.commit("setCurrentGoods", res.data.data);
       });
   },
-
-
-
 };
 </script>
 <style lang="scss">
