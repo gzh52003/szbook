@@ -47,12 +47,11 @@ export default {
       this.$router.back();
     },
   },
-  computed:{
-    cartNum(){
-      const cartNumber = this.$store.state.userInfo;
-      console.log(this.$store.state.userInfo);
-      return 0;
-    }
+  computed: {
+    cartNum: function () {
+      console.log("cartlength", this.$store.state.userInfo.cartInfo.length);
+      return (this.$store.state.userInfo.cartInfo.length);
+    },
   },
   created() {
     this.$request
@@ -61,14 +60,7 @@ export default {
         this.pageData = res.data.data;
         this.$store.commit("setCurrentGoods", res.data.data);
       });
-
-      // this.$store.commit("addUserInfo");
-
-      console.log(this.$store.state.userInfo)
   },
-
-
-
 };
 </script>
 <style lang="scss">

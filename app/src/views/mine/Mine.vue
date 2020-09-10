@@ -144,6 +144,7 @@ export default {
     } else {
       //token不存在，弹wrapper
       this.show = true;
+      console.log("www")
     }
   },
   methods: {

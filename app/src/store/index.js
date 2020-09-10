@@ -7,11 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state(){
-
-
-
       if(localStorage.getItem("szbookUsername")&&localStorage.getItem("szbookcarInfo")){
-        console.log(1)
         return {
           "userInfo":{
             "username":localStorage.getItem("szbookUsername"),
@@ -31,7 +27,7 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    // addUserInfo(state) {
+    addUserInfo(state) {
     //   function getCookie(name) {
     //     let cookieArr = document.cookie.split('; ');
     //     let res = cookieArr.map(function (cur) {
@@ -41,18 +37,21 @@ export default new Vuex.Store({
     //     }).join('')
     //     return res;
     //   }
-    //   state.userInfo.username=getCookie("szbookUsername");
-    //   state.userInfo.cartInfo=JSON.parse(getCookie("szbookcarInfo"));
+      state.userInfo.username=localStorage.getItem("szbookUsername");
+      state.userInfo.cartInfo=JSON.parse(localStorage.getItem("szbookcarInfo"))
     //   // state["userInfo"] = {
     //   //   "username": getCookie("szbookUsername"),
     //   //   "cartInfo": JSON.parse(getCookie("szbookcarInfo"))
     //   // }
-    // },
+    },
     setCurrentGoods(state,data){
       state.currentGoods = data;
     },
     changeUserInfo(state,data){
       const cartArr = state.userInfo.cartInfo;
+      console.log(cartArr);
+      console.log(state.userInfo.cartInfo);
+      console.log(data);
       if(cartArr.some(item=>item.book._id == data._id)){
         cartArr.map(item=>{
           if(item.book._id==data._id){
@@ -61,7 +60,7 @@ export default new Vuex.Store({
           return item;
         })
       }else{
-        state.userInfo.cartInfo = [...state.userInfo.cartInfo,{book:data,num:1}]
+        state.userInfo.cartInfo = [...cartArr,{book:data,num:1,checked:false}]
       }
     }
   },

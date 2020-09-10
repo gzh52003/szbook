@@ -80,7 +80,7 @@ export default {
       return true;
     },
 
-    async onSubmit(values) {
+    async onSubmit() {
       if (this.buttonName === "登录") {
         let queryStr = "";
         queryStr += `password=${this.password}&username=${this.username}&vcode=${this.verify}&mdl=${this.checked}`;
@@ -101,7 +101,7 @@ export default {
 
               Notify({ type: "success", message: "登录成功" });
               this.$router.replace("/home");
-              // this.$store.commit("addUserInfo")
+              this.$store.commit("addUserInfo")
             } else if (data.code == 10) {
               Notify({ type: "danger", message: "验证码错误" });
               this.getVcode();
