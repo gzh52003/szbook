@@ -77,8 +77,10 @@ export default {
         const bookName = this.$store.state.currentGoods.name;
         this.$request.get("/goods?bookName=" + bookName).then((res) => {
           const bookInfo = res.data.data[0];
+          console.log(bookInfo);
           this.$store.commit("changeUserInfo", bookInfo);
           console.log("userInfo",this.$store.state.userInfo);
+          localStorage.setItem("szbookcarInfo",JSON.stringify(this.$store.state.userInfo))
           // this.$request.patch('/goods',{
           //   userInfo:this.$store.state.userInfo
           // }).then(res=>{
