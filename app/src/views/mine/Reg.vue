@@ -7,7 +7,6 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
 import myWrapper from "./myWrapper";
 export default {
    porps:{

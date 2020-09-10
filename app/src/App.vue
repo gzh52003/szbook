@@ -68,6 +68,12 @@ export default {
       ],
     };
   },
+  created() {
+    // this.cartInfolist=this.$store.state.userInfo.cartInfo
+    //  console.log("this.cartInfo",this.cartInfo)
+    console.log(this.$stroe.state);
+      this.$store.commit("addUserInfo");
+  },
   methods: {
     addCart() {
       console.log(this.$store.state);
@@ -76,6 +82,7 @@ export default {
         this.$request.get("/goods?bookName=" + bookName).then((res) => {
           const bookInfo = res.data.data[0];
           this.$store.commit("changeUserInfo", bookInfo);
+          console.log(bookInfo);
           console.log(this.$store.state);
         });
       } else {
@@ -85,7 +92,7 @@ export default {
   },
   watch: {
     "$route.path"() {
-      console.log(this.$route.params);
+      // console.log(this.$route.params);
     },
   },
   // 使用request请求

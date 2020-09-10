@@ -49,12 +49,14 @@ export default {
   },
   computed:{
     cartNum(){
-      const cartNumber = this.$store.state.userInfo;
-      console.log(this.$store.state.userInfo);
+      
+      const cartNumber = this.$store.state;
+      console.log(cartNumber);
       return 0;
     }
   },
   created() {
+    console.log("creat")
     this.$request
       .post("https://api.szbookmall.com/app/product/detail", this.$route.params)
       .then((res) => {
@@ -62,6 +64,9 @@ export default {
         this.$store.commit("setCurrentGoods", res.data.data);
       });
   },
+
+
+
 };
 </script>
 <style lang="scss">
