@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="col-3">
-        <van-icon class="iconfont" class-prefix="icon" name="gouwuchezhengpin" />
+        <van-icon class="iconfont" class-prefix="icon" name="gouwuchezhengpin" :badge="cartNum" />
       </div>
     </div>
     <div class="container">
@@ -47,11 +47,19 @@ export default {
       this.$router.back();
     },
   },
+  computed:{
+    cartNum(){
+      const cartNumber = this.$store.state.userInfo;
+      console.log(this.$store.state.userInfo);
+      return 0;
+    }
+  },
   created() {
     this.$request
       .post("https://api.szbookmall.com/app/product/detail", this.$route.params)
       .then((res) => {
-        this.$store.state.currentGoods = this.pageData = res.data.data;
+        this.pageData = res.data.data;
+        this.$store.commit("setCurrentGoods", res.data.data);
       });
 
       // this.$store.commit("addUserInfo");
@@ -92,6 +100,15 @@ export default {
     .col-3 {
       width: 30%;
       text-align: right;
+      .van-info {
+        display: inline-block;
+        height: 16px;
+        line-height: 16px;
+        position: relative;
+        font-size: 8px;
+        width: 16px;
+        right: 8px;
+      }
     }
     .col-7 {
       width: 70%;
@@ -151,15 +168,15 @@ export default {
         }
       }
     }
-    .desc{
+    .desc {
       margin: 0;
       padding: 10px;
       text-align: left;
       overflow-x: hidden;
-      p{
+      p {
         margin: 0;
       }
-      img{
+      img {
         width: 100%;
         object-fit: cover;
       }
