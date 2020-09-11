@@ -105,6 +105,7 @@ export default {
             } else if (data.code == 10) {
               Notify({ type: "danger", message: "验证码错误" });
               this.getVcode();
+              this.verify=""
             } else {
               Notify({ type: "danger", message: "账号或者密码错误" });
             }

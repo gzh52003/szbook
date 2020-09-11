@@ -52,6 +52,11 @@ export default new Vuex.Store({
         localStorage.getItem("szbookcarInfo")
       );
     },
+    logOut(state){
+     state.userInfo.cartInfo=[];
+     state.userInfo.username="";
+     state.userInfo.currentGoods={};
+    },
     setCurrentGoods(state, data) {
       state.currentGoods = data;
     },

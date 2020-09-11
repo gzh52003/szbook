@@ -121,18 +121,7 @@ export default {
       pagesize: 5,
       currentpage: 1,
       orderdata: [],
-      // orderdata: [
-      //   // {
-      //   // id:1,
-      //   // address:"11",
-      //   // phone:111,
-      //   // add_time:"2014-8-18",
-      //   // totalPrice:358,
-      //   // username:'sawf',
-      //   // goodsNum:2,
-      //   // details:[{isbn:13158},{isbn:12123},]
-      // // }
-      // ],
+
     };
   },
   computed: {},
@@ -160,7 +149,7 @@ export default {
         operateDataBeforeRender(res, this);
       });
     },
-   
+
     async delData(_id) {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
