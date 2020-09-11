@@ -160,36 +160,7 @@ export default {
         operateDataBeforeRender(res, this);
       });
     },
-    // async putData(_id, address, phone) {
-    //   this.$confirm("此操作将永久修改该信息, 是否继续?", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning",
-    //   })
-    //     .then(async () => {
-    //       const a = await changeData({
-    //         _id: _id,
-    //         address: address,
-    //         phone: phone,
-    //       });
-    //       if (JSON.parse(a).code === 1)
-    //         this.$message({
-    //           message: "信息修改成功",
-    //           type: "success",
-    //         });
-    //       findData({ size: this.pagesize, page: this.currentpage }).then(
-    //         (res) => {
-    //           operateDataBeforeRender(res, this);
-    //         }
-    //       );
-    //     })
-    //     .catch(() => {
-    //       this.$message({
-    //         type: "info",
-    //         message: "已取消修改",
-    //       });
-    //     });
-    // },
+   
     async delData(_id) {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
