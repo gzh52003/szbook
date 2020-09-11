@@ -32,12 +32,13 @@ import "@/assets/iconfont/iconfont.css";
 import vanFun from "./vant/comVant";
 vanFun();
 import Vue from "vue";
-import { Tabbar, TabbarItem, Icon, List, PullRefresh } from "vant";
+import { Tabbar, TabbarItem, Icon, List, PullRefresh, Notify } from "vant";
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
 Vue.use(Icon);
 Vue.use(List);
 Vue.use(PullRefresh);
+Vue.use(Notify)
 export default {
   data() {
     return {
@@ -77,13 +78,17 @@ export default {
         const bookName = this.$store.state.currentGoods.name;
         this.$request.get("/goods?bookName=" + bookName).then((res) => {
           const bookInfo = res.data.data[0];
-          this.$store.commit("changeUserInfo", bookInfo);
-          localStorage.setItem("szbookcarInfo",JSON.stringify(this.$store.state.userInfo.cartInfo))
           this.$request.patch('/goods',{
             username:this.$store.state.userInfo.username,
             cartInfo:this.$store.state.userInfo.cartInfo,
           }).then(res=>{
-            // console.log(res);
+            console.log(res.data.code);
+            if(res.data.code==1){
+              this.$store.commit("changeUserInfo", bookInfo);
+              localStorage.setItem("szbookcarInfo",JSON.stringify(this.$store.state.userInfo.cartInfo))
+              Notify({ type: 'success', message: '成功添加购物车' });
+              this.$router.push("/shopcart");
+            }
           })
         });
       } else {

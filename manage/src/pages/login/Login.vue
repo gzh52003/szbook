@@ -229,7 +229,7 @@ body {
   min-width: 300px;
   max-width: 380px;
   width: 39%;
-  height: 380px;
+  height: 410px;
   background: #fff;
   box-shadow: 0 0 10px #b4bccc;
   padding: 30px 30px 0 30px;
