@@ -49,10 +49,8 @@ export default {
   },
   computed: {
     cartNum: function () {
-      if(this.$store.state.userInfo.cartInfo){
-        return (this.$store.state.userInfo.cartInfo.length);
-      }
-      return 0
+      // console.log("cartlength", this.$store.state.userInfo.cartInfo.length);
+      return (this.$store.state.userInfo.cartInfo.length);
     },
   },
   created() {

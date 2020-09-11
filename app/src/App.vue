@@ -83,7 +83,7 @@ export default {
             username:this.$store.state.userInfo.username,
             cartInfo:this.$store.state.userInfo.cartInfo,
           }).then(res=>{
-            console.log(res);
+            // console.log(res);
           })
         });
       } else {
