@@ -408,9 +408,11 @@ export default {
       }
     },
     handleAvatarSuccess(res, file) {
+      // 图片转为相对路径
+      // let imagesunpath = "http://42.194.179.50:80/";
       this.imageUrl = URL.createObjectURL(file.raw);
-      this.imgpathsend =
-        "http://42.194.179.50:80/" + file.response.data.uploadUrl.slice(3);
+      this.imgpathsend = file.response.data.uploadUrl;
+      console.log(this.imgpathsend);
       console.log(this.imgpathsend);
       this.imgpath = this.imgpathsend;
     },
@@ -587,9 +589,7 @@ export default {
   display: block;
 }
 
-
-.el-row .el-input .el-input-group__append{
+.el-row .el-input .el-input-group__append {
   padding: 0 20px;
-
 }
 </style>
