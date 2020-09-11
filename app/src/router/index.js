@@ -96,7 +96,7 @@ const routes = [
   {
     path: "*",
     name: "404",
-    component: () => import("../Default.vue"),
+    component: () => import("../views/Home.vue"),
   },
 ];
 
