@@ -10,7 +10,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state(){
       if(localStorage.getItem("szbookUsername")&&localStorage.getItem("szbookcarInfo")){
-
         return {
           "userInfo":{
             "username":localStorage.getItem("szbookUsername"),
@@ -18,19 +17,17 @@ export default new Vuex.Store({
           },
           "currentGoods": {},
       }
-
     }
-
-
       return{
-        "userInfo":{},
+        "userInfo":{
+          "cartInfo":[],
+          "username":""
+        },
         "currentGoods": {}
       }
-
   },
   getters:{
     totalPrice(state){
-
       const arr=state.userInfo.cartInfo.filter(item=>{
         return item.checked
       })
