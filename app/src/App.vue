@@ -1,7 +1,16 @@
 <template>
   <div id="app">
     <div class="main">
-      <router-view />
+      <!-- <keep-alive include="Home,Category">
+      <router-view>
+      </router-view>
+      </keep-alive> -->
+      <keep-alive>
+      <router-view v-if="this.$route.meta.keepAlive"></router-view>
+      <!--这里是会被缓存的组件-->
+
+       </keep-alive>
+        <router-view v-if="!this.$route.meta.keepAlive"></router-view>
     </div>
     <van-tabbar active-color="#ff1100" inactive-color="#000" route id="nav" :fixed="false">
       <div class="bottomBox" v-if="!this.$route.params.id||this.$route.query.tatle">
