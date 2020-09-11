@@ -54,7 +54,7 @@
 </template>
 <script>
 import Vue from "vue";
-import { Steps, Row, Col, Card, Stepper, Empty,Checkbox, SubmitBar } from "vant";
+import { Steps, Row, Col, Card, Stepper, Empty,Checkbox, SubmitBar, Dialog, Notify } from "vant";
 Vue.use(Steps);
 Vue.use(Row);
 Vue.use(Col);
@@ -63,6 +63,8 @@ Vue.use(Empty)
 Vue.use(Stepper);
 Vue.use(Checkbox);
 Vue.use(SubmitBar)
+Vue.use(Dialog)
+Vue.use(Notify)
 export default {
   data() {
     return {
@@ -76,6 +78,13 @@ export default {
     totalPrice(){return this.$store.getters.totalPrice},
     checkAll:{
       get(){
+          let checkArr=this.$store.state.userInfo.cartInfo.filter((item) => {
+          return item.checked;
+        });
+        if(checkArr.length===0)
+        {
+          return false
+        }
         return this.$store.state.userInfo.cartInfo.every(item=>item.checked);
       },
       set(val){
@@ -101,10 +110,109 @@ export default {
 
     },
     deleteGoods(){
-       this.$store.commit("deleteGood")
+      let checkArr=this.$store.state.userInfo.cartInfo.filter((item) => {
+        return item.checked;
+      });
+      if(checkArr.length===0)
+      {
+        return
+      }
+      Dialog.confirm({
+        title: '删除商品',
+        message: '是否确认删除商品',
+        theme: 'round-button',
+      })
+        .then(() => {
+          this.$store.commit("deleteGood")
+          Notify({ type: "success", message: "商品已删除" });
+          // 更新localStorage
+      localStorage.setItem("szbookcarInfo",JSON.stringify(this.$store.state.userInfo.cartInfo))
+      // 更新数据库
+      this.$request.patch('/goods',{
+            username:this.$store.state.userInfo.username,
+            cartInfo:this.$store.state.userInfo.cartInfo,
+          }).then(res=>{
+            // console.log(res);
+          })
+        })
+        .catch(() => {
+          // on cancel
+        });
+
     },
     onSubmit(){
+       let checkArr=this.$store.state.userInfo.cartInfo.filter((item) => {
+        return item.checked;
+      });
+      // console.log("checkArr",checkArr)
+
+      if(checkArr.length===0)
+      {
+        return
+      }
       console.log("submit")
+      let details=checkArr.map((item) => {
+
+                            item.book.buynum=item.num
+                          return item.book;
+                        })
+          details=details.map(item=>{
+            return {
+              "bookName":item.bookName,
+              "author":item.author,
+              "public":item.public,
+              "isbn":item.isbn,
+              "time":item.time,
+              "desc":item.desc,
+              "price":item.price,
+              "line_price":item.line_price,
+              "num":item.num,
+              "saleNum":item.saleNum,
+              "categoryInfo":item.categoryInfo,
+              "img":item.img,
+              "buynum":item.buynum
+
+            }
+          })
+      // let obj={
+      //             username: this.$store.state.userInfo.username,
+      //             add_time:(new Date()).toLocaleString(),
+      //             address:"深圳市龙岗区",
+      //             goodsNum:checkArr.length,
+      //             phone:"13715158094",
+      //             totalPrice:this.totalPrice,
+      //             details:details
+      //         }
+      //插入订单数据到数据库
+
+              const url = "http://42.194.179.50/api/order";
+              fetch(url, {
+                method: "post",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({"username": this.$store.state.userInfo.username,
+                  "add_time":(new Date()).toLocaleString(),
+                  "address":"深圳市龙岗区",
+                  "goodsNum":checkArr.length,
+                  "phone":"13715158094",
+                  "totalPrice":this.totalPrice,
+                  "details":details
+                  })
+              })
+                .then(res => res.json())
+                .then(res => {
+                  console.log(res);
+                  if (res.code == 0) {
+                    Notify({ type: "danger", message: "下单出错啦，请再次下单" });
+
+                  } else if(res.code == 1) {
+                    Notify({ type: "success", message: "下单成功,您的商品正在向你狂奔" });
+
+                  }
+                });
+
     },
     onChange(willNum,bookName){
       // console.log("event",willNum)

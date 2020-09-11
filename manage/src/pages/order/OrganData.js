@@ -23,7 +23,7 @@ export default function operateDataBeforeRender(res,self){
             obj.forEach((item) => {
               //  计算订单总价
               cur.totalPrice +=
-                parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
+                (parseFloat(item.buynum) * parseFloat(item.line_price.substr(1)))==0?item.totalPrice:parseFloat(item.buynum) * parseFloat(item.line_price.substr(1));
             });
             cur.totalPrice = cur.totalPrice.toFixed(2);
             cur.details = obj;
