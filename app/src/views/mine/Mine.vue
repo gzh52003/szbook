@@ -5,11 +5,17 @@
         <van-col span="6">
           <van-image round width="10vh" height="10vh" src="https://img.yzcdn.cn/vant/cat.jpeg" />
         </van-col>
-        <van-col span="4" >
-          <van-tag color="#ffe1e1"  class="van-ellipsis" v-if="szbookUsername" text-color="#ad0000" size="medium">{{szbookUsername}}</van-tag>
+        <van-col span="4">
+          <van-tag
+            color="#ffe1e1"
+            class="van-ellipsis"
+            v-if="szbookUsername"
+            text-color="#ad0000"
+            size="medium"
+          >{{szbookUsername}}</van-tag>
         </van-col>
         <van-col span="2" offset="10">
-          <i class="iconfont icon-lingdang"></i>
+          <i class="iconfont icon-lingdang" @click="logIn"></i>
         </van-col>
         <van-col span="2">
           <i class="iconfont icon-icon-test" @click="logout"></i>
@@ -102,7 +108,17 @@
 
 <script>
 import Vue from "vue";
-import { Overlay, Skeleton, Row, Col, Image, Panel, Dialog, Notify, Tag } from "vant";
+import {
+  Overlay,
+  Skeleton,
+  Row,
+  Col,
+  Image,
+  Panel,
+  Dialog,
+  Notify,
+  Tag
+} from "vant";
 import Login from "./Login";
 import Reg from "./Reg";
 Vue.use(Overlay);
@@ -111,16 +127,16 @@ Vue.use(Row);
 Vue.use(Col);
 Vue.use(Image);
 Vue.use(Panel);
-Vue.use(Dialog)
-Vue.use(Notify)
-Vue.use(Tag)
+Vue.use(Dialog);
+Vue.use(Notify);
+Vue.use(Tag);
 export default {
   data() {
     return {
       show: true,
       showLogin: true,
       showReg: false,
-      szbookUsername:localStorage.getItem("szbookUsername")
+      szbookUsername: localStorage.getItem("szbookUsername")
     };
   },
   created() {
@@ -159,29 +175,36 @@ export default {
       this.showLogin = login;
       this.showReg = reg;
     },
-    logout(){
-       Dialog.confirm({
-        title: '退出登录',
-        message: '是否确认退出登录',
-        theme: 'round-button',
+    logIn() {
+      if (localStorage.getItem("szbookUsername")) {
+        return;
+      }
+      this.show = true;
+      this.showLogin = true;
+    },
+    logout() {
+      if (!localStorage.getItem("szbookUsername")) {
+        return;
+      }
+      Dialog.confirm({
+        title: "退出登录",
+        message: "是否确认退出登录",
+        theme: "round-button"
       })
         .then(() => {
           Notify({ type: "success", message: "您已退出登录" });
           // 更新localStorage
-          localStorage.removeItem("userInfo")
-           localStorage.removeItem("szbookcarInfo")
-            localStorage.removeItem("szbookUsername")
-            //$stroe数据改变
-            this.$store.commit("logOut")
-            this.szbookUsername=localStorage.getItem("szbookUsername")
+          localStorage.removeItem("userInfo");
+          localStorage.removeItem("szbookcarInfo");
+          localStorage.removeItem("szbookUsername");
+          //$stroe数据改变
+          this.$store.commit("logOut");
+          this.szbookUsername = localStorage.getItem("szbookUsername");
         })
         .catch(() => {
           // on cancel
         });
-
-
     }
-
   },
   components: {
     Login,
@@ -204,8 +227,8 @@ export default {
     font-size: 20px;
     line-height: 10vh;
   }
-  .van-tag{
-    margin-top: 3vh
+  .van-tag {
+    margin-top: 3vh;
   }
   .count {
     margin-top: 3vh;

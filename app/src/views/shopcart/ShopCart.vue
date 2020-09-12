@@ -83,7 +83,6 @@ export default {
       imageURL: "https://img.yzcdn.cn/vant/cat.jpeg"
     };
   },
-
   computed: {
     cartInfolist() {
       return this.$store.state.userInfo.cartInfo;

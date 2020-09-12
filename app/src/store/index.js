@@ -52,41 +52,41 @@ export default new Vuex.Store({
         localStorage.getItem("szbookcarInfo")
       );
     },
-    logOut(state){
-     state.userInfo.cartInfo=[];
-     state.userInfo.username="";
-     state.userInfo.currentGoods={};
+    logOut(state) {
+      state.userInfo.cartInfo = [];
+      state.userInfo.username = "";
+      state.userInfo.currentGoods = {};
     },
     setCurrentGoods(state, data) {
       state.currentGoods = data;
     },
     changeUserInfo(state, data) {
       const cartArr = state.userInfo.cartInfo;
-      try{
+      try {
         //购物车中已经有该商品 数量+1
         if (cartArr.some((item) => item.book._id == data._id)) {
-
-                cartArr.map((item) => {
-                  if (item.book._id == data._id) {
-                    item.num += 1;
-                  }
-                  return item;
-                });
-                // console.log("state1",state.userInfo.cartInfo)
-              }else{
-                // console.log("state3")
-                state.userInfo.cartInfo.push({"book":data, "num":1, "checked": false} )
-              }
-      }catch(err){
+          cartArr.map((item) => {
+            if (item.book._id == data._id) {
+              item.num += 1;
+            }
+            return item;
+          });
+          // console.log("state1",state.userInfo.cartInfo)
+        } else {
+          // console.log("state3")
+          state.userInfo.cartInfo.push({ book: data, num: 1, checked: false });
+        }
+      } catch (err) {
         //将该商品加到购物车中
-            state.userInfo.cartInfo.push({"book":data, "num":1, "checked": false} )
-            // console.log("state2",state.userInfo.cartInfo)
-
-      }finally{
+        state.userInfo.cartInfo.push({ book: data, num: 1, checked: false });
+        // console.log("state2",state.userInfo.cartInfo)
+      } finally {
         //同步localStroage
-        localStorage.setItem("szbookcarInfo",JSON.stringify(state.userInfo.cartInfo))
+        localStorage.setItem(
+          "szbookcarInfo",
+          JSON.stringify(state.userInfo.cartInfo)
+        );
       }
-
     },
     changeGoodNum(state, { willNum, bookName }) {
       state.userInfo.cartInfo = state.userInfo.cartInfo.map((item) => {

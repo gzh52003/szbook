@@ -4,13 +4,12 @@
       <!-- <keep-alive include="Home,Category">
       <router-view>
       </router-view>
-      </keep-alive> -->
+      </keep-alive>-->
       <keep-alive>
-      <router-view v-if="this.$route.meta.keepAlive"></router-view>
-      <!--这里是会被缓存的组件-->
-
-       </keep-alive>
-        <router-view v-if="!this.$route.meta.keepAlive"></router-view>
+        <router-view v-if="this.$route.meta.keepAlive"></router-view>
+        <!--这里是会被缓存的组件-->
+      </keep-alive>
+      <router-view v-if="!this.$route.meta.keepAlive"></router-view>
     </div>
     <van-tabbar active-color="#ff1100" inactive-color="#000" route id="nav" :fixed="false">
       <div class="bottomBox" v-if="!this.$route.params.id||this.$route.query.tatle">
@@ -39,7 +38,7 @@
 <script>
 import "@/assets/iconfont/iconfont.css";
 import vanFun from "./vant/comVant";
-import request from "./utils/request"
+import request from "./utils/request";
 vanFun();
 import Vue from "vue";
 import { Tabbar, TabbarItem, Icon, List, PullRefresh, Notify } from "vant";
@@ -48,7 +47,7 @@ Vue.use(TabbarItem);
 Vue.use(Icon);
 Vue.use(List);
 Vue.use(PullRefresh);
-Vue.use(Notify)
+Vue.use(Notify);
 export default {
   data() {
     return {
@@ -59,58 +58,59 @@ export default {
           name: "category",
           icon: "shujiguanli",
           badge: 0,
-          text: "类别",
+          text: "类别"
         },
         {
           path: "/hotnews",
           name: "hotNews",
           icon: "tubiao-",
           badge: 0,
-          text: "热点",
+          text: "热点"
         },
         {
           path: "/shopcart",
           name: "shopCart",
           icon: "gouwuchezhengpin",
           badge: 0,
-          text: "购物车",
+          text: "购物车"
         },
-        { path: "/mine", name: "mine", icon: "wode", badge: 0, text: "我的" },
-      ],
+        { path: "/mine", name: "mine", icon: "wode", badge: 0, text: "我的" }
+      ]
     };
   },
- created() {
-    console.log("this.$store.state",this.$store.state)
+  created() {
+    console.log("this.$store.state", this.$store.state);
   },
   methods: {
     addCart() {
       if (localStorage.getItem("userInfo")) {
         const Isbn = this.$store.state.currentGoods.book_info.isbn;
-        this.$request.get("/goods?isbn=" + Isbn).then((res) => {
+        this.$request.get("/goods?isbn=" + Isbn).then(res => {
           const bookInfo = res.data.data[0];
-           if(bookInfo){
-              this.$store.commit("changeUserInfo", bookInfo);
-              Notify({ type: 'success', message: '成功添加购物车' });
-              //同步数据库
-              this.$request.patch('/goods',{
-                username:this.$store.state.userInfo.username,
-                cartInfo:this.$store.state.userInfo.cartInfo,
-              }).then(res=>{
+          if (bookInfo) {
+            this.$store.commit("changeUserInfo", bookInfo);
+            Notify({ type: "success", message: "成功添加购物车" });
+            //同步数据库
+            this.$request
+              .patch("/goods", {
+                username: this.$store.state.userInfo.username,
+                cartInfo: this.$store.state.userInfo.cartInfo
               })
-            }else{
-              alert("该商品不存在数据库中.")
-            }
+              .then(res => {});
+          } else {
+            alert("该商品不存在数据库中.");
+          }
         });
       } else {
         this.$router.push("/mine");
       }
-    },
+    }
   },
   watch: {
     "$route.path"() {
       // console.log(this.$route.params);
-    },
-  },
+    }
+  }
   // 使用request请求
   // async created() {
   //   const res = await this.$request.get("/goods");
