@@ -39,6 +39,7 @@
 <script>
 import "@/assets/iconfont/iconfont.css";
 import vanFun from "./vant/comVant";
+import request from "./utils/request"
 vanFun();
 import Vue from "vue";
 import { Tabbar, TabbarItem, Icon, List, PullRefresh, Notify } from "vant";
@@ -87,18 +88,18 @@ export default {
         const bookName = this.$store.state.currentGoods.name;
         this.$request.get("/goods?bookName=" + bookName).then((res) => {
           const bookInfo = res.data.data[0];
-          this.$request.patch('/goods',{
-            username:this.$store.state.userInfo.username,
-            cartInfo:this.$store.state.userInfo.cartInfo,
-          }).then(res=>{
-            console.log(res.data.code);
-            if(res.data.code==1){
+           if(bookInfo){
               this.$store.commit("changeUserInfo", bookInfo);
-              localStorage.setItem("szbookcarInfo",JSON.stringify(this.$store.state.userInfo.cartInfo))
               Notify({ type: 'success', message: '成功添加购物车' });
-              this.$router.push("/shopcart");
+              //同步数据库
+              this.$request.patch('/goods',{
+                username:this.$store.state.userInfo.username,
+                cartInfo:this.$store.state.userInfo.cartInfo,
+              }).then(res=>{
+              })
+            }else{
+              alert("该商品不存在数据库中.")
             }
-          })
         });
       } else {
         this.$router.push("/mine");
