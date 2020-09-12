@@ -85,8 +85,8 @@ export default {
   methods: {
     addCart() {
       if (localStorage.getItem("userInfo")) {
-        const bookName = this.$store.state.currentGoods.name;
-        this.$request.get("/goods?bookName=" + bookName).then((res) => {
+        const Isbn = this.$store.state.currentGoods.book_info.isbn;
+        this.$request.get("/goods?isbn=" + Isbn).then((res) => {
           const bookInfo = res.data.data[0];
            if(bookInfo){
               this.$store.commit("changeUserInfo", bookInfo);

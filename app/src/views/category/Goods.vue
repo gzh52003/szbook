@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="col-3">
-        <van-icon class="iconfont" class-prefix="icon" name="gouwuchezhengpin" :badge="cartNum" />
+        <van-icon class="iconfont" class-prefix="icon" @click="gocart" name="gouwuchezhengpin" :badge="cartNum" />
       </div>
     </div>
     <div class="container">
@@ -46,6 +46,9 @@ export default {
     goback() {
       this.$router.back();
     },
+    gocart(){
+      this.$router.push("/shopcart");
+    }
   },
   computed: {
     cartNum: function () {
