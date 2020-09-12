@@ -84,8 +84,8 @@ export default {
   methods: {
     addCart() {
       if (localStorage.getItem("userInfo")) {
-        const bookName = this.$store.state.currentGoods.name;
-        this.$request.get("/goods?bookName=" + bookName).then((res) => {
+        const Isbn = this.$store.state.currentGoods.book_info.isbn;
+        this.$request.get("/goods?isbn=" + Isbn).then((res) => {
           const bookInfo = res.data.data[0];
           this.$request.patch('/goods',{
             username:this.$store.state.userInfo.username,
@@ -96,7 +96,6 @@ export default {
               this.$store.commit("changeUserInfo", bookInfo);
               localStorage.setItem("szbookcarInfo",JSON.stringify(this.$store.state.userInfo.cartInfo))
               Notify({ type: 'success', message: '成功添加购物车' });
-              this.$router.push("/shopcart");
             }
           })
         });
