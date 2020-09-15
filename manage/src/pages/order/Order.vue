@@ -8,6 +8,7 @@
       highlight-current-row
       :data="orderdata"
       style="width: 100%;"
+      :row-class-name="tableRowClassName"
     >
       <el-table-column type="expand">
         <template v-slot="scope">
@@ -79,7 +80,7 @@
             circle
             style="padding:13px"
             icon="el-icon-circle-check"
-            @click="isfinishEdit(scope.$index, scope.row)"
+            @click="isfinishOrder(scope.$index, scope.row)"
           ></el-button>
           <el-button
             type="primary"
@@ -121,7 +122,7 @@ export default {
       pagesize: 5,
       currentpage: 1,
       orderdata: [],
-
+      finished:true
     };
   },
   computed: {},
@@ -176,11 +177,9 @@ export default {
           });
         });
     },
-    isEdit(index, row) {
-      row.isshow = true;
-    },
-    isfinishEdit(index, row) {
-      this.$confirm("此操作将永久修改该信息, 是否继续?", "提示", {
+      isEdit(index, row) {
+      if(row.isshow===true){
+          this.$confirm("此操作将永久修改该信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -210,7 +209,49 @@ export default {
             message: "已取消修改",
           });
         });
+      }else{
+          row.isshow = !row.isshow;
+      }
     },
+    isfinishOrder(index, row){
+         this.$confirm("是否确认该订单已完成?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          row.finished='true';
+          //修改数据库订单finished状态
+            await fetch(`http://www.ihuanu.cn/api/order/personal`,{
+              method:"put",
+              headers:{ "Content-Type": "application/json" },
+              body:JSON.stringify({
+                _id:row._id,
+                finished:"true"
+              })
+            }).then(res=>{
+                return res.text();
+            })
+          this.$message({
+            type: "success",
+            message: "订单完成已确定",
+          });
+
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消确认",
+          });
+
+        });
+    },
+     tableRowClassName({row, rowIndex}) {
+        if (row.finished === "true") {
+          return 'success-row';
+        }
+        return '';
+      }
   },
   components: {
     pagination,
@@ -243,4 +284,7 @@ export default {
 .btn button{
   padding:0;
 }
+ .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>

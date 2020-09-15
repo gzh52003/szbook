@@ -1,20 +1,17 @@
 <template>
-  <div class="shopCart">
-    <van-row class="cartHead">
-      <van-col span="4" offset="10">购物车</van-col>
-      <van-col span="2" offset="8">
-        <van-icon name="delete" @click="deleteGoods" />
-      </van-col>
-    </van-row>
-    <van-row class="mainer">
+<div id="shopCart">
+  <order-module text="购物车">
+    <template v-slot:headerIcon>
+       <van-icon name="delete" @click="deleteGoods" />
+    </template>
+    <template v-slot:content>
       <van-empty
         v-if="cartInfolist.length==0"
         class="custom-image"
         image="https://img.yzcdn.cn/vant/custom-empty-image.png"
         description="您的购物车还没有商品哦，赶快去选购吧"
       />
-      <!--  -->
-      <van-card
+       <van-card
         v-for="(item,idx) in cartInfolist"
         :key="idx"
         :num="item.num"
@@ -45,15 +42,17 @@
           ></van-checkbox>
         </template>
       </van-card>
-    </van-row>
-    <van-submit-bar :price="totalPrice*100" button-text="提交订单" @submit="onSubmit">
-      <van-checkbox v-model="checkAll">全选</van-checkbox>
-      <!-- v-model="checkAll" -->
-    </van-submit-bar>
-  </div>
+    </template>
+  </order-module>
+  <van-submit-bar :price="totalPrice*100" button-text="提交订单" @submit="onSubmit">
+    <van-checkbox v-model="checkAll">全选</van-checkbox>
+    <!-- v-model="checkAll" -->
+  </van-submit-bar>
+</div>
 </template>
 <script>
 import Vue from "vue";
+import orderModule from './orderModule'
 import {
   Steps,
   Row,
@@ -110,6 +109,7 @@ export default {
       }
     }
   },
+
   methods: {
     perTotalPrice(item) {
       let linePrice = item.book.line_price.split("");
@@ -117,7 +117,7 @@ export default {
       linePrice = parseFloat(linePrice.join(""));
       return (linePrice * item.num).toFixed(2);
     },
-    changeCheck(ischeck, bookName) {
+    changeCheck(ischeck, bookName) {console.log(ischeck,bookName)
       this.$store.commit("changeCheck", { ischeck, bookName });
       // 更新localStorage
       localStorage.setItem(
@@ -126,6 +126,7 @@ export default {
       );
     },
     deleteGoods() {
+
       let checkArr = this.$store.state.userInfo.cartInfo.filter(item => {
         return item.checked;
       });
@@ -203,7 +204,7 @@ export default {
       var ss = da.getSeconds();
       da = [year, month, date].join("-") + " " + [hh, mm, ss].join(":");
 
-      const url = "http://42.194.179.50/api/order";
+      const url = "http://www.ihuanu.cn/api/order";
       fetch(url, {
         method: "post",
         credentials: "include",
@@ -217,7 +218,8 @@ export default {
           goodsNum: checkArr.length,
           phone: "13715158094",
           totalPrice: this.totalPrice,
-          details: details
+          details: details,
+          finished:'false'
         })
       })
         .then(res => res.json())
@@ -267,59 +269,22 @@ export default {
           // console.log(res);
         });
     }
+  },
+  components:{
+    orderModule
   }
 };
 </script>
 <style lang='scss' scoped>
-.shopCart {
-  height: 100%;
+#shopCart{
+ height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   z-index: -1;
-  .van-card {
-    z-index: 1;
-    padding-top: 0;
-    padding-bottom: 0;
-    .van-card__content {
-      max-width: 55vw;
-      margin-left: 8vw;
-    }
-    .van-card__header {
-      padding: 0.5vh 0;
-    }
-    .van-card__footer {
-      border-top: 1px solid #f7f7f7;
-      padding: 1vh 0;
-      position: relative;
-      z-index: -1;
-    }
-    .van-image {
-      transform: translateX(6vw);
-    }
-    .van-radio {
-      margin-top: 50%;
-      margin-left: -1.6vw;
-    }
-    .van-submit-bar {
-      margin-bottom: 7vh;
-    }
-  }
-
-  .cartHead {
-    background: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid #f7f7f7;
-  }
-  .mainer {
-    background: #f7f7f7;
-    height: 100%;
-    overflow-y: auto;
-  }
   .van-submit-bar {
     position: static;
   }
 }
+
 </style>

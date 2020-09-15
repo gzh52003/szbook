@@ -1,8 +1,8 @@
 <template>
   <div class="reg">
-    <myWrapper @goto="goto" :buttonName="buttonName" :checked="checked">
+    <my-wrapper @goto="goto" :buttonName="buttonName" :checked="checked">
 
-    </myWrapper>
+    </my-wrapper>
     <p @click="goto" class="gotoLogin">去登录</p>
   </div>
 </template>

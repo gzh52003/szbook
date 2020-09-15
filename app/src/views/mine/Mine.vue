@@ -48,26 +48,32 @@
     </van-row>
     <van-row class="orderInfos">
       <van-row class="info1">
-        <van-col span="6">我的订单</van-col>
+        <van-col span="6"><span @click="allOrder">我的订单</span></van-col>
         <van-col span="3" offset="14" class="more">更多</van-col>
       </van-row>
       <van-row class="info2">
-        <van-col span="6">
-          <i class="iconfont icon-qianbao"></i>
-          <p>待付款</p>
-        </van-col>
-        <van-col span="6">
-          <i class="iconfont icon-tubiaolunkuo-"></i>
-          <p>待发货</p>
-        </van-col>
-        <van-col span="6">
-          <i class="iconfont icon-daifahuo"></i>
-          <p>已发货</p>
-        </van-col>
-        <van-col span="6">
-          <i class="iconfont icon-shouhou"></i>
-          <p>退款/售后</p>
-        </van-col>
+        <van-goods-action>
+        <van-goods-action-icon  text="待付款"  >
+          <template v-slot:icon>
+             <i class="iconfont icon-qianbao"></i>
+          </template>
+        </van-goods-action-icon>
+        <van-goods-action-icon  text="待发货" @click="sendGood" :badge="waitSentNum" >
+          <template v-slot:icon>
+             <i class="iconfont icon-tubiaolunkuo-"></i>
+          </template>
+        </van-goods-action-icon>
+        <van-goods-action-icon  text="已发货" @click="hasSend" :badge="hasSentNum">
+          <template v-slot:icon>
+            <i class="iconfont icon-daifahuo"></i>
+          </template>
+        </van-goods-action-icon>
+        <van-goods-action-icon  text="退款/售后" >
+          <template v-slot:icon>
+            <i class="iconfont icon-shouhou"></i>
+          </template>
+        </van-goods-action-icon>
+      </van-goods-action>
       </van-row>
     </van-row>
     <van-row class="fav">
@@ -117,7 +123,10 @@ import {
   Panel,
   Dialog,
   Notify,
-  Tag
+  Tag,
+  GoodsAction,
+  GoodsActionIcon,
+  GoodsActionButton
 } from "vant";
 import Login from "./Login";
 import Reg from "./Reg";
@@ -130,13 +139,18 @@ Vue.use(Panel);
 Vue.use(Dialog);
 Vue.use(Notify);
 Vue.use(Tag);
+Vue.use(GoodsAction);
+Vue.use(GoodsActionButton);
+Vue.use(GoodsActionIcon);
 export default {
   data() {
     return {
       show: true,
       showLogin: true,
       showReg: false,
-      szbookUsername: localStorage.getItem("szbookUsername")
+      szbookUsername: localStorage.getItem("szbookUsername"),
+      waitSentNum:0,
+      hasSentNum:0
     };
   },
   created() {
@@ -154,7 +168,7 @@ export default {
       // token=token.unshift()
       token = token.join("");
       // console.log(token);
-      fetch(`http://42.194.179.50/api/login/check?authorization=${token}`)
+      fetch(`http://www.ihuanu.cn/api/login/check?authorization=${token}`)
         .then(res => res.json())
         .then(res => {
           if (res.code == 0) {
@@ -169,11 +183,39 @@ export default {
       this.show = true;
       // console.log("www")
     }
+    //已发货，代发货数量
+     this.$request
+        .get(
+          "/order/personal?username=" +
+            this.$store.state.userInfo.username +
+            "&finished=false"
+        )
+        .then(res => {
+          this.waitSentNum=res.data.data.length;
+        });
+    this.$request
+        .get(
+          "/order/personal?username=" +
+            this.$store.state.userInfo.username +
+            "&finished=true"
+        )
+        .then(res => {
+          this.hasSentNum=res.data.data.length;
+        });
   },
   methods: {
     goto(login, reg) {
       this.showLogin = login;
       this.showReg = reg;
+    },
+    sendGood() {
+      this.$router.push("/myOrders");
+    },
+    hasSend() {
+      this.$router.push("/hasSend");
+    },
+    allOrder(){
+      this.$router.push("/allOrders");
     },
     logIn() {
       if (localStorage.getItem("szbookUsername")) {
@@ -217,6 +259,11 @@ export default {
   height: 100%;
   overflow: auto;
   background: rgba(0, 0, 0, 0.05);
+}
+.info2 .van-goods-action{
+  position: static;
+  display: flex;
+  justify-content: space-around;
 }
 .userInfos {
   margin: 0 auto;

@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import Home from '../views/Home.vue'
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,13 +20,20 @@ const routes = [
     meta: {
       keepAlive: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Home.vue"),
+    component: Home,
   },
   {
     path: "/shopcart",
     name: "ShopCart",
     component: () => import("../views/shopcart/ShopCart.vue"),
+    meta: {
+      keepAlive: false,
+    },
+  },
+  {
+    path: "/allOrders",
+    name: "allOrders",
+    component: () => import("../views/shopcart/allOrders.vue"),
     meta: {
       keepAlive: false,
     },
@@ -36,6 +45,22 @@ const routes = [
       keepAlive: true,
     },
     component: () => import("../views/category/Category.vue"),
+  },
+  {
+    path: "/myOrders",
+    name: "myOrders",
+    meta: {
+      keepAlive: false,
+    },
+    component: () => import("../views/shopcart/myOrders.vue"),
+  },
+  {
+    path: "/hasSend",
+    name: "hasSend",
+    meta: {
+      keepAlive: false,
+    },
+    component: () => import("../views/shopcart/hasSend.vue"),
   },
   {
     path: '/goodslist/:id',
@@ -101,7 +126,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode:'history',
+  // mode:'history',
   routes,
   scrollBehavior(to,form,savedPosition){
     //scrollBehavior方法接收to，form路由对象

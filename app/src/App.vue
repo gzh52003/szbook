@@ -5,15 +5,19 @@
       <router-view>
       </router-view>
       </keep-alive>-->
-      <keep-alive>
-        <router-view v-if="this.$route.meta.keepAlive"></router-view>
+      <keep-alive include="Home,Category">
+        <router-view></router-view>
         <!--这里是会被缓存的组件-->
       </keep-alive>
-      <router-view v-if="!this.$route.meta.keepAlive"></router-view>
+      <!-- <keep-alive>
+        <router-view v-if="this.$route.meta.keepAlive"></router-view> -->
+        <!--这里是会被缓存的组件-->
+      <!-- </keep-alive>
+      <router-view v-if="!this.$route.meta.keepAlive"></router-view> -->
     </div>
     <van-tabbar active-color="#ff1100" inactive-color="#000" route id="nav" :fixed="false">
       <div class="bottomBox" v-if="!this.$route.params.id||this.$route.query.tatle">
-        <van-tabbar-item v-for="(item, idx) in Tabbar" :key="idx" :to="item.path">
+        <van-tabbar-item v-for="(item, idx) in Tabbar" :key="idx"  @click="goto(item.path)">
           <van-icon class="iconfont" class-prefix="icon" :name="item.icon" />
           <div>{{ item.text }}</div>
         </van-tabbar-item>
@@ -104,11 +108,26 @@ export default {
       } else {
         this.$router.push("/mine");
       }
+    },
+    goto(path){
+      if(this.$route.path!=path){
+        //路由redundant
+        this.$router.push(path)
+      }
+
     }
   },
+  // beforeRouteUpdate(to,from,next){
+  //   if(to===from)
+  //   return
+  //   else
+  //   next()
+  // },
   watch: {
-    "$route.path"() {
+    "$route.path"(newVal,oldVal) {
+      // if(newVal!==oldVal)
       // console.log(this.$route.params);
+
     }
   }
   // 使用request请求

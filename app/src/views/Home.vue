@@ -96,7 +96,7 @@ Vue.use(Grid);
 Vue.use(GridItem);
 
 export default {
-  name: "Home",
+  // name: "Home",
   data() {
     return {
       navbar: [],

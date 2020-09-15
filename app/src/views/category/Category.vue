@@ -26,6 +26,7 @@
 import classifyContext from "../../components/classifyContext";
 
 export default {
+  name:"Category",
   components: {
     classifyContext,
   },
@@ -41,6 +42,7 @@ export default {
   created() {
     this.initdata();
   },
+   
   methods: {
     onSearch() {
       // console.log("我是搜索框");

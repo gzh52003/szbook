@@ -7,9 +7,10 @@ import request from './utils/request'
 Vue.config.productionTip = false
 Vue.prototype.$request = request
 
-new Vue({
+const vm=new Vue({
   router,
   store,
   render: h => h(App),
 }).$mount('#app')
 
+// console.log("vm",vm)

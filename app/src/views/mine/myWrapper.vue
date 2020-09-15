@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     async getVcode() {
-      const result = await fetch(`http://42.194.179.50/api/vcode`, {
+      const result = await fetch(`http://www.ihuanu.cn/api/vcode`, {
         credentials: "include"
       }).then(res => res.json());
 
@@ -85,7 +85,7 @@ export default {
         let queryStr = "";
         queryStr += `password=${this.password}&username=${this.username}&vcode=${this.verify}&mdl=${this.checked}`;
         console.log(queryStr);
-        fetch(`http://42.194.179.50/api/login?${queryStr}`, {
+        fetch(`http://www.ihuanu.cn/api/login?${queryStr}`, {
           credentials: "include"
         })
           .then(res => res.json())
@@ -117,13 +117,13 @@ export default {
       if (this.buttonName === "注册") {
         //检测用户名是否存在
 
-        fetch(`http://42.194.179.50/api/reg/check?username=${this.username}`)
+        fetch(`http://www.ihuanu.cn/api/reg/check?username=${this.username}`)
           .then(res => res.json())
           .then(res => {
             if (res.code == 0) {
               Notify({ type: "danger", message: "该用户已存在" });
             } else {
-              const url = "http://42.194.179.50/api/reg";
+              const url = "http://www.ihuanu.cn/api/reg";
               fetch(url, {
                 method: "post",
                 credentials: "include",
