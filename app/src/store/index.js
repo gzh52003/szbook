@@ -15,6 +15,7 @@ export default new Vuex.Store({
       return {
         userInfo: {
           username: localStorage.getItem("szbookUsername"),
+          userId:localStorage.getItem("userId"),
           cartInfo: JSON.parse(localStorage.getItem("szbookcarInfo")),
         },
         currentGoods: {},
@@ -24,6 +25,7 @@ export default new Vuex.Store({
       userInfo: {
         cartInfo: [],
         username: "",
+        userId:""
       },
       currentGoods: {},
     };

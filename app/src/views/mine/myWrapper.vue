@@ -97,6 +97,8 @@ export default {
               );
               console.log(data);
               localStorage.setItem("szbookUsername", this.username);
+              localStorage.setItem("userId",data.data._id)
+              localStorage.setItem("userIcon", data.data.imageUrl)
               localStorage.setItem(
                 "szbookcarInfo",
                 JSON.stringify(data.data.cartInfo)
@@ -133,6 +135,7 @@ export default {
                 body: JSON.stringify({
                   username: this.username,
                   password: this.password,
+                  imageUrl:'http://www.ihuanu.cn/szbook/app/bookicon.jpg',
                   vcode: this.verify,
                   cartInfo: []
                 })

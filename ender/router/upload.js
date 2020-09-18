@@ -18,7 +18,7 @@ let storage = multer.diskStorage({
     filename: function (req, file, cb) {
         // 获取文件后缀名
         let ext = path.extname(file.originalname);
-
+        console.log("originalname",originalname)
         cb(null, file.fieldname + '-' + Date.now() + ext);
     }
 })

@@ -3,7 +3,9 @@
     <van-row class="userInfos">
       <van-row>
         <van-col span="6">
-          <van-image round width="10vh" height="10vh" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+          <van-uploader :after-read="onRead" accept="image/*">
+            <van-image round width="10vh" height="10vh" :src="uploadImages" />
+          </van-uploader>
         </van-col>
         <van-col span="4">
           <van-tag
@@ -15,10 +17,10 @@
           >{{szbookUsername}}</van-tag>
         </van-col>
         <van-col span="2" offset="10">
-          <i class="iconfont icon-lingdang" @click="logIn"></i>
+          <i class="iconfont icon-lingdang" @click="setPersonInfo"></i>
         </van-col>
         <van-col span="2">
-          <i class="iconfont icon-icon-test" @click="logout"></i>
+          <i class="iconfont icon-icon-test" @click="logoutlogIn"></i>
         </van-col>
       </van-row>
       <van-row class="count">
@@ -48,32 +50,34 @@
     </van-row>
     <van-row class="orderInfos">
       <van-row class="info1">
-        <van-col span="6"><span @click="allOrder">我的订单</span></van-col>
+        <van-col span="6">
+          <span @click="allOrder">我的订单</span>
+        </van-col>
         <van-col span="3" offset="14" class="more">更多</van-col>
       </van-row>
       <van-row class="info2">
         <van-goods-action>
-        <van-goods-action-icon  text="待付款"  >
-          <template v-slot:icon>
-             <i class="iconfont icon-qianbao"></i>
-          </template>
-        </van-goods-action-icon>
-        <van-goods-action-icon  text="待发货" @click="sendGood" :badge="waitSentNum" >
-          <template v-slot:icon>
-             <i class="iconfont icon-tubiaolunkuo-"></i>
-          </template>
-        </van-goods-action-icon>
-        <van-goods-action-icon  text="已发货" @click="hasSend" :badge="hasSentNum">
-          <template v-slot:icon>
-            <i class="iconfont icon-daifahuo"></i>
-          </template>
-        </van-goods-action-icon>
-        <van-goods-action-icon  text="退款/售后" >
-          <template v-slot:icon>
-            <i class="iconfont icon-shouhou"></i>
-          </template>
-        </van-goods-action-icon>
-      </van-goods-action>
+          <van-goods-action-icon text="待付款">
+            <template v-slot:icon>
+              <i class="iconfont icon-qianbao"></i>
+            </template>
+          </van-goods-action-icon>
+          <van-goods-action-icon text="待发货" @click="sendGood" :badge="waitSentNum">
+            <template v-slot:icon>
+              <i class="iconfont icon-tubiaolunkuo-"></i>
+            </template>
+          </van-goods-action-icon>
+          <van-goods-action-icon text="已发货" @click="hasSend" :badge="hasSentNum">
+            <template v-slot:icon>
+              <i class="iconfont icon-daifahuo"></i>
+            </template>
+          </van-goods-action-icon>
+          <van-goods-action-icon text="退款/售后">
+            <template v-slot:icon>
+              <i class="iconfont icon-shouhou"></i>
+            </template>
+          </van-goods-action-icon>
+        </van-goods-action>
       </van-row>
     </van-row>
     <van-row class="fav">
@@ -126,10 +130,13 @@ import {
   Tag,
   GoodsAction,
   GoodsActionIcon,
-  GoodsActionButton
+  GoodsActionButton,
+  Uploader
 } from "vant";
 import Login from "./Login";
 import Reg from "./Reg";
+
+Vue.use(Uploader);
 Vue.use(Overlay);
 Vue.use(Skeleton);
 Vue.use(Row);
@@ -149,8 +156,11 @@ export default {
       showLogin: true,
       showReg: false,
       szbookUsername: localStorage.getItem("szbookUsername"),
-      waitSentNum:0,
-      hasSentNum:0
+      waitSentNum: 0,
+      hasSentNum: 0,
+      uploadImages: localStorage.getItem("userIcon")
+        ? localStorage.getItem("userIcon")
+        : "http://www.ihuanu.cn/szbook/app/bookicon.jpg"
     };
   },
   created() {
@@ -184,26 +194,55 @@ export default {
       // console.log("www")
     }
     //已发货，代发货数量
-     this.$request
-        .get(
-          "/order/personal?username=" +
-            this.$store.state.userInfo.username +
-            "&finished=false"
-        )
-        .then(res => {
-          this.waitSentNum=res.data.data.length;
-        });
     this.$request
-        .get(
-          "/order/personal?username=" +
-            this.$store.state.userInfo.username +
-            "&finished=true"
-        )
-        .then(res => {
-          this.hasSentNum=res.data.data.length;
-        });
+      .get(
+        "/order/personal?username=" +
+          this.$store.state.userInfo.username +
+          "&finished=false"
+      )
+      .then(res => {
+        this.waitSentNum = res.data.data.length;
+      });
+    this.$request
+      .get(
+        "/order/personal?username=" +
+          this.$store.state.userInfo.username +
+          "&finished=true"
+      )
+      .then(res => {
+        this.hasSentNum = res.data.data.length;
+      });
   },
   methods: {
+    onRead(file) {
+      let formData = new FormData();
+      formData.append("goodsImg", file.file);//uploadMiddleware.single('goodsImg')接口指定field
+      // formData.append("_id", this.$store.state.userInfo.userId);
+      this.$request.post("/upload/singleimg", formData).then(async res => {
+        if (res.data.code === 1) {
+
+          let result = await fetch(`http://42.194.179.50/api/user`, {
+            method: "PUT",
+            body: JSON.stringify({
+              _id: this.$store.state.userInfo.userId,
+              username: this.$store.state.userInfo.username,
+              imageUrl:  res.data.data.uploadUrl
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          }).then(res => res.json());
+          if (result.code && result.code == 200) {
+            Notify({ type: "success", message: "头像更新成功" });
+            this.uploadImages = res.data.data.uploadUrl;
+          } else {
+            Notify({ type: "success", message: "头像更新失败" });
+          }
+        }
+        //  　　　　let str = res.response_data[0];
+        //  　　　　this.uploadImages.push(str);
+      });
+    },
     goto(login, reg) {
       this.showLogin = login;
       this.showReg = reg;
@@ -214,18 +253,16 @@ export default {
     hasSend() {
       this.$router.push("/hasSend");
     },
-    allOrder(){
+    allOrder() {
       this.$router.push("/allOrders");
     },
-    logIn() {
-      if (localStorage.getItem("szbookUsername")) {
-        return;
-      }
-      this.show = true;
-      this.showLogin = true;
+    setPersonInfo() {
+      console.log("收货地址联系方式");
     },
-    logout() {
+    logoutlogIn() {
       if (!localStorage.getItem("szbookUsername")) {
+        this.show = true;
+        this.showLogin = true;
         return;
       }
       Dialog.confirm({
@@ -260,7 +297,7 @@ export default {
   overflow: auto;
   background: rgba(0, 0, 0, 0.05);
 }
-.info2 .van-goods-action{
+.info2 .van-goods-action {
   position: static;
   display: flex;
   justify-content: space-around;
